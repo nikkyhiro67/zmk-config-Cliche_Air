@@ -52,6 +52,7 @@
             tapping-term-ms = <200>;
             flavor = "balanced";
             quick-tap-ms = <200>;
+        };
 
         my_mt: my_mt {
             compatible = "zmk,behavior-hold-tap";
