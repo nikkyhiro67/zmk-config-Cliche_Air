@@ -24,7 +24,7 @@
             bindings = <&tog_off MOUSE>;
             label = "exit_AML";
         };
-
+    };
         kp_exit_AML: kp_exit_AML {
             compatible = "zmk,behavior-macro-one-param";
             wait-ms = <0>;
