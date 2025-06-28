@@ -14,7 +14,7 @@
     input-processors = <&zip_temp_layer 5 250>;
 };
 
-/{
+/ {
     macros {
         exit_AML: exit_AML {
             compatible = "zmk,behavior-macro";
@@ -63,7 +63,7 @@
             quick-tap-ms = <0>;
         };
     };
-}
+};
 
 / {
     combos { compatible = "zmk,combos"; };
