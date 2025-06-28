@@ -52,14 +52,18 @@
             tapping-term-ms = <200>;
             flavor = "balanced";
             quick-tap-ms = <200>;
+
+        my_mt: my_mt {
+            compatible = "zmk,behavior-hold-tap";
+            label = "MY_MT";
+            bindings = <&kp A>, <&kp B>;
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            flavor = "balanced";
+            quick-tap-ms = <0>;
         };
     };
 }
-
-&mt {
-    flavor = "balanced";
-    quick-tap-ms = <0>;
-};
 
 / {
     combos { compatible = "zmk,combos"; };
