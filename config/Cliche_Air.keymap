@@ -96,23 +96,21 @@
 
         default_layer {
             bindings = <
-&kp Q      &kp W         &kp E        &kp R           &kp T                                            &kp Y    &kp U      &lt 5 I  &kp O      &kp P
-&kp A      &mt LSHIFT S  &mt LCTRL D  &mt LEFT_ALT F  &kp G      &kp MINUS              &kp H          &kp J    &kp K      &kp L    &kp SQT    &mt LEFT_SHIFT Z
-&kp Z      &kp X         &kp C        &kp V           &kp B      &kp INTERNATIONAL_4    &kp N          &kp M    &kp COMMA  &kp DOT  &kp SLASH  &kp LCTRL
-&kp LANG5  &kp TAB       &kp LWIN     &mo 2           &kp SPACE  &mo 1                  &kp BACKSPACE  &lt 1 ENTER                             &kp DEL
+&kp Q      &kp W         &kp E        &kp R           &kp T                                        &kp Y          &kp U            &lt 5 I      &kp O              &kp P
+&kp A      &mt LSHIFT S  &mt LCTRL D  &mt LEFT_ALT F  &kp G      &none                  &kp F9     &kp H          &mt RIGHT_ALT J  &mt RCTRL K  &mt RIGHT_SHIFT L  &mt KP_EQUAL KP_MINUS
+&kp Z      &kp X         &kp C        &kp V           &kp B      &kp INTERNATIONAL_4    &kp F10    &kp N          &kp M            &kp COMMA    &kp PERIOD         &kp DELETE
+&kp LANG5  &kp TAB       &kp LWIN     &mo 2           &kp SPACE  &mo 1                  &kp ENTER  &kp BACKSPACE                                                   &lt 4 ESCAPE
             >;
 
-            sensor-bindings =
-                <&scroll_up_down>,
-                <&inc_dec_kp C_VOL_DN C_VOL_UP>;
+            sensor-bindings = <&scroll_up_down>;
         };
 
         layer_1 {
             bindings = <
-&trans  &trans  &trans  &trans  &trans                    &kp F1   &kp F2  &kp F3  &kp F4   &kp F5
-&trans  &trans  &trans  &trans  &trans  &trans    &kp F6  &kp F7   &kp F8  &kp F9  &kp F10  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans   &trans  &trans  &kp F11  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans                            &kp F12
+&kp ASTERISK    &kp AMPERSAND    &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp SLASH                                       &kp KP_PLUS      &kp KP_NUMBER_7  &kp KP_NUMBER_8  &kp KP_NUMBER_9  &kp KP_MINUS
+&kp TILDE       &kp DOLLAR       &kp PERCENT           &kp CARET              &kp UNDERSCORE    &none                &kp F11  &kp COMMA        &kp KP_NUMBER_4  &kp KP_NUMBER_5  &kp KP_NUMBER_6  &kp KP_ASTERISK
+&kp GRAVE       &kp EXCLAMATION  &kp DOUBLE_QUOTES     &kp HASH               &kp SEMICOLON     &kp COLON            &kp F12  &kp PERIOD       &kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_NUMBER_3  &kp KP_SLASH
+&kp LEFT_BRACE  &kp RIGHT_BRACE  &none                 &kp AT_SIGN            &kp LEFT_BRACKET  &kp RIGHT_BRACKET    &none    &kp KP_NUMBER_0                                                     &none
             >;
 
             sensor-bindings = <&scroll_up_down>;
