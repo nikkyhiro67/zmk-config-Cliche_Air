@@ -135,6 +135,30 @@
 
             label = "ALLCUT";
         };
+
+        move_to_top: move_to_top {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press>,
+                <&kp RCTRL>,
+                <&macro_press>,
+                <&kp RIGHT_ARROW>;
+
+            label = "MOVE_TO_TOP";
+        };
+
+        move_to_end: move_to_end {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press>,
+                <&kp RCTRL>,
+                <&macro_press>,
+                <&kp LEFT_ARROW>;
+
+            label = "MOVE_TO_END";
+        };
     };
 
     behaviors {
@@ -172,10 +196,10 @@
 
         layer_1 {
             bindings = <
-&kp ASTERISK    &kp AMPERSAND    &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp SLASH                                       &kp KP_PLUS      &kp KP_NUMBER_7  &kp KP_NUMBER_8  &kp KP_NUMBER_9  &kp KP_MINUS
-&kp TILDE       &kp DOLLAR       &kp PERCENT           &kp CARET              &kp UNDERSCORE    &none                &kp F11  &kp COMMA        &kp KP_NUMBER_4  &kp KP_NUMBER_5  &kp KP_NUMBER_6  &kp KP_ASTERISK
-&kp GRAVE       &kp EXCLAMATION  &kp DOUBLE_QUOTES     &kp HASH               &kp SEMICOLON     &kp COLON            &kp F12  &kp PERIOD       &kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_NUMBER_3  &kp KP_SLASH
-&kp LEFT_BRACE  &kp RIGHT_BRACE  &none                 &kp AT_SIGN            &kp LEFT_BRACKET  &kp RIGHT_BRACKET    &none    &kp KP_NUMBER_0                                                     &none
+&kp ASTERISK    &kp AMPERSAND    &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp SLASH                             &kp KP_PLUS      &kp KP_NUMBER_7  &kp KP_NUMBER_8  &kp KP_NUMBER_9  &kp KP_MINUS
+&kp TILDE       &kp DOLLAR       &kp PERCENT           &kp CARET              &kp UNDERSCORE  &none        &kp F11  &kp COMMA        &kp KP_NUMBER_4  &kp KP_NUMBER_5  &kp KP_NUMBER_6  &kp KP_ASTERISK
+&kp GRAVE       &kp EXCLAMATION  &kp DOUBLE_QUOTES     &kp HASH               &kp SEMICOLON   &kp COLON    &kp F12  &kp PERIOD       &kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_NUMBER_3  &kp KP_SLASH
+&kp LEFT_BRACE  &kp RIGHT_BRACE  &kp AT_SIGN           &none                  &none           &none        &kp F2   &kp KP_NUMBER_0                                                     &none
             >;
 
             sensor-bindings = <&scroll_up_down>;
@@ -183,10 +207,10 @@
 
         layer_2 {
             bindings = <
-&none      &none            &none            &none            &none                                 &none     &none           &kp UP_ARROW    &none            &none
-&kp SLASH  &kp KP_NUMBER_4  &kp KP_NUMBER_5  &kp KP_NUMBER_6  &kp ASTERISK  &none    &kp PAGE_UP    &kp HOME  &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &none
-&none      &none            &none            &none            &none         &none    &kp PAGE_DOWN  &kp END   &none           &none           &none            &none
-&none      &none            &none            &none            &none         &none    &none          &none                                                      &none
+&none         &none         &none         &none    &none                                &none     &none           &kp UP_ARROW    &none            &none
+&parentheses  &bracket      &bracket      &braces  &screenshot  &none    &kp PAGE_UP    &kp HOME  &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &none
+&none         &move_to_end  &move_to_top  &allcut  &allcopy     &none    &kp PAGE_DOWN  &kp END   &none           &none           &none            &none
+&none         &none         &none         &none    &none        &none    &none          &none                                                      &none
             >;
 
             sensor-bindings = <&scroll_up_down>;
