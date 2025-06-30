@@ -6,11 +6,11 @@
         compatible = "zmk,input-processor-temp-layer";
         #input-processor-cells = <2>;
         require-prior-idle-ms = <200>;
-    };Add commentMore actions
+    };
 
     trackball_listener {
         compatible = "zmk,input-listener";
-        device = <&trackball>;
+        device = <&trackball>;Add commentMore actions
 
         input-processors = <&zip_temp_layer 5 10000>;
     };
