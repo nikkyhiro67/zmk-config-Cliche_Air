@@ -207,7 +207,7 @@
         layer_2 {
             bindings = <
 &none         &none               &none                &none          &none                                  &none                 &none               &kp UP_ARROW            &none                &none
-&parentheses  &bracket            &braces              &kp LG(LS(S))  &none                   &kp PAGE_UP    &kp HOME              &kp LEFT_ARROW      &kp DOWN_ARROW          &kp RIGHT_ARROW      &none
+&none         &parentheses        &bracket             &braces        &kp LG(LS(S))                          &kp PAGE_UP    &kp HOME              &kp LEFT_ARROW      &kp DOWN_ARROW          &kp RIGHT_ARROW      &none
 &none         &kp LC(LEFT_ARROW)  &kp LC(RIGHT_ARROW)  &allcut        &allcopy       &none    &kp PAGE_DOWN  &kp END               &kp LG(LEFT_ARROW)  &kp LG(LS(LEFT_ARROW))  &kp LG(RIGHT_ARROW)  &kp LG(LS(RIGHT_ARROW))
 &none         &none               &none                &none          &none          &none    &kp LG(TAB)    &kp LG(LS(UP_ARROW))                                                                   &none
             >;
