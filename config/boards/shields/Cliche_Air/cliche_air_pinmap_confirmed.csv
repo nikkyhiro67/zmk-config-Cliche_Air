@@ -1,0 +1,32 @@
+Function,NetName,MCU_P0xx,Notes
+LEFT_ROW0,Row0_L,P0.10,Left row 0
+LEFT_ROW1,Row1_L,P0.11,Left row 1
+LEFT_ROW2,Row2_L,P0.12,Left row 2
+LEFT_ROW3,Row3_L,P0.13,Left row 3
+LEFT_ROW4,Row4_L,P0.14,Left row 4
+LEFT_COL0,Col0_L,P0.4,Left col 0
+LEFT_COL1,Col1_L,P0.5,Left col 1
+LEFT_COL2,Col2_L,P0.6,Left col 2
+LEFT_COL3,Col3_L,P0.7,Left col 3
+LEFT_COL4,Col4_L,P0.8,Left col 4
+LEFT_COL5,Col5_L,P0.9,Left col 5
+ENCODER_A,ENC_A_L,P0.15,Left encoder A
+ENCODER_B,ENC_B_L,P0.16,Left encoder B
+RIGHT_ROW0,Row0_R,P0.20,Right row 0
+RIGHT_ROW1,Row1_R,P0.21,Right row 1
+RIGHT_ROW2,Row2_R,P0.22,Right row 2
+RIGHT_ROW3,Row3_R,P0.23,Right row 3
+RIGHT_ROW4,Row4_R,P0.24,Right row 4
+RIGHT_COL0,Col0_R,P0.25,Right col 0
+RIGHT_COL1,Col1_R,P0.26,Right col 1
+RIGHT_COL2,Col2_R,P0.27,Right col 2
+RIGHT_COL3,Col3_R,P0.28,Right col 3
+RIGHT_COL4,Col4_R,P0.29,Right col 4
+RIGHT_COL5,Col5_R,P0.30,Right col 5
+PMW_NCS,NCS_R,P0.6,Trackball CS (shared with left col2 - verify)
+PMW_SCLK,SCLK_R,P0.18,Trackball SCLK
+PMW_SDIO,SDIO_R,P0.19,Trackball SDIO (single-wire data)
+PMW_IRQ,MOTION_R,P0.4,Trackball motion IRQ (shared with left col0 - verify)
+LED_ENABLE,LED_EN_R,P0.14,LED power enable (P-MOS gate)
+LED_DATA,LED_DATA,P0.18,LED data / control (shared)
+BATTERY_ADC,BATTERY,A2/A3,ADC channel: left A2, right A3 - verify

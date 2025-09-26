@@ -1,8 +1,0 @@
-file_format: "1"
-id: Cliche_Air
-name: Cliche_Air
-type: shield
-url: https://github.com/sayu-hub/zmk-config-Cliche_Air
-requires: [seeeduino_xiao_ble]
-features:
-  - keys

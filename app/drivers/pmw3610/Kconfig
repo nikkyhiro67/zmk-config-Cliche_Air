@@ -1,0 +1,9 @@
+# app/drivers/pmw3610/Kconfig
+
+config ZMK_PMW3610
+    bool "PMW3610 Optical Trackball Sensor Driver"
+    default y
+    depends on GPIO && (SPI || ARCH_POSIX) && ZMK_POINTING
+    help
+      Enable PixArt PMW3610 optical trackball/optical sensor driver.
+      This driver supports SPI mode or SDIO (single-wire) mode using GPIO bit-banging.

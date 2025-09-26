@@ -1,0 +1,5 @@
+config ZMK_BATTERY_VOLTAGE
+    bool "Battery voltage measurement driver"
+    default y
+    help
+      Enables ADC-based battery voltage measurement and provides a simple API.

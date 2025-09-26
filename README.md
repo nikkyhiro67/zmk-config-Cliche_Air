@@ -1,7 +1,14 @@
-# 6/30 zmk-pmw3610-driver/Kconfig 修正
+Cliche_Air LED Indicator Firmware v1.5 (final candidate)
+=======================================================
 
-# 6/30 Cliche_Air_R.conf と Cliche_Air_R.overlay で EC11 有効化の修正
+This package contains:
+- DeviceTree overlays (config/boards/shields/cliche_air/)
+- prj.conf and left/right confs
+- Custom drivers (app/drivers/): battery_voltage, ext_power_transient, led_stripnize, pmw3610
+- LED indicator app (app/src/led_indicator.c)
+- Pinmap CSV (config/boards/shields/cliche_air/cliche_air_pinmap_confirmed.csv) -- PLEASE VERIFY
 
-# 6/30 一通りすべて設定終了　あとは実機での調整
-
-# keymap の EC 部分消去
+IMPORTANT:
+- Verify pin mappings in the CSV against your PCB/board before building.
+- PMW3610 driver is SPI-based; if your board uses SDIO, the driver must be adapted.
+- Build this within your ZMK workspace (west build) and provide logs if errors occur.
