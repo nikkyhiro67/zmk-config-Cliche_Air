@@ -1,7 +1,5 @@
-# SPDX-License-Identifier: MIT
-if SHIELD_CLICHE_AIR_L
 
+if SHIELD_CLICHE_AIR_L
 config ZMK_KEYBOARD_NAME
     default "Cliche_Air_L"
-
 endif
