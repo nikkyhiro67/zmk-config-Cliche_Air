@@ -1,4 +1,3 @@
-
 config SHIELD_CLICHE_AIR_R
-    bool "Cliche_Air_R Shield"
+    bool "Cliche_Air Right"
     select ZMK_KEYBOARD
