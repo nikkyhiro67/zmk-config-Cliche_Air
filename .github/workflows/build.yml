@@ -3,7 +3,7 @@ name: Build Cliche_Air
 on:
   push:
     branches:
-      - main
+      - mmaster
   pull_request:
 
 jobs:
