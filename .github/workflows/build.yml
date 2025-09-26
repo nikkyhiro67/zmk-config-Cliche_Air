@@ -1,7 +1,8 @@
-name: Build Cliche_Air firmware
+name: Build Cliche_Air
 
 on:
   push:
+    branches: [main]
   pull_request:
 
 jobs:
@@ -9,26 +10,26 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        shield: [Cliche_Air_L, Cliche_Air_R] # ← rgbled_adapter を削除！
+        shield: [Cliche_Air_L, Cliche_Air_R]
         board: [seeeduino_xiao_ble]
 
     steps:
-      - name: Checkout config
-        uses: actions/checkout@v3
+      - name: Checkout config (repo)
+        uses: actions/checkout@v4
         with:
           path: config
 
       - name: Checkout ZMK
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: zmkfirmware/zmk
           path: zmk
           ref: main
 
-      - name: Setup west
-        run: pip install west
+      - name: Install West
+        run: python3 -m pip install --upgrade west
 
-      - name: Initialize west
+      - name: Init west
         working-directory: zmk
         run: west init -l app
 

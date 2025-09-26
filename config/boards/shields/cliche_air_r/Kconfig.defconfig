@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: MIT
+if SHIELD_CLICHE_AIR_R
+
+config ZMK_KEYBOARD_NAME
+    default "Cliche_Air_R"
+
+endif

@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: MIT
+config SHIELD_CLICHE_AIR_L
+    bool "Cliche_Air Left Shield"
+    depends on BOARD_SEEEDUINO_XIAO_BLE
