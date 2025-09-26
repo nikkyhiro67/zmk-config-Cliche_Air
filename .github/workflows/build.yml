@@ -2,7 +2,8 @@ name: Build Cliche_Air
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
 
 jobs:
@@ -12,36 +13,25 @@ jobs:
       matrix:
         shield: [Cliche_Air_L, Cliche_Air_R]
         board: [seeeduino_xiao_ble]
-
     steps:
-      - name: Checkout config (repo)
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
-          path: config
+          submodules: recursive
 
-      - name: Checkout ZMK
-        uses: actions/checkout@v4
-        with:
-          repository: zmkfirmware/zmk
-          path: zmk
-          ref: main
+      - name: Install west
+        run: pip3 install west
 
-      - name: Install West
-        run: python3 -m pip install --upgrade west
-
-      - name: Init west
-        working-directory: zmk
-        run: west init -l app
+      - name: Initialize west
+        run: west init -l config
 
       - name: Update west
-        working-directory: zmk
         run: west update
 
-      - name: Build (${{ matrix.shield }} - ${{ matrix.board }})
-        working-directory: zmk
+      - name: Export Zephyr
+        run: west zephyr-export
+
+      - name: Build ZMK
         run: |
-          west build -s app -d build/${{ matrix.shield }} \
+          west build -s zmk/app -d build/${{ matrix.shield }} \
             -b ${{ matrix.board }} \
-            -- -DZMK_CONFIG=../config \
-               -DSHIELD=${{ matrix.shield }} \
-               -DZMK_EXTRA_MODULES="$(pwd)/../config"
+            -- -DZMK_CONFIG=config -DSHIELD=${{ matrix.shield }}
