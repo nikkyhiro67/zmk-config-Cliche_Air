@@ -1,5 +1,46 @@
-on: [push, pull_request, workflow_dispatch]
+name: Build Cliche_Air firmware
+
+on:
+  push:
+  pull_request:
 
 jobs:
   build:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.2.1
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shield: [Cliche_Air_L, Cliche_Air_R] # ← rgbled_adapter を削除！
+        board: [seeeduino_xiao_ble]
+
+    steps:
+      - name: Checkout config
+        uses: actions/checkout@v3
+        with:
+          path: config
+
+      - name: Checkout ZMK
+        uses: actions/checkout@v3
+        with:
+          repository: zmkfirmware/zmk
+          path: zmk
+          ref: main
+
+      - name: Setup west
+        run: pip install west
+
+      - name: Initialize west
+        working-directory: zmk
+        run: west init -l app
+
+      - name: Update west
+        working-directory: zmk
+        run: west update
+
+      - name: Build (${{ matrix.shield }} - ${{ matrix.board }})
+        working-directory: zmk
+        run: |
+          west build -s app -d build/${{ matrix.shield }} \
+            -b ${{ matrix.board }} \
+            -- -DZMK_CONFIG=../config \
+               -DSHIELD=${{ matrix.shield }} \
+               -DZMK_EXTRA_MODULES="$(pwd)/../config"
