@@ -3,7 +3,7 @@ name: Build Cliche_Air
 on:
   push:
     branches:
-      - master # 実際の default branch に合わせる
+      - master
   pull_request:
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
 
       - name: Initialize west
         run: |
-          west init -l config
+          west init -l .
           west update
 
       - name: Export Zephyr
