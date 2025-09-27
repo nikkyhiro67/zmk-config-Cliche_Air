@@ -1,2 +1,3 @@
-zephyr_library()
-zephyr_library_sources()
+# SPDX-License-Identifier: MIT
+
+zephyr_include_directories(.)
