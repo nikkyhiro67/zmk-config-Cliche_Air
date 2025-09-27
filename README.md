@@ -14,4 +14,4 @@ IMPORTANT:
 - PMW3610 driver is SPI-based; if your board uses SDIO, the driver must be adapted.
 - Build this within your ZMK workspace (west build) and provide logs if errors occur.
 
-  9.26 色々修正
+  9.27 色々修正
