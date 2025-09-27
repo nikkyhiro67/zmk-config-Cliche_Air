@@ -1,33 +1,43 @@
-/dts-v1/;
+#include "cliche_air.dtsi"
 
 / {
-    /include/ "../cliche_air/cliche_air.dtsi"
-
     chosen {
         zmk,kscan = &kscan0;
     };
+};
 
-    &kscan0 {
-        row-gpios = <&gpio0 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&gpio0 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&gpio0 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&gpio0 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&gpio0 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
-        col-gpios = <&gpio0 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                    <&gpio0 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                    <&gpio0 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                    <&gpio0 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                    <&gpio0 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                    <&gpio0 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        diode-direction = "col2row";
-    };
+&kscan0 {
+    /* Left hand key matrix
+     * Based on PCB wiring (JL connector → P0.2〜P0.12)
+     */
+    row-gpios = <&gpio0 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
 
-    trackball0: trackball {
-        status = "disabled";
-    };
+    col-gpios = <&gpio0 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
 
-    battery_voltage: battery_voltage {
-        io-channels = <&adc 1>;
-        status = "okay";
-    };
+    diode-direction = "col2row";
+    debounce-press-ms = <5>;
+    debounce-release-ms = <5>;
+};
+
+/* Rotary encoder (left side only) */
+encoder0: encoder {
+    compatible = "alps,ec11";
+    status = "okay";
+    a-gpios = <&gpio0 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+    b-gpios = <&gpio0 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+    resolution = <4>;
+};
+
+/* Trackball disabled on left */
+trackball0: trackball {
+    status = "disabled";
 };

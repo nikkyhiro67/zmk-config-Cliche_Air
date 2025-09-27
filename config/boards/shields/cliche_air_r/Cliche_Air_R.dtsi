@@ -1,46 +1,55 @@
-/dts-v1/;
+#include "cliche_air.dtsi"
 
 / {
-    /include/ "../cliche_air/cliche_air.dtsi"
-
     chosen {
         zmk,kscan = &kscan0;
     };
+};
 
-    &kscan0 {
-        /* 右手上書き (回路図と照合して数値を確定すること) */
-        row-gpios = <&gpio0 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&gpio0 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&gpio0 22 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&gpio0 23 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&gpio0 24 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
-        col-gpios = <&gpio0 25 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                    <&gpio0 26 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                    <&gpio0 27 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                    <&gpio0 28 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                    <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                    <&gpio0 30 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        diode-direction = "col2row";
-    };
+&kscan0 {
+    /* Right hand key matrix
+     * Based on PCB wiring (P0.20〜P0.30)
+     */
+    row-gpios = <&gpio0 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 22 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 23 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 24 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
 
-    &spi0 {
-        status = "okay";
-        trackball@0 {
-            compatible = "pixart,pmw3610";
-            reg = <0>;
-            spi-max-frequency = <2000000>;
-            cs-gpios = <&gpio0 6 GPIO_ACTIVE_LOW>;
-            motion-gpios = <&gpio0 4 GPIO_ACTIVE_LOW>;
-            reset-gpios = <&gpio0 5 GPIO_ACTIVE_LOW>;
-            zephyr,axis-x = <0>;
-            zephyr,axis-y = <1>;
-            res-cpi = <1600>;
-            status = "okay";
-        };
-    };
+    col-gpios = <&gpio0 25 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 26 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 27 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 28 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 30 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
 
-    battery_voltage: battery_voltage {
-        io-channels = <&adc 3>;
+    diode-direction = "col2row";
+    debounce-press-ms = <5>;
+    debounce-release-ms = <5>;
+};
+
+/* Rotary encoder disabled on right */
+encoder0: encoder {
+    status = "disabled";
+};
+
+/* Trackball PMW3610 (right side only) */
+&spi0 {
+    status = "okay";
+
+    trackball0: trackball@0 {
+        compatible = "pixart,pmw3610";
+        reg = <0>;
+        spi-max-frequency = <2000000>;
+
+        cs-gpios    = <&gpio0 6 GPIO_ACTIVE_LOW>;
+        motion-gpios = <&gpio0 4 GPIO_ACTIVE_LOW>;
+        reset-gpios  = <&gpio0 5 GPIO_ACTIVE_LOW>;
+
+        zephyr,axis-x = <0>;
+        zephyr,axis-y = <1>;
+
+        res-cpi = <1600>;
         status = "okay";
     };
 };
