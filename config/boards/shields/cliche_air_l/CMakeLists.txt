@@ -1,3 +1,2 @@
-# SPDX-License-Identifier: MIT
-
-zephyr_include_directories(.)
+# Register this directory as a shield
+zephyr_library()
