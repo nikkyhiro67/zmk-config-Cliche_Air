@@ -1,11 +1,50 @@
-
+/dts-v1/;
 / {
     chosen {
         zmk,kscan = &kscan0;
     };
-};
 
-&kscan0 {
-    debounce-press-ms = <5>;
-    debounce-release-ms = <5>;
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        diode-direction = "col2row";
+        row-gpios
+            = <&gpio0 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+              <&gpio0 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+              <&gpio0 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+              <&gpio0 13 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+              <&gpio0 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+        col-gpios
+            = <&gpio0 4  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+              <&gpio0 5  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+              <&gpio0 6  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+              <&gpio0 7  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+              <&gpio0 8  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+              <&gpio0 9  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+    };
+
+    encoder0: encoder {
+        compatible = "alps,ec11";
+        a-gpios = <&gpio0 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&gpio0 16 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+    };
+
+    ext_power: ext_power {
+        compatible = "zmk,ext-power-transient";
+        gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
+        status = "okay";
+    };
+
+    led_strip: led_strip {
+        compatible = "zmk,led-stripnize";
+        gpios = <&gpio0 18 GPIO_ACTIVE_HIGH>;
+        status = "okay";
+    };
+
+    battery_voltage: battery_voltage {
+        compatible = "voltage-divider";
+        io-channels = <&adc 2>;
+        output-ohms = <1000000>;
+        full-ohms   = <2000000>;
+        status = "okay";
+    };
 };

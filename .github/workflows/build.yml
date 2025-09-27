@@ -3,7 +3,7 @@ name: Build Cliche_Air
 on:
   push:
     branches:
-      - master
+      - master # 実際の default branch に合わせる
   pull_request:
 
 jobs:
@@ -11,27 +11,28 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        shield: [Cliche_Air_L, Cliche_Air_R]
+        shield: [cliche_air_l, cliche_air_r]
         board: [seeeduino_xiao_ble]
+
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
 
-      - name: Install west
+      - name: Install West
         run: pip3 install west
 
       - name: Initialize west
-        run: west init -l config
-
-      - name: Update west
-        run: west update
+        run: |
+          west init -l config
+          west update
 
       - name: Export Zephyr
         run: west zephyr-export
 
-      - name: Build ZMK
+      - name: Build ZMK for shield
         run: |
+          echo "Building shield=${{ matrix.shield }} board=${{ matrix.board }}"
           west build -s zmk/app -d build/${{ matrix.shield }} \
             -b ${{ matrix.board }} \
             -- -DZMK_CONFIG=config -DSHIELD=${{ matrix.shield }}
