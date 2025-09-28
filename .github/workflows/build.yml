@@ -1,51 +1,5 @@
-name: Build Cliche_Air
-
-on:
-  push:
-    branches:
-      - master # 実際の default branch に合わせる
-  pull_request:
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        shield: [cliche_air_l, cliche_air_r]
-        board: [seeeduino_xiao_ble]
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          submodules: recursive
-
-      - name: Checkout ZMK firmware (separate repo)
-        uses: actions/checkout@v3
-        with:
-          repository: zmkfirmware/zmk
-          path: zmk
-          ref: main
-
-      - name: Install West
-        run: python3 -m pip install --upgrade west
-
-      - name: Initialize west (using config/west.yml)
-        working-directory: zmk
-        run: west init -l ../config
-
-      - name: Update west
-        working-directory: zmk
-        run: west update
-
-      - name: Export Zephyr
-        working-directory: zmk
-        run: west zephyr-export
-
-      - name: Build ZMK for shield
-        working-directory: zmk
-        run: |
-          echo "Building shield=${{ matrix.shield }} board=${{ matrix.board }}"
-          west build -s app -d build/${{ matrix.shield }} \
-            -b ${{ matrix.board }} \
-            -- -DZMK_CONFIG=../config -DSHIELD=${{ matrix.shield }}
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.2.1
