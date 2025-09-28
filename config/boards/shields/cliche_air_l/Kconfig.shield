@@ -1,16 +1,3 @@
 config SHIELD_CLICHE_AIR_L
     bool "Cliche Air Left (cliche_air_l)"
     select ZMK_KEYBOARD
-
-if SHIELD_CLICHE_AIR_L
-
-config ZMK_KEYBOARD_NAME
-    default "Cliche_Air_L"
-
-config ZMK_SPLIT
-    default y
-
-config ZMK_SPLIT_ROLE_CENTRAL
-    default y
-
-endif
