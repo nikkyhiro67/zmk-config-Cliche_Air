@@ -3,7 +3,7 @@ name: Build Cliche_Air
 on:
   push:
     branches:
-      - master # 実際の default branch に合わせる
+      - master
   pull_request:
 
 jobs:
@@ -30,7 +30,6 @@ jobs:
       - name: Install West
         run: python3 -m pip install --upgrade west
 
-      # ここが重要: zmk ディレクトリに移動して manifest (../config/west.yml) を参照して初期化
       - name: Initialize west (using config/west.yml)
         working-directory: zmk
         run: west init -l ../config
@@ -42,6 +41,21 @@ jobs:
       - name: Export Zephyr
         working-directory: zmk
         run: west zephyr-export
+
+      - name: List config and shields (debug)
+        working-directory: zmk
+        run: |
+          echo "PWD: $(pwd)"
+          echo "ls -la ../config"
+          ls -la ../config || true
+          echo "ls -la ../config/boards"
+          ls -la ../config/boards || true
+          echo "ls -la ../config/boards/shields"
+          ls -la ../config/boards/shields || true
+          echo "ls -la ../config/boards/shields/cliche_air_l"
+          ls -la ../config/boards/shields/cliche_air_l || true
+          echo "ls -la ../config/boards/shields/cliche_air_r"
+          ls -la ../config/boards/shields/cliche_air_r || true
 
       - name: Build ZMK for shield
         working-directory: zmk

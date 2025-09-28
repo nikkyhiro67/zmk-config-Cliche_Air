@@ -1,2 +1,2 @@
-# Register this directory as a shield
+# config/boards/shields/cliche_air_l/CMakeLists.txt
 zephyr_library()

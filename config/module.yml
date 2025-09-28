@@ -1,5 +1,7 @@
+# config/module.yml  —  must be in config/ (module root = config)
 name: zmk-config-cliche_air
 build:
   cmake: .
   kconfig: Kconfig
+  # shield_root is relative to this module root (config)
   shield_root: boards/shields
