@@ -6,7 +6,6 @@ config ZMK_KEYBOARD_NAME
 config ZMK_SPLIT
     default y
 
-# Left is CENTRAL (親機) as you specified
 config ZMK_SPLIT_ROLE_CENTRAL
     default y
 
