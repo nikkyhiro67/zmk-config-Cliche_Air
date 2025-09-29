@@ -1,0 +1,10 @@
+file_format: "1"
+id: cliche_air_l
+name: "Cliche_Air_L"
+type: shield
+url: https://github.com/nikkyhiro67/zmk-config-Cliche_Air
+requires: [seeeduino_xiao_ble]
+features:
+  - keys
+  - split
+  - ble
