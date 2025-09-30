@@ -1,5 +1,0 @@
-name: zmk-config-cliche_air
-build:
-  cmake: ..
-  kconfig: ../Kconfig
-  shield_root: ../boards/shields
