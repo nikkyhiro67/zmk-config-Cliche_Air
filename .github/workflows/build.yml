@@ -1,8 +1,6 @@
-name: Build ZMK Firmware
+name: Build ZMK firmware
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3.0
-    with:
-      extra-cmake-args: -DZMK_EXTRA_MODULES=${{ github.workspace }}
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
