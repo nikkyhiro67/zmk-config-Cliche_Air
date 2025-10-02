@@ -9,11 +9,13 @@ jobs:
   build-left:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3.0
     with:
-      board: seeeduino_xiao_ble
-      shield: cliche_air_l rgbled_adapter
+      config: |
+        board: seeeduino_xiao_ble
+        shield: cliche_air_l rgbled_adapter
 
   build-right:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3.0
     with:
-      board: seeeduino_xiao_ble
-      shield: cliche_air_r rgbled_adapter
+      config: |
+        board: seeeduino_xiao_ble
+        shield: cliche_air_r rgbled_adapter
