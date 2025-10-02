@@ -8,3 +8,9 @@ on:
 jobs:
   build:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3.0
+    with:
+      board: seeeduino_xiao_ble
+      shield: |
+        cliche_air_l rgbled_adapter
+        cliche_air_r rgbled_adapter
+      extra-cmake-args: -DZMK_EXTRA_MODULES=${{ github.workspace }}
