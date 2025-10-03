@@ -1,0 +1,52 @@
+/* Left-side overlay for Cliche_Air
+ * - Provides key matrix pin mapping for left half
+ * - Enables encoder (left only)
+ * - Disables trackball (right-only)
+ *
+ * NOTE: Verify the pin numbers (P0.xx) against your PCB schematic before building.
+ */
+
+#include "cliche_air.dtsi"
+
+/ {
+    chosen {
+        zmk,kscan = &kscan0;
+    };
+};
+
+/* Key matrix (left) */
+&kscan0 {
+    /* Left hand key matrix (example mapping - confirm with your PCB) */
+    row-gpios = <&gpio0 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>, /* R0 -> P0.2 */
+                <&gpio0 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>, /* R1 -> P0.3 */
+                <&gpio0 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>, /* R2 -> P0.4 */
+                <&gpio0 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>, /* R3 -> P0.5 */
+                <&gpio0 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>; /* R4 -> P0.6 */
+
+    col-gpios = <&gpio0 7  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,  /* C0 -> P0.7 */
+                <&gpio0 8  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,  /* C1 -> P0.8 */
+                <&gpio0 9  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,  /* C2 -> P0.9 */
+                <&gpio0 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,  /* C3 -> P0.10 */
+                <&gpio0 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,  /* C4 -> P0.11 */
+                <&gpio0 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;  /* C5 -> P0.12 */
+
+    diode-direction = "col2row";
+    debounce-press-ms = <5>;
+    debounce-release-ms = <5>;
+};
+
+/* Enable the encoder on left side by referencing the common encoder node */
+&encoder0 {
+    status = "okay";
+    /* NOTE: use pins that are NOT used by the key matrix columns/rows.
+     * Example uses P0.15 and P0.16 — confirm with your PCB wiring.
+     */
+    a-gpios = <&gpio0 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>; /* EC A -> P0.15 */
+    b-gpios = <&gpio0 16 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>; /* EC B -> P0.16 */
+    resolution = <4>;
+};
+
+/* Explicitly disable trackball on left (if driver expects node or to be safe) */
+trackball0: trackball {
+    status = "disabled";
+};

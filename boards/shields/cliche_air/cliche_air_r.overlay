@@ -42,9 +42,8 @@ encoder0: encoder {
         reg = <0>;
         spi-max-frequency = <2000000>;
 
-        cs-gpios    = <&gpio0 6 GPIO_ACTIVE_LOW>;
-        motion-gpios = <&gpio0 4 GPIO_ACTIVE_LOW>;
-        reset-gpios  = <&gpio0 5 GPIO_ACTIVE_LOW>;
+        cs-gpios     = <&gpio0 17 GPIO_ACTIVE_LOW>;   /* NCS_R */
+        motion-gpios = <&gpio0 24 GPIO_ACTIVE_LOW>;   /* MOTION_R (IRQ) */
 
         zephyr,axis-x = <0>;
         zephyr,axis-y = <1>;

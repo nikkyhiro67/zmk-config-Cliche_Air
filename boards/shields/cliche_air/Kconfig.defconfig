@@ -1,0 +1,25 @@
+if SHIELD_CLICHE_AIR_L
+
+config ZMK_KEYBOARD_NAME
+    default "Cliche_Air_Left"
+
+config ZMK_SPLIT
+    default y
+
+config ZMK_SPLIT_ROLE_CENTRAL
+    default y
+
+endif
+
+if SHIELD_CLICHE_AIR_R
+
+config ZMK_KEYBOARD_NAME
+    default "Cliche_Air_Right"
+
+config ZMK_SPLIT
+    default y
+
+config ZMK_SPLIT_ROLE_PERIPHERAL
+    default y
+
+endif

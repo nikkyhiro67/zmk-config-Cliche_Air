@@ -2,5 +2,4 @@ name: zmk-config-cliche_air
 
 build:
   settings:
-    board_root: .
     shield_root: boards/shields
