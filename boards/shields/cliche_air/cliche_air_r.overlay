@@ -29,7 +29,7 @@
 };
 
 /* Rotary encoder disabled on right */
-encoder0: encoder {
+&encoder0 {
     status = "disabled";
 };
 
@@ -37,7 +37,7 @@ encoder0: encoder {
 &spi0 {
     status = "okay";
 
-    trackball0: trackball@0 {
+&trackball0 {
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;

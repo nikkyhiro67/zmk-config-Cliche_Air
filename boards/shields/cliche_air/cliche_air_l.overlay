@@ -47,6 +47,6 @@
 };
 
 /* Explicitly disable trackball on left (if driver expects node or to be safe) */
-trackball0: trackball {
+&trackball0 {
     status = "disabled";
 };
