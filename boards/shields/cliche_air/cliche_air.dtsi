@@ -1,11 +1,20 @@
-/ {
+/*
+ * Cliche_Air 共通ハードウェア定義
+ * -----------------------------------------
+ * 各サイド専用 overlay (cliche_air_l.overlay / cliche_air_r.overlay) で
+ * row-gpios, col-gpios, トラックボール, エンコーダなどを上書きする。
+ *
+ * この .dtsi は共通ノードの定義のみを行う。
+ */
+
+ / {
     chosen {
-        /* default kscan handle (can be overridden in overlays) */
+        /* デフォルトのキースキャンデバイス (各サイドで上書き可能) */
         zmk,kscan = &kscan0;
     };
 
     /* ---------------------------
-     * Keyscan controller (common)
+     * Keyscan controller (共通設定)
      * ---------------------------
      */
     kscan0: kscan {
@@ -14,11 +23,13 @@
         debounce-press-ms = <5>;
         debounce-release-ms = <5>;
         status = "okay";
+        /* row-gpios / col-gpios は各 overlay 側で定義 */
     };
 
     /* ---------------------------
-     * Rotary encoder (common)
+     * Rotary encoder (共通)
      * ---------------------------
+     * 各サイドで status を上書きして使用。
      */
     encoder0: encoder {
         compatible = "alps,ec11";
@@ -26,8 +37,9 @@
     };
 
     /* ---------------------------
-     * External power / LED VCC control
+     * 外部電源制御 (例: LED電源)
      * ---------------------------
+     * 必要に応じて overlay でピン番号を上書き。
      */
     ext_power: ext_power {
         compatible = "zmk,ext-power-transient";
@@ -36,8 +48,9 @@
     };
 
     /* ---------------------------
-     * LED data / strip node
+     * LED ストリップ制御
      * ---------------------------
+     * led_stripnize ドライバ用。overlayでGPIO変更可。
      */
     led_strip: led_strip {
         compatible = "zmk,led-stripnize";
@@ -46,26 +59,25 @@
     };
 
     /* ---------------------------
-     * Battery voltage measurement
+     * バッテリ電圧測定ノード（ZMK標準を無効化）
      * ---------------------------
+     * ZMK の voltage-divider ドライバは使用しない。
+     * custom_battery_adc.c が直接 ADC を制御する。
      */
-    battery {
-        compatible = "zmk,battery-voltage-divider";
-        io-channels = <&adc 2>;
-        divider = <2>; /* 1MΩ + 1MΩ → 分圧比2倍 */
+    /* 削除済み: zmk,battery-voltage-divider ノード */
+    
+    /* ADCを有効化 (custom_battery_adc.c が使用) */
+    &adc {
         status = "okay";
     };
-};
 
-/ {
-    /* Common dummy trackball node for reference safety */
+    /* ---------------------------
+     * トラックボール (右側のみ使用)
+     * ---------------------------
+     * overlay にて spi0 経由で有効化される。
+     */
     trackball0: trackball {
         compatible = "pixart,pmw3610";
-        status = "disabled";
-    };
-
-    encoder0: encoder {
-        compatible = "alps,ec11";
         status = "disabled";
     };
 };
