@@ -57,3 +57,16 @@
         status = "okay";
     };
 };
+
+/ {
+    /* Common dummy trackball node for reference safety */
+    trackball0: trackball {
+        compatible = "pixart,pmw3610";
+        status = "disabled";
+    };
+
+    encoder0: encoder {
+        compatible = "alps,ec11";
+        status = "disabled";
+    };
+};
