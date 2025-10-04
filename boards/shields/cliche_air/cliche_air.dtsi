@@ -1,15 +1,12 @@
-/dts-v1/;
-
 / {
     chosen {
-        /* default kscan handle (will be overridden by per-shield overlay if needed) */
+        /* default kscan handle (can be overridden in overlays) */
         zmk,kscan = &kscan0;
     };
 
     /* ---------------------------
      * Keyscan controller (common)
-     * --------------------------- 
-     * Per-side overlays must supply row-gpios and col-gpios for &kscan0.
+     * ---------------------------
      */
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
@@ -17,24 +14,21 @@
         debounce-press-ms = <5>;
         debounce-release-ms = <5>;
         status = "okay";
-        /* row-gpios / col-gpios intentionally left for per-overlay to provide */
     };
 
     /* ---------------------------
      * Rotary encoder (common)
      * ---------------------------
-     * Disabled by default. Overlay should reference &encoder0 and set status="okay"
-     * and a-gpios / b-gpios if present on that half.
      */
     encoder0: encoder {
         compatible = "alps,ec11";
-        status = "disabled"; /* enabled in left overlay if encoder present */
-        /* a-gpios / b-gpios left to overlay */
+        status = "disabled";
     };
 
     /* ---------------------------
      * External power / LED VCC control
-     * --------------------------- */
+     * ---------------------------
+     */
     ext_power: ext_power {
         compatible = "zmk,ext-power-transient";
         gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
@@ -43,7 +37,8 @@
 
     /* ---------------------------
      * LED data / strip node
-     * --------------------------- */
+     * ---------------------------
+     */
     led_strip: led_strip {
         compatible = "zmk,led-stripnize";
         gpios = <&gpio0 18 GPIO_ACTIVE_HIGH>;
@@ -51,8 +46,9 @@
     };
 
     /* ---------------------------
-     * Battery voltage measurement (voltage-divider)
-     * --------------------------- */
+     * Battery voltage measurement
+     * ---------------------------
+     */
     battery_voltage: battery_voltage {
         compatible = "voltage-divider";
         io-channels = <&adc 2>;
