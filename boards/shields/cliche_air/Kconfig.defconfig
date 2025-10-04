@@ -1,12 +1,15 @@
 if SHIELD_CLICHE_AIR_L
 
 config ZMK_KEYBOARD_NAME
-    default "Cliche_Air_Left"
+    string
+    default "Cliche_Air_L"
 
 config ZMK_SPLIT
+    bool
     default y
 
 config ZMK_SPLIT_ROLE_CENTRAL
+    bool
     default y
 
 endif
@@ -14,12 +17,15 @@ endif
 if SHIELD_CLICHE_AIR_R
 
 config ZMK_KEYBOARD_NAME
-    default "Cliche_Air_Right"
+    string
+    default "Cliche_Air_R"
 
 config ZMK_SPLIT
+    bool
     default y
 
 config ZMK_SPLIT_ROLE_PERIPHERAL
+    bool
     default y
 
 endif
