@@ -15,8 +15,7 @@
 
     /* ---------------------------
      * Keyscan controller (共通設定)
-     * ---------------------------
-     */
+     * --------------------------- */
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
         diode-direction = "col2row";
@@ -59,19 +58,6 @@
     };
 
     /* ---------------------------
-     * バッテリ電圧測定ノード（ZMK標準を無効化）
-     * ---------------------------
-     * ZMK の voltage-divider ドライバは使用しない。
-     * custom_battery_adc.c が直接 ADC を制御する。
-     */
-    /* 削除済み: zmk,battery-voltage-divider ノード */
-    
-    /* ADCを有効化 (custom_battery_adc.c が使用) */
-    &adc {
-        status = "okay";
-    };
-
-    /* ---------------------------
      * トラックボール (右側のみ使用)
      * ---------------------------
      * overlay にて spi0 経由で有効化される。
@@ -80,4 +66,11 @@
         compatible = "pixart,pmw3610";
         status = "disabled";
     };
+};
+
+/* -------------------------------------------------------
+ * ADC を有効化（custom_battery_adc.c が使用）
+ * ------------------------------------------------------- */
+&adc {
+    status = "okay";
 };
