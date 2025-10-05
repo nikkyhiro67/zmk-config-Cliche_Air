@@ -1,42 +1,65 @@
-if SHIELD_CLICHE_AIR_L
-config ZMK_SPLIT
-    bool "Enable split keyboard"
-    default y
+# Cliche_Air split keyboard common config
+# Updated for ZMK + Zephyr 3.5 (2025)
 
-config ZMK_SPLIT_ROLE_PERIPHERAL
-    bool "Left side acts as Peripheral"
+# ---------------------------------------------------------
+# Common defaults for both sides
+# ---------------------------------------------------------
+config ZMK_SPLIT
+    bool "Enable split keyboard support"
     default y
 
 config ZMK_KSCAN_GPIO
+    bool "Use GPIO-based key scan"
     default y
 
 config ZMK_KSCAN_DEBOUNCE_PRESS_MS
-    int
+    int "Debounce press time (ms)"
     default 5
 
 config ZMK_KSCAN_DEBOUNCE_RELEASE_MS
-    int
+    int "Debounce release time (ms)"
     default 5
+
+
+# ---------------------------------------------------------
+# Left half (Peripheral)
+# ---------------------------------------------------------
+if SHIELD_CLICHE_AIR_L
+
+config ZMK_SPLIT_ROLE
+    string
+    default "peripheral"
+
+config ZMK_BLE
+    bool
+    default y
+
+config ZMK_BLE_PERIPHERAL
+    bool
+    default y
+
 endif # SHIELD_CLICHE_AIR_L
 
 
+# ---------------------------------------------------------
+# Right half (Central)
+# ---------------------------------------------------------
 if SHIELD_CLICHE_AIR_R
-config ZMK_SPLIT
-    bool "Enable split keyboard"
+
+config ZMK_SPLIT_ROLE
+    string
+    default "central"
+
+config ZMK_BLE
+    bool
     default y
 
-config ZMK_SPLIT_ROLE_CENTRAL
-    bool "Right side acts as Central"
+config ZMK_BLE_CENTRAL
+    bool
     default y
 
-config ZMK_KSCAN_GPIO
+config ZMK_USB
+    bool
     default y
 
-config ZMK_KSCAN_DEBOUNCE_PRESS_MS
-    int
-    default 5
-
-config ZMK_KSCAN_DEBOUNCE_RELEASE_MS
-    int
-    default 5
 endif # SHIELD_CLICHE_AIR_R
