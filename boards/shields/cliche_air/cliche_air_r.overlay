@@ -6,6 +6,40 @@
 
 #include "cliche_air.dtsi"
 
+/* --- SPI0 ピン制御ノード定義 --- */
+/* seeeduino_xiao_ble は pinctrl を明示的に定義する必要あり */
+&pinctrl {
+    spi0_default: spi0_default {
+        group1 {
+            /* SCK=P0.13, MOSI=P0.11, MISO=P0.12 */
+            psels = <NRF_PSEL(SPIM_SCK, 0, 13)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 11)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 12)>;
+        };
+    };
+};
+
+&spi0 {
+    status = "okay";
+    pinctrl-0 = <&spi0_default>;
+    pinctrl-names = "default";
+
+    trackball_r: pmw3610@0 {
+        compatible = "pixart,pmw3610";
+        reg = <0>;
+        spi-max-frequency = <2000000>;
+
+        cs-gpios     = <&gpio0 17 GPIO_ACTIVE_LOW>; /* NCS_R */
+        motion-gpios = <&gpio0 24 GPIO_ACTIVE_LOW>; /* MOTION_R (IRQ) */
+
+        zephyr,axis-x = <0>;
+        zephyr,axis-y = <1>;
+
+        res-cpi = <1600>;
+        status = "okay";
+    };
+};
+
 / {
     chosen {
         zmk,kscan = &kscan0;
@@ -35,26 +69,4 @@
 /* Disable encoder on right side */
 &encoder0 {
     status = "disabled";
-};
-
-/* Enable trackball (PixArt PMW3610) on SPI0 */
-&spi0 {
-    status = "okay";
-    pinctrl-0 = <&spi0_default>;
-    pinctrl-names = "default";
-
-    trackball_r: pmw3610@0 {
-        compatible = "pixart,pmw3610";
-        reg = <0>;
-        spi-max-frequency = <2000000>;
-
-        cs-gpios     = <&gpio0 17 GPIO_ACTIVE_LOW>; /* NCS_R */
-        motion-gpios = <&gpio0 24 GPIO_ACTIVE_LOW>; /* MOTION_R (IRQ) */
-
-        zephyr,axis-x = <0>;
-        zephyr,axis-y = <1>;
-
-        res-cpi = <1600>;
-        status = "okay";
-    };
 };
