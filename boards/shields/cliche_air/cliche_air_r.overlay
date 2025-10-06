@@ -5,10 +5,22 @@
  */
 
 #include "cliche_air.dtsi"
+#include <zephyr/dt-bindings/input/input-event-codes.h>
 
 / {
     chosen {
         zmk,kscan = &kscan0;
+    };
+
+    /* Optional: Trackball input listener for ZMK */
+    trackball_r_listener: trackball_r_listener {
+        compatible = "zmk,input-listener";
+        device = <&trackball_r>;
+        status = "okay";
+        /* Example processor chain (invert X, scale down, scroll mapping) */
+        input-processors = <&zip_xy_transform INPUT_TRANSFORM_X_INVERT>,
+                           <&zip_xy_scaler 1 16>,
+                           <&zip_xy_to_scroll_mapper>;
     };
 };
 
@@ -40,28 +52,24 @@
 /* Enable trackball (PixArt PMW3610) on SPI0 */
 &spi0 {
     status = "okay";
+    compatible = "nordic,nrf-spim"; /* Xiao BLE uses nRF52 series */
     pinctrl-0 = <&spi0_default>;
-    pinctrl-names = "default";
+    pinctrl-1 = <&spi0_sleep>;
+    pinctrl-names = "default", "sleep";
+    cs-gpios = <&gpio0 17 GPIO_ACTIVE_LOW>; /* NCS_R */
 
-    trackball_r: pmw3610@0 {
+    trackball_r: trackball_r@0 {
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
 
-        /* use cs-gpios instead of spi-chip-select */
-        cs-gpios = <&gpio0 17 GPIO_ACTIVE_LOW>; /* NCS_R */
+        irq-gpios = <&gpio0 24 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* MOTION_R */
+        cpi = <800>;
+        evt-type = <INPUT_EV_REL>;
+        x-input-code = <INPUT_REL_X>;
+        y-input-code = <INPUT_REL_Y>;
+        disable-burst-read;
 
-        /* required properties for the binding */
-        irq-gpios = <&gpio0 24 GPIO_ACTIVE_LOW>; /* MOTION_R */
-        evt-type = <0x02>;     /* EV_REL */
-        x-input-code = <0x00>; /* REL_X */
-        y-input-code = <0x01>; /* REL_Y */
-
-        /* optional ZMK usage mappings */
-        zephyr,axis-x = <0>;
-        zephyr,axis-y = <1>;
-
-        res-cpi = <1600>;
         status = "okay";
     };
 };
