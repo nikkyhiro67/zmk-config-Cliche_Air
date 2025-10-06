@@ -1,3 +1,9 @@
+/* Right-side overlay for Cliche_Air
+ * - Provides key matrix pin mapping for right half
+ * - Disables encoder (left-only)
+ * - Enables trackball (right-only)
+ */
+
 #include "cliche_air.dtsi"
 
 / {
@@ -6,10 +12,7 @@
     };
 };
 
-/* ---------------------------
- * Key matrix (Right side)
- * ---------------------------
- */
+/* Key matrix (right) */
 &kscan0 {
     row-gpios = <&gpio0 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
                 <&gpio0 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
@@ -27,31 +30,24 @@
     diode-direction = "col2row";
     debounce-press-ms = <5>;
     debounce-release-ms = <5>;
-    status = "okay";
 };
 
-/* ---------------------------
- * Rotary encoder (disabled)
- * ---------------------------
- */
+/* Disable encoder on right side */
 &encoder0 {
     status = "disabled";
 };
 
-/* ---------------------------
- * Trackball PMW3610 (Right side only)
- * ---------------------------
- */
+/* Enable trackball (PixArt PMW3610) on SPI0 */
 &spi0 {
     status = "okay";
 
-    trackball0: pmw3610@0 {
+    trackball_r: trackball@0 {
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
 
-        cs-gpios     = <&gpio0 17 GPIO_ACTIVE_LOW>;   /* NCS_R */
-        motion-gpios = <&gpio0 24 GPIO_ACTIVE_LOW>;   /* MOTION_R (IRQ) */
+        cs-gpios     = <&gpio0 17 GPIO_ACTIVE_LOW>; /* NCS_R */
+        motion-gpios = <&gpio0 24 GPIO_ACTIVE_LOW>; /* MOTION_R (IRQ) */
 
         zephyr,axis-x = <0>;
         zephyr,axis-y = <1>;
