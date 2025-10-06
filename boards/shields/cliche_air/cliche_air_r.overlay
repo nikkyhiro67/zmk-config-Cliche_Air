@@ -19,6 +19,7 @@
     };
 };
 
+/* --- SPI0設定 & PMW3610トラックボール --- */
 &spi0 {
     status = "okay";
     pinctrl-0 = <&spi0_default>;
@@ -29,12 +30,15 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
 
+        /* 必須GPIOプロパティ群 */
         cs-gpios     = <&gpio0 17 GPIO_ACTIVE_LOW>; /* NCS_R */
-        motion-gpios = <&gpio0 24 GPIO_ACTIVE_LOW>; /* MOTION_R (IRQ) */
+        irq-gpios    = <&gpio0 24 GPIO_ACTIVE_LOW>; /* MOTION_R (IRQ) */
 
+        /* ZMK軸マッピング設定 */
         zephyr,axis-x = <0>;
         zephyr,axis-y = <1>;
 
+        /* センサー分解能設定 */
         res-cpi = <1600>;
         status = "okay";
     };
@@ -46,7 +50,7 @@
     };
 };
 
-/* Key matrix (right) */
+/* --- キーマトリクス設定 (右側) --- */
 &kscan0 {
     row-gpios = <&gpio0 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
                 <&gpio0 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
@@ -66,7 +70,7 @@
     debounce-release-ms = <5>;
 };
 
-/* Disable encoder on right side */
+/* --- エンコーダ無効化 (右側) --- */
 &encoder0 {
     status = "disabled";
 };
