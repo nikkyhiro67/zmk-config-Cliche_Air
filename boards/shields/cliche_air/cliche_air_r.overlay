@@ -29,14 +29,16 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
 
-        /* --- GPIO設定 --- */
-        cs-gpios  = <&gpio0 17 GPIO_ACTIVE_LOW>; /* NCS_R */
+        /* --- 新仕様に対応したCS指定 --- */
+        spi-chip-select = <0>; /* SPIバス上のチップセレクト番号 */
+
+        /* --- GPIO (IRQピンのみ) --- */
         irq-gpios = <&gpio0 24 GPIO_ACTIVE_LOW>; /* MOTION_R (IRQ) */
 
         /* --- 必須フィールド --- */
-        evt-type = <INPUT_EV_REL>;          /* 相対座標デバイス */
-        x-input-code = <INPUT_REL_X>;       /* X軸イベントコード */
-        y-input-code = <INPUT_REL_Y>;       /* Y軸イベントコード */
+        evt-type = <INPUT_EV_REL>;
+        x-input-code = <INPUT_REL_X>;
+        y-input-code = <INPUT_REL_Y>;
 
         /* --- 軸設定 --- */
         zephyr,axis-x = <0>;
