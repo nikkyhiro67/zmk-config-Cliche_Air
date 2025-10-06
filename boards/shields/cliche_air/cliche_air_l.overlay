@@ -1,10 +1,10 @@
-/* Right-side overlay for Cliche_Air
- * - Provides key matrix pin mapping for right half
- * - Disables encoder (left-only)
- * - Enables trackball (right-only)
- *
- * NOTE: Verify the pin numbers (P0.xx) against your PCB schematic before building.
- */
+/* ================================================================
+ * Cliche_Air Left Overlay
+ * ---------------------------------------------------------------
+ * - Left-hand key matrix
+ * - Encoder enabled
+ * - Trackball disabled
+ * ================================================================ */
 
 #include "cliche_air.dtsi"
 
@@ -14,28 +14,42 @@
     };
 };
 
-/* Key matrix (right) */
+/* ---------------------------
+ * Key Matrix (Left Side)
+ * --------------------------- */
 &kscan0 {
-    /* Right hand key matrix */
-    row-gpios = <&gpio0 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                <&gpio0 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                <&gpio0 22 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                <&gpio0 23 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                <&gpio0 24 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+    row-gpios = <&gpio0 2  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 3  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 4  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 5  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 6  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
 
-    col-gpios = <&gpio0 25 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                <&gpio0 26 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                <&gpio0 27 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                <&gpio0 28 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-                <&gpio0 30 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+    col-gpios = <&gpio0 7  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 8  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 9  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
 
     diode-direction = "col2row";
     debounce-press-ms = <5>;
     debounce-release-ms = <5>;
+    status = "okay";
 };
 
-/* Disable encoder on right side */
+/* ---------------------------
+ * Rotary Encoder (Enabled)
+ * --------------------------- */
 &encoder0 {
+    status = "okay";
+    a-gpios = <&gpio0 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+    b-gpios = <&gpio0 16 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+    resolution = <4>;
+};
+
+/* ---------------------------
+ * Trackball (Disabled)
+ * --------------------------- */
+&trackball0 {
     status = "disabled";
 };
