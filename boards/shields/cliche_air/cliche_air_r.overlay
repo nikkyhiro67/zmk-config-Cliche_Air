@@ -5,9 +5,9 @@
  */
 
 #include "cliche_air.dtsi"
+#include <dt-bindings/input/input-event-codes.h>
 
 /* --- SPI0 ピン制御ノード定義 --- */
-/* Xiao BLE の SPI ピン (SCK=P0.13, MOSI=P0.11, MISO=P0.12) */
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
@@ -34,7 +34,7 @@
         irq-gpios = <&gpio0 24 GPIO_ACTIVE_LOW>; /* MOTION_R (IRQ) */
 
         /* --- 必須フィールド --- */
-        evt-type = "pointer";  /* ZMK input event type (e.g. "pointer", "scroll") */
+        evt-type = <INPUT_EV_REL>;  /* ポインティングデバイス（相対座標） */
 
         /* --- 軸設定 --- */
         zephyr,axis-x = <0>;
