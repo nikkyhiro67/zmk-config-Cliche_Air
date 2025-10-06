@@ -40,8 +40,10 @@
 /* Enable trackball (PixArt PMW3610) on SPI0 */
 &spi0 {
     status = "okay";
+    pinctrl-0 = <&spi0_default>;
+    pinctrl-names = "default";
 
-    trackball_r: trackball@0 {
+    trackball_r: pmw3610@0 {
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
