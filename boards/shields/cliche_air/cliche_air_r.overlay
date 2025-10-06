@@ -1,41 +1,55 @@
-#include "cliche_air.dtsi"
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 
 / {
     chosen {
         zmk,kscan = &kscan0;
     };
-
-    trackball_r_listener: trackball_r_listener {
-        compatible = "zmk,input-listener";
-        device = <&trackball_r>;
-        status = "okay";
-        input-processors = <&zip_xy_transform INPUT_TRANSFORM_X_INVERT>,
-                           <&zip_xy_scaler 1 16>,
-                           <&zip_xy_to_scroll_mapper>;
-    };
 };
 
+/* Key matrix (right) */
+&kscan0 {
+    row-gpios = <&gpio0 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 22 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 23 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&gpio0 24 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+
+    col-gpios = <&gpio0 25 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 26 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 27 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 28 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                <&gpio0 30 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+
+    diode-direction = "col2row";
+    debounce-press-ms = <5>;
+    debounce-release-ms = <5>;
+};
+
+/* Disable encoder on right side */
+&encoder0 {
+    status = "disabled";
+};
+
+/* Enable trackball (PixArt PMW3610) on SPI0 */
 &spi0 {
     status = "okay";
     compatible = "nordic,nrf-spim";
     pinctrl-0 = <&spi0_default>;
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 17 GPIO_ACTIVE_LOW>;
 
-    trackball_r: trackball_r@0 {
+    cs-gpios = <&gpio0 17 GPIO_ACTIVE_LOW>; /* NCS_R */
+    trackball_r: pmw3610@0 {
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
-
-        irq-gpios = <&gpio0 24 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        irq-gpios = <&gpio0 24 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* MOTION_R (IRQ) */
 
         cpi = <800>;
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
-        disable-burst-read;
 
         status = "okay";
     };
