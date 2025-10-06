@@ -7,7 +7,7 @@
  */
 
 #include <dt-bindings/input/input-event-codes.h>
-#include "boards/shields/cliche_air/cliche_air.dtsi"
+#include "cliche_air.dtsi"
 
 / {
     chosen {
@@ -47,7 +47,6 @@
     pinctrl-0 = <&spi0_default>;
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
-
     cs-gpios = <&gpio0 17 GPIO_ACTIVE_LOW>;
 
     trackball_r: pmw3610@0 {
