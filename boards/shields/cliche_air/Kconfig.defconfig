@@ -1,48 +1,22 @@
-# ==========================================
-#  Cliche_Air Split Keyboard Role Definitions
-# ==========================================
-
-if SHIELD_CLICHE_AIR_L
-config ZMK_SPLIT
-    bool "Enable split keyboard"
-    default y
-
-config ZMK_SPLIT_ROLE_PERIPHERAL
-    bool "Left side acts as Peripheral"
-    default y
-
-config ZMK_KSCAN_GPIO
-    bool
-    default y
-
-config ZMK_KSCAN_DEBOUNCE_PRESS_MS
-    int
-    default 5
-
-config ZMK_KSCAN_DEBOUNCE_RELEASE_MS
-    int
-    default 5
-endif # SHIELD_CLICHE_AIR_L
-
-
 if SHIELD_CLICHE_AIR_R
+
+config ZMK_KEYBOARD_NAME
+    default "cliche_air_r"
+
 config ZMK_SPLIT
-    bool "Enable split keyboard"
     default y
 
 config ZMK_SPLIT_ROLE_CENTRAL
-    bool "Right side acts as Central"
     default y
 
-config ZMK_KSCAN_GPIO
-    bool
+endif
+
+if SHIELD_CLICHE_AIR_L
+
+config ZMK_KEYBOARD_NAME
+    default "cliche_air_l"
+
+config ZMK_SPLIT
     default y
 
-config ZMK_KSCAN_DEBOUNCE_PRESS_MS
-    int
-    default 5
-
-config ZMK_KSCAN_DEBOUNCE_RELEASE_MS
-    int
-    default 5
-endif # SHIELD_CLICHE_AIR_R
+endif
