@@ -2,20 +2,31 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    - name: sayu-hub
+
+    - name: nikkyhiro67
       url-base: https://github.com/nikkyhiro67
-    - name: caksoylar # <-- new entry
+
+    - name: caksoylar
       url-base: https://github.com/caksoylar
+
   projects:
+    # ZMK本体
     - name: zmk
       remote: zmkfirmware
       revision: main
       import: app/west.yml
+
+    # PMW3610 トラックボールドライバ
     - name: zmk-pmw3610-driver
       remote: nikkyhiro67
       revision: main
-    - name: zmk-rgbled-widget # <-- new entry
+      path: modules/zmk-pmw3610-driver
+
+    # RGBLED Widget
+    - name: zmk-rgbled-widget
       remote: caksoylar
       revision: main
+      path: zmk-rgbled-widget
+
   self:
     path: config
