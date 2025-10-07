@@ -1,22 +1,49 @@
+# ================================================================
+# Cliche_Air Split Keyboard - Role Defaults
+# ================================================================
+
 if SHIELD_CLICHE_AIR_R
+    config ZMK_KEYBOARD_NAME
+        default "Cliche_Air_R"
 
-config ZMK_KEYBOARD_NAME
-    default "cliche_air_r"
+    config ZMK_SPLIT
+        default y
 
-config ZMK_SPLIT
-    default y
+    config ZMK_SPLIT_ROLE_CENTRAL
+        default y
 
-config ZMK_SPLIT_ROLE_CENTRAL
-    default y
+    config ZMK_SPLIT_ROLE_PERIPHERAL
+        default n
 
+    # USB有効化（Central側のみ）
+    config ZMK_USB
+        default y
+
+    # BLE有効化
+    config ZMK_BLE
+        default y
 endif
 
+# ---------------------------------------------------------------
+
 if SHIELD_CLICHE_AIR_L
+    config ZMK_KEYBOARD_NAME
+        default "Cliche_Air_L"
 
-config ZMK_KEYBOARD_NAME
-    default "cliche_air_l"
+    config ZMK_SPLIT
+        default y
 
-config ZMK_SPLIT
-    default y
+    config ZMK_SPLIT_ROLE_PERIPHERAL
+        default y
 
+    config ZMK_SPLIT_ROLE_CENTRAL
+        default n
+
+    # USB無効化（Peripheral側）
+    config ZMK_USB
+        default n
+
+    # BLE有効化（Peripheralとして動作）
+    config ZMK_BLE
+        default y
 endif

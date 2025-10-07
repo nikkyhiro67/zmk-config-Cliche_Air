@@ -1,5 +1,21 @@
+# ================================================================
+# Cliche_Air Shield Kconfig
+# ---------------------------------------------------------------
+# Defines shield presence flags for Left and Right halves
+# ================================================================
+
+menu "Cliche_Air Shields"
+
 config SHIELD_CLICHE_AIR_R
-    def_bool $(shields_list_contains,cliche_air_r)
+    bool "Cliche_Air Right (Central)"
+    default $(shields_list_contains,cliche_air_r)
+    help
+        Enables the right-hand (central) shield for Cliche_Air.
 
 config SHIELD_CLICHE_AIR_L
-    def_bool $(shields_list_contains,cliche_air_l)
+    bool "Cliche_Air Left (Peripheral)"
+    default $(shields_list_contains,cliche_air_l)
+    help
+        Enables the left-hand (peripheral) shield for Cliche_Air.
+
+endmenu

@@ -8,7 +8,7 @@
 
 #include "cliche_air.dtsi"
 
-/* Key matrix (right) */
+/* Key matrix (Left) */
 &kscan0 {
     /* Right hand key matrix */
         col-gpios
