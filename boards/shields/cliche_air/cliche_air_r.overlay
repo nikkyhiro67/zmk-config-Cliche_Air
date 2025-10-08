@@ -11,58 +11,59 @@
 #include "cliche_air.dtsi"
 
 / {
-	chosen {
-		zmk,kscan = &kscan0;
-		zmk,matrix-transform = &default_transform;
-	};
+    chosen {
+        zmk,kscan = &kscan0;
+        zmk,matrix-transform = &default_transform;
+    };
 
-	kscan0: kscan {
-		compatible = "zmk,kscan-gpio-matrix";
-		label = "KSCAN_R";
-		diode-direction = "col2row";
-		row-gpios = <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-		            <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-		            <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-		            <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
-		col-gpios = <&xiao_d 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-		            <&xiao_d 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-		            <&xiao_d 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-		            <&xiao_d 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-		            <&xiao_d 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-		            <&xiao_d 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-	};
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        label = "KSCAN_R";
+        diode-direction = "col2row";
+        row-gpios = <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+        col-gpios = <&xiao_d 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                    <&xiao_d 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                    <&xiao_d 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                    <&xiao_d 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                    <&xiao_d 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+                    <&xiao_d 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+    };
 
-	/* トラックボールセンサー（PMW3610） */
-	sensor_trackball: pmw3610@11 {
-		compatible = "pixart,pmw3610";
-		reg = <0x11>;
-		irq-gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
-		spi-max-frequency = <2000000>;
-		label = "PMW3610";
-		evt-type = "relative";   /* ←★これが必須 */
-		status = "okay";
-	};
+    /* SPIバス設定 */
+    &spi0 {
+        status = "okay";
+        cs-gpios = <&gpio0 26 GPIO_ACTIVE_LOW>;
+        mosi-pin = <13>;
+        miso-pin = <14>;
+        sck-pin  = <15>;
 
-	spi0: &spi0 {
-		status = "okay";
-		cs-gpios = <&gpio0 26 GPIO_ACTIVE_LOW>;
-		mosi-pin = <13>;
-		miso-pin = <14>;
-		sck-pin  = <15>;
-	};
+        /* トラックボールセンサー（PMW3610） */
+        pmw3610@0 {
+            compatible = "pixart,pmw3610";
+            reg = <0>;
+            irq-gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
+            spi-max-frequency = <2000000>;
+            label = "PMW3610";
+            evt-type = "relative"; /* ← 必須プロパティ */
+            status = "okay";
+        };
+    };
 
-	/* エンコーダー (右側は有効化) */
-	right_encoder: encoder_right {
-		compatible = "alps,ec11";
-		a-gpios = <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-		b-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-		steps = <24>;
-		status = "okay";
-	};
+    /* エンコーダー (右側は有効化) */
+    right_encoder: encoder_right {
+        compatible = "alps,ec11";
+        a-gpios = <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        steps = <24>;
+        status = "okay";
+    };
 
-	sensors: sensors {
-		compatible = "zmk,keymap-sensors";
-		sensors = <&sensor_trackball &right_encoder>;
-		triggers-per-rotation = <10>;
-	};
+    sensors: sensors {
+        compatible = "zmk,keymap-sensors";
+        sensors = <&right_encoder>;
+        triggers-per-rotation = <10>;
+    };
 };
