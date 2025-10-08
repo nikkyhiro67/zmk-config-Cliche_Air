@@ -7,14 +7,15 @@
         zmk,kscan = &kscan0;
     };
 
-    /* matrix-transform (map削除済み) */
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <11>;
         rows = <4>;
     };
 
-    /* Keyscan controller */
+    /* ---------------------------
+     * Keyscan controller
+     * --------------------------- */
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
         label = "KSCAN";
@@ -26,7 +27,9 @@
         status = "okay";
     };
 
-    /* Rotary encoder (共通定義) */
+    /* ---------------------------
+     * Rotary encoder
+     * --------------------------- */
     left_encoder: encoder_left {
         compatible = "alps,ec11";
         a-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
@@ -39,30 +42,38 @@
         status = "disabled";
     };
 
-    /* --- 修正箇所: sensors ノード --- */
+    /* ---------------------------
+     * Keymap sensor
+     * --------------------------- */
     sensors: sensors {
         compatible = "zmk,keymap-sensors";
-        sensors = <&left_encoder>;   /* ← 単体参照に変更 */
+        sensors = <&left_encoder>;
         triggers-per-rotation = <10>;
         status = "okay";
     };
 };
 
-/* 外部電源制御 */
+/* ---------------------------
+ * 外部電源制御
+ * --------------------------- */
 ext_power: ext_power {
     compatible = "zmk,ext-power-transient";
-    gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
+    gpios = <&xiao_d 17 GPIO_ACTIVE_HIGH>;   /* ← 修正 */
     status = "okay";
 };
 
-/* LEDストリップ制御 */
+/* ---------------------------
+ * LED ストリップ制御
+ * --------------------------- */
 led_strip: led_strip {
     compatible = "zmk,led-stripnize";
-    gpios = <&gpio0 18 GPIO_ACTIVE_HIGH>;
+    gpios = <&xiao_d 18 GPIO_ACTIVE_HIGH>;   /* ← 修正 */
     status = "okay";
 };
 
-/* ADC有効化 */
+/* ---------------------------
+ * ADC 有効化
+ * --------------------------- */
 &adc {
     status = "okay";
 };
