@@ -1,27 +1,24 @@
-/* Right-side overlay for Cliche_Air
- * - Provides key matrix pin mapping for right half
- * - Disables encoder (left-only)
- * - Enables trackball (right-only)
- *
- * NOTE: Verify the pin numbers (P0.xx) against your PCB schematic before building.
- */
+/* ================================================================
+ * Cliche_Air Left Overlay
+ * ---------------------------------------------------------------
+ * - Left-hand key matrix
+ * - Encoder enabled
+ * - No trackball
+ * ================================================================ */
 
 #include "cliche_air.dtsi"
 
-/* Key matrix (Left) */
+/* 左側の列設定 */
 &kscan0 {
-    /* Right hand key matrix */
-        col-gpios
-            = <&xiao_d 10 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 9 GPIO_ACTIVE_HIGH> 
-            , <&xiao_d 8 GPIO_ACTIVE_HIGH> 
-            , <&xiao_d 7 GPIO_ACTIVE_HIGH> 
-            , <&gpio0 10 GPIO_ACTIVE_HIGH>
-            , <&gpio0 9 GPIO_ACTIVE_HIGH>
-            ;
+    col-gpios = <&xiao_d 10 GPIO_ACTIVE_HIGH>,
+                <&xiao_d 9 GPIO_ACTIVE_HIGH>,
+                <&xiao_d 8 GPIO_ACTIVE_HIGH>,
+                <&xiao_d 7 GPIO_ACTIVE_HIGH>,
+                <&gpio0 10 GPIO_ACTIVE_HIGH>,
+                <&gpio0 9 GPIO_ACTIVE_HIGH>;
 };
 
-/* Disable encoder on right side */
+/* 左側エンコーダ有効化 */
 &left_encoder {
     status = "okay";
 };
