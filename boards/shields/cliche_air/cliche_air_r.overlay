@@ -39,6 +39,7 @@
 		irq-gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
 		spi-max-frequency = <2000000>;
 		label = "PMW3610";
+		evt-type = "relative";   /* ←★これが必須 */
 		status = "okay";
 	};
 
