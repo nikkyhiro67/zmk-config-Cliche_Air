@@ -7,6 +7,8 @@
  * この .dtsi は共通ノードの定義のみを行う。
  */
 
+#include <dt-bindings/zmk/matrix_transform.h>
+
 / {
 	chosen {
 		/* デフォルトのキースキャンデバイス (各サイドで上書き可能) */
