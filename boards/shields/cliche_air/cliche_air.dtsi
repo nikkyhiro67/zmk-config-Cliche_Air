@@ -7,14 +7,14 @@
         zmk,kscan = &kscan0;
     };
 
-    /* matrix-transform (map削除済み・ZMK側で処理) */
+    /* matrix-transform (map削除済み) */
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <11>;
         rows = <4>;
-        // map = <  RC(0,0) ... >;  ← 削除済み
     };
 
+    /* Keyscan controller */
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
         label = "KSCAN";
@@ -26,6 +26,7 @@
         status = "okay";
     };
 
+    /* Rotary encoder (共通定義) */
     left_encoder: encoder_left {
         compatible = "alps,ec11";
         a-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
@@ -38,10 +39,12 @@
         status = "disabled";
     };
 
+    /* --- 修正箇所: sensors ノード --- */
     sensors: sensors {
         compatible = "zmk,keymap-sensors";
-        sensors = <&left_encoder &right_encoder>;
+        sensors = <&left_encoder>;   /* ← 単体参照に変更 */
         triggers-per-rotation = <10>;
+        status = "okay";
     };
 };
 
