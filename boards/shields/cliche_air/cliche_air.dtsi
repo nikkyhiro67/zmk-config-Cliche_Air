@@ -20,10 +20,10 @@
         compatible = "zmk,kscan-gpio-matrix";
         label = "KSCAN";
         diode-direction = "col2row";
-        row-gpios = <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+        row-gpios = <&gpio0 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&gpio0 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&gpio0 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&gpio0 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
         status = "okay";
     };
 
@@ -32,8 +32,8 @@
      * --------------------------- */
     left_encoder: encoder_left {
         compatible = "alps,ec11";
-        a-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        b-gpios = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        a-gpios = <&gpio0 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&gpio0 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
         steps = <24>;
         status = "disabled";
     };
@@ -58,7 +58,7 @@
  * --------------------------- */
 ext_power: ext_power {
     compatible = "zmk,ext-power-transient";
-    gpios = <&xiao_d 17 GPIO_ACTIVE_HIGH>;   /* ← 修正 */
+    gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
     status = "okay";
 };
 
@@ -67,7 +67,7 @@ ext_power: ext_power {
  * --------------------------- */
 led_strip: led_strip {
     compatible = "zmk,led-stripnize";
-    gpios = <&xiao_d 18 GPIO_ACTIVE_HIGH>;   /* ← 修正 */
+    gpios = <&gpio0 18 GPIO_ACTIVE_HIGH>;
     status = "okay";
 };
 
