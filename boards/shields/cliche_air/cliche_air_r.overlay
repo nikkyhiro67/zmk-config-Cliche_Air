@@ -34,7 +34,6 @@
 		            <&xiao_d 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
 		            <&xiao_d 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
 		            <&xiao_d 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-
 		status = "okay";
 	};
 
