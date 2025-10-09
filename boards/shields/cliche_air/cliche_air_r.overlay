@@ -22,10 +22,7 @@
 	 * Keyscan Matrix (右手側)
 	 * ---------------------------------------- */
 	&kscan0 {
-		compatible = "zmk,kscan-gpio-matrix";
 		label = "KSCAN_R";
-		diode-direction = "col2row";
-
 		row-gpios = <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
 		            <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
 		            <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
@@ -37,6 +34,8 @@
 		            <&xiao_d 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
 		            <&xiao_d 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
 		            <&xiao_d 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+
+		status = "okay";
 	};
 
 	/* ----------------------------------------
@@ -44,23 +43,17 @@
 	 * ---------------------------------------- */
 	&spi0 {
 		status = "okay";
-
-		/* 標準的な Zephyr binding 形式: cs-gpios を使用 */
 		cs-gpios = <&gpio0 26 GPIO_ACTIVE_LOW>;
 
-		/* トラックボールノード定義 */
 		trackball: trackball@0 {
 			compatible = "pixart,pmw3610";
 			reg = <0>;
 			label = "PMW3610";
 			spi-max-frequency = <2000000>;
 			irq-gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
-
-			/* 入力イベント種別を数値マクロで指定 */
 			evt-type = <INPUT_EV_REL>;
 			x-input-code = <INPUT_REL_X>;
 			y-input-code = <INPUT_REL_Y>;
-
 			status = "okay";
 		};
 	};
