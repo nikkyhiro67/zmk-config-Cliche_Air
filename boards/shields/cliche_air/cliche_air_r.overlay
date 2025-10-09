@@ -41,18 +41,21 @@
 	 * SPI bus + Trackball sensor (PMW3610)
 	 * ---------------------------------------- */
 &spi0 {
-		status = "okay";
-		cs-gpios = <&gpio0 26 GPIO_ACTIVE_LOW>;
+	status = "okay";
+	cs-gpios = <&gpio0 26 GPIO_ACTIVE_LOW>;
 
-		trackball: trackball@0 {
-			compatible = "pixart,pmw3610";
-			reg = <0>;
-			label = "PMW3610";
-			spi-max-frequency = <2000000>;
-			irq-gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
-			evt-type = <INPUT_EV_REL>;
-			x-input-code = <INPUT_REL_X>;
-			y-input-code = <INPUT_REL_Y>;
-			status = "okay";
-		};
+	pinctrl-0 = <&spi0_default>;
+	pinctrl-names = "default";
+
+	trackball: trackball@0 {
+		compatible = "pixart,pmw3610";
+		reg = <0>;
+		label = "PMW3610";
+		spi-max-frequency = <2000000>;
+		irq-gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
+		evt-type = <INPUT_EV_REL>;
+		x-input-code = <INPUT_REL_X>;
+		y-input-code = <INPUT_REL_Y>;
+		status = "okay";
+	};
 };
