@@ -1,11 +1,12 @@
 /*
- * Cliche_Air Right (Central)
- * -------------------------------------
- * - Split Central
- * - BLE Central
- * - USB 有効
- * - トラックボール搭載（PMW3610）
- * - LEDウィジェット連携
+ * Cliche Air (Right side / Central)
+ * ----------------------------------------
+ * Features:
+ * - Split central
+ * - BLE + USB
+ * - Trackball PMW3610
+ * - EC11 encoder
+ * - RGB widget compatible
  */
 
 #include "cliche_air.dtsi"
@@ -16,6 +17,7 @@
 		zmk,matrix-transform = &default_transform;
 	};
 
+	/* Keyscan Matrix */
 	kscan0: kscan {
 		compatible = "zmk,kscan-gpio-matrix";
 		label = "KSCAN_R";
@@ -34,29 +36,29 @@
 			    <&xiao_d 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
 	};
 
-	/* SPIバス設定 */
+	/* SPI bus and trackball sensor */
 	&spi0 {
 		status = "okay";
 		cs-gpios = <&gpio0 26 GPIO_ACTIVE_LOW>;
 		mosi-pin = <13>;
 		miso-pin = <14>;
-		sck-pin  = <15>;
+		sck-pin = <15>;
 
-		/* トラックボールセンサー（PMW3610） */
-		pmw3610@0 {
+		trackball@0 {
 			compatible = "pixart,pmw3610";
 			reg = <0>;
-			irq-gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
-			spi-max-frequency = <2000000>;
 			label = "PMW3610";
-			evt-type = "relative"; /* ← 必須 */
+			spi-max-frequency = <2000000>;
+			irq-gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
+			evt-type = "relative";
 			status = "okay";
 		};
 	};
 
-	/* エンコーダー (右側は有効化) */
+	/* Rotary encoder */
 	right_encoder: encoder_right {
 		compatible = "alps,ec11";
+		label = "EC11_R";
 		a-gpios = <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
 		b-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
 		steps = <24>;
