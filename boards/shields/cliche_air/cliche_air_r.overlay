@@ -17,11 +17,11 @@
 		zmk,kscan = &kscan0;
 		zmk,matrix-transform = &default_transform;
 	};
-
+};
 	/* ----------------------------------------
 	 * Keyscan Matrix (右手側)
 	 * ---------------------------------------- */
-	&kscan0 {
+&kscan0 {
 		label = "KSCAN_R";
 		row-gpios = <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
 			    <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
@@ -35,12 +35,12 @@
 			    <&xiao_d 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
 			    <&xiao_d 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
 		status = "okay";
-	};
+};
 
 	/* ----------------------------------------
 	 * SPI bus + Trackball sensor (PMW3610)
 	 * ---------------------------------------- */
-	&spi0 {
+&spi0 {
 		status = "okay";
 		cs-gpios = <&gpio0 26 GPIO_ACTIVE_LOW>;
 
@@ -55,5 +55,4 @@
 			y-input-code = <INPUT_REL_Y>;
 			status = "okay";
 		};
-	};
 };
