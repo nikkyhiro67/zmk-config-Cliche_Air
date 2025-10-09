@@ -24,16 +24,16 @@
 	&kscan0 {
 		label = "KSCAN_R";
 		row-gpios = <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-		            <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-		            <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-		            <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+			    <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+			    <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+			    <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
 
-		col-gpios = <&xiao_d 7  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-		            <&xiao_d 8  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-		            <&xiao_d 9  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-		            <&xiao_d 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-		            <&xiao_d 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-		            <&xiao_d 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+		col-gpios = <&xiao_d 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+			    <&xiao_d 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+			    <&xiao_d 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+			    <&xiao_d 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+			    <&xiao_d 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+			    <&xiao_d 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
 		status = "okay";
 	};
 
