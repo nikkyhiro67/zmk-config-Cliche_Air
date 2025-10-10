@@ -1,70 +1,44 @@
-name: "Build ZMK (Custom Stable)"
+name: Build ZMK (Custom Stable)
 
 on:
-  workflow_call:
-    inputs:
-      zephyr-version:
-        description: "Zephyr version to use"
-        default: "v3.4.0"
-        required: false
-        type: string
-      zephyr-sdk-version:
-        description: "Zephyr SDK version to use"
-        default: "0.16.1"
-        required: false
-        type: string
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout config repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
 
-      - name: Setup west and dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ninja-build gperf ccache dfu-util wget \
-            device-tree-compiler python3-pip python3-setuptools python3-wheel
-          pip install west
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
 
-      - name: Install Zephyr SDK ${{ inputs.zephyr-sdk-version }}
+      - name: Install west + dependencies
         run: |
-          wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${{ inputs.zephyr-sdk-version }}/zephyr-sdk-${{ inputs.zephyr-sdk-version }}_linux-x86_64.tar.xz
-          tar xf zephyr-sdk-${{ inputs.zephyr-sdk-version }}_linux-x86_64.tar.xz
-          sudo mv zephyr-sdk-${{ inputs.zephyr-sdk-version }} /opt/zephyr-sdk-${{ inputs.zephyr-sdk-version }}
-          /opt/zephyr-sdk-${{ inputs.zephyr-sdk-version }}/setup.sh -h > /dev/null
+          pip install west
+          sudo apt-get install -y ninja-build gperf
 
       - name: Initialize west workspace
         run: |
           west init -l config
-          west update
+          west update --narrow --fetch-opt=--depth=1
+          west zephyr-export
 
-      - name: Export Zephyr environment
-        run: |
-          source zephyr/zephyr-env.sh
-
-      - name: Build firmware
+      - name: Build ZMK firmware (Cliche Air)
         run: |
           west build -s zmk/app -b seeeduino_xiao_ble \
-            -DZMK_CONFIG=config \
+            -- -DZMK_CONFIG=config \
             -DSHIELD="cliche_air_r rgbled_adapter" \
             -DZMK_EXTRA_MODULES=$(pwd)
 
-      - name: Build left side firmware
-        run: |
-          west build -s zmk/app -b seeeduino_xiao_ble -d build_left \
-            -DZMK_CONFIG=config \
-            -DSHIELD="cliche_air_l rgbled_adapter" \
-            -DZMK_EXTRA_MODULES=$(pwd)
-
-      - name: Upload artifacts
+      - name: Upload firmware artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: zmk-firmware
-          path: |
-            build/zephyr/zmk.uf2
-            build_left/zephyr/zmk.uf2
+          name: firmware
+          path: build/zephyr/*.uf2
