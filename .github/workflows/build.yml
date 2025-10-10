@@ -1,8 +1,10 @@
-on: [push, pull_request, workflow_dispatch]
+name: Build ZMK Firmware
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
-    with:
-      zephyr-version: v3.4.0 # ← Zephyr 3.4 固定
-      zephyr-sdk-version: 0.16.1 # ← SDKも安定版を明示指定
+    uses: ./.github/workflows/build-user-config.yml
