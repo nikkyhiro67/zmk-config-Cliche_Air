@@ -12,34 +12,48 @@
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 #include "cliche_air.dtsi"
 
-/ {
+/* ----------------------------------------
+ * SPIピン設定 (SPI0 Default)
+ * ---------------------------------------- */
+&pinctrl {
+	spi0_default: spi0_default {
+		group1 {
+			psels = <NRF_PSEL(SPIM_SCK, 0, 15)>,  /* SCK  = P0.15 */
+			        <NRF_PSEL(SPIM_MOSI, 0, 13)>, /* MOSI = P0.13 */
+			        <NRF_PSEL(SPIM_MISO, 0, 14)>; /* MISO = P0.14 */
+		};
+	};
+};
+
+ / {
 	chosen {
 		zmk,kscan = &kscan0;
 		zmk,matrix-transform = &default_transform;
 	};
 };
-	/* ----------------------------------------
-	 * Keyscan Matrix (右手側)
-	 * ---------------------------------------- */
-&kscan0 {
-		label = "KSCAN_R";
-		row-gpios = <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-			    <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-			    <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-			    <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
 
-		col-gpios = <&xiao_d 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-			    <&xiao_d 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-			    <&xiao_d 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-			    <&xiao_d 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-			    <&xiao_d 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
-			    <&xiao_d 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-		status = "okay";
+/* ----------------------------------------
+ * Keyscan Matrix (右手側)
+ * ---------------------------------------- */
+&kscan0 {
+	label = "KSCAN_R";
+	row-gpios = <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+	            <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+	            <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+	            <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+
+	col-gpios = <&xiao_d 7  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+	            <&xiao_d 8  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+	            <&xiao_d 9  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+	            <&xiao_d 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+	            <&xiao_d 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>,
+	            <&xiao_d 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+	status = "okay";
 };
 
-	/* ----------------------------------------
-	 * SPI bus + Trackball sensor (PMW3610)
-	 * ---------------------------------------- */
+/* ----------------------------------------
+ * SPI bus + Trackball sensor (PMW3610)
+ * ---------------------------------------- */
 &spi0 {
 	status = "okay";
 	cs-gpios = <&gpio0 26 GPIO_ACTIVE_LOW>;
@@ -59,3 +73,4 @@
 		status = "okay";
 	};
 };
+
