@@ -10,16 +10,19 @@ manifest:
       url-base: https://github.com/caksoylar
 
   projects:
+    # ZMK 本体 (安定版 Zephyr3.4 対応ブランチを指定)
     - name: zmk
       remote: zmkfirmware
       revision: main
       import: app/west.yml
 
+    # PMW3610 トラックボールドライバ
     - name: zmk-pmw3610-driver
       remote: nikkyhiro67
       revision: main
       path: modules/zmk-pmw3610-driver
 
+    # RGB LED Widget
     - name: zmk-rgbled-widget
       remote: caksoylar
       revision: main

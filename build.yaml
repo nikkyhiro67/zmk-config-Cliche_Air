@@ -1,7 +1,12 @@
 include:
+  # Right (Central)
   - board: seeeduino_xiao_ble
     shield: "cliche_air_r rgbled_adapter"
+
+  # Left
   - board: seeeduino_xiao_ble
     shield: "cliche_air_l rgbled_adapter"
+
+  # Reset
   - board: seeeduino_xiao_ble
     shield: settings_reset
