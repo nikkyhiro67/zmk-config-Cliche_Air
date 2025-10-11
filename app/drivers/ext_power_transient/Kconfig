@@ -1,3 +1,0 @@
-config ZMK_EXT_POWER_TRANSIENT
-    bool "External power transient control driver"
-    default y
