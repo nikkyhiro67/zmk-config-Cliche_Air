@@ -20,7 +20,10 @@
 include:
   - board: seeeduino_xiao_ble
     shield: Cliche_Air_R rgbled_adapter
+    artifact-name: Cliche_Air_R
   - board: seeeduino_xiao_ble
     shield: Cliche_Air_L rgbled_adapter
+    artifact-name: Cliche_Air_L
   - board: seeeduino_xiao_ble
     shield: settings_reset
+    artifact-name: Cliche_Air_Reset
