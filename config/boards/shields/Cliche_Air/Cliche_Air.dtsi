@@ -69,13 +69,9 @@
         compatible = "zmk,battery-voltage-divider";
         io-channels = <&adc 0>;
 
-        // 分圧抵抗例：R1=470kΩ（上側）, R2=100kΩ（下側）
-        // 1.45V入力時 → 約0.25VがADCへ入力
         output-ohms = <100000>;
-        full-ohms = <570000>;   // ← 修正済み（括弧削除・数値直記）
+        full-ohms = <570000>;
 
-        // Ni-MH単セル電圧特性（mV単位）
-        // 1.0V: 空 / 1.45V: 満充電
         mv-to-pct-thresholds = <
             1000 1050 1100 1150 1180 1200 1250 1300 1350 1400 1450
         >;
@@ -121,7 +117,7 @@
     black_animation: black_animation {
         compatible = "zmk,animation-solid";
         pixels = <0 1 2 3>;
-        colors = <HSL(0, 0, 0)>;
+        colors = <0x000000>; // HSL(0, 0, 0)
     };
 
     empty_animation: empty_animation {
@@ -133,34 +129,40 @@
         compatible = "zmk,animation-solid";
         status = "okay";
         pixels = <0 1 2 3>;
-        colors = <HSL(0, 100, 50) HSL(60, 100, 50) HSL(120, 100, 50)
-                  HSL(180, 100, 50) HSL(240, 100, 50) HSL(300, 100, 50)>;
+        colors = <
+            0xFF0000  // HSL(0,100,50)
+            0xFFFF00  // HSL(60,100,50)
+            0x00FF00  // HSL(120,100,50)
+            0x00FFFF  // HSL(180,100,50)
+            0x0000FF  // HSL(240,100,50)
+            0xFF00FF  // HSL(300,100,50)
+        >;
     };
 
     red_animation: red_animation {
         compatible = "zmk,animation-solid";
         status = "okay";
         pixels = <0 1 2 3>;
-        colors = <HSL(0, 100, 50)>;
+        colors = <0xFF0000>; // HSL(0,100,50)
     };
 
     endpoint_status: endpoint_status {
         compatible = "zmk,animation-endpoint";
         status = "okay";
         pixels = <0 1 2 3>;
-        color-open = <HSL(60, 100, 50)>;
-        color-connected = <HSL(240, 100, 50)>;
-        color-disconnected = <HSL(0, 100, 50)>;
-        color-usb = <HSL(120, 100, 25)>;
+        color-open = <0xFFFF00>;         // HSL(60,100,50)
+        color-connected = <0x0000FF>;    // HSL(240,100,50)
+        color-disconnected = <0xFF0000>; // HSL(0,100,50)
+        color-usb = <0x008000>;          // HSL(120,100,25)
     };
 
     battery_status: battery_status {
         compatible = "zmk,animation-battery-status";
         status = "okay";
         pixels = <0 1 2 3>;
-        color-high = <HSL(120, 100, 50)>;
-        color-middle = <HSL(60, 100, 50)>;
-        color-low = <HSL(0, 100, 50)>;
+        color-high = <0x00FF00>;   // HSL(120,100,50)
+        color-middle = <0xFFFF00>; // HSL(60,100,50)
+        color-low = <0xFF0000>;    // HSL(0,100,50)
     };
 };
 
@@ -214,9 +216,9 @@
     default-color = <0x0000FF>; // blue
 
     colors = <
-        0x00B8E6   // Layer 0: HSL(193,100,47) → #00B8E6 (Cyan)
-        0xFF0000   // Layer 1: HSL(0,100,40) → #FF0000 (Red)
-        0xFFFFFF   // Layer 2: HSL(0,100,100) → #FFFFFF (White)
-        0xFF8000   // Layer 3: HSL(29,88,51) → #FF8000 (Orange)
+        0x00B8E6   // Layer 0: Cyan
+        0xFF0000   // Layer 1: Red
+        0xFFFFFF   // Layer 2: White
+        0xFF8000   // Layer 3: Orange
     >;
 };
