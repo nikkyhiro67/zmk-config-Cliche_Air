@@ -68,8 +68,14 @@
     vbatt: vbatt {
         compatible = "zmk,battery-voltage-divider";
         io-channels = <&adc 0>;
+
+        // 分圧抵抗例：R1=470kΩ（上側）, R2=100kΩ（下側）
+        // 1.45V入力時 → 約0.25VがADCへ入力
         output-ohms = <100000>;
-        full-ohms = <570000>;
+        full-ohms = <570000>;   // ← 修正済み（括弧削除・数値直記）
+
+        // Ni-MH単セル電圧特性（mV単位）
+        // 1.0V: 空 / 1.45V: 満充電
         mv-to-pct-thresholds = <
             1000 1050 1100 1150 1180 1200 1250 1300 1350 1400 1450
         >;
@@ -85,7 +91,10 @@
     animation: animation {
         compatible = "zmk,animation";
         drivers = <&led_strip>;
-        pixels = <&pixel 0 0>, <&pixel 1 0>, <&pixel 2 0>, <&pixel 3 0>;
+        pixels = <&pixel 0 0>,
+                 <&pixel 1 0>,
+                 <&pixel 2 0>,
+                 <&pixel 3 0>;
         chain-lengths = <4>;
     };
 
@@ -112,7 +121,7 @@
     black_animation: black_animation {
         compatible = "zmk,animation-solid";
         pixels = <0 1 2 3>;
-        colors = <0x000000>;
+        colors = <HSL(0, 0, 0)>;
     };
 
     empty_animation: empty_animation {
@@ -124,33 +133,34 @@
         compatible = "zmk,animation-solid";
         status = "okay";
         pixels = <0 1 2 3>;
-        colors = <0xFF0000 0xFFFF00 0x00FF00 0x00FFFF 0x0000FF 0xFF00FF>;
+        colors = <HSL(0, 100, 50) HSL(60, 100, 50) HSL(120, 100, 50)
+                  HSL(180, 100, 50) HSL(240, 100, 50) HSL(300, 100, 50)>;
     };
 
     red_animation: red_animation {
         compatible = "zmk,animation-solid";
         status = "okay";
         pixels = <0 1 2 3>;
-        colors = <0xFF0000>;
+        colors = <HSL(0, 100, 50)>;
     };
 
     endpoint_status: endpoint_status {
         compatible = "zmk,animation-endpoint";
         status = "okay";
         pixels = <0 1 2 3>;
-        color-open = <0xFFFF00>;
-        color-connected = <0x0000FF>;
-        color-disconnected = <0xFF0000>;
-        color-usb = <0x008000>;
+        color-open = <HSL(60, 100, 50)>;
+        color-connected = <HSL(240, 100, 50)>;
+        color-disconnected = <HSL(0, 100, 50)>;
+        color-usb = <HSL(120, 100, 25)>;
     };
 
     battery_status: battery_status {
         compatible = "zmk,animation-battery-status";
         status = "okay";
         pixels = <0 1 2 3>;
-        color-high = <0x00FF00>;
-        color-middle = <0xFFFF00>;
-        color-low = <0xFF0000>;
+        color-high = <HSL(120, 100, 50)>;
+        color-middle = <HSL(60, 100, 50)>;
+        color-low = <HSL(0, 100, 50)>;
     };
 };
 
@@ -192,19 +202,21 @@
         chain-length = <4>;
         spi-one-frame = <0x70>;
         spi-zero-frame = <0x40>;
-        color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
+        color-mapping = <LED_COLOR_ID_GREEN
+                         LED_COLOR_ID_RED
+                         LED_COLOR_ID_BLUE>;
     };
 };
 
 // レイヤー状態表示アニメーション設定
 &animation_layer_status {
     pixels = <0 1 2 3>;
-    default-color = <0x0000FF>;
+    default-color = <HSL(240, 100, 50)>;
     colors = <
         0
-        0x00C8FF
-        0x660000
-        0xFF0000
-        0xD57A2F
+        HSL(193, 100, 47)
+        HSL(0, 100, 40)
+        HSL(0, 100, 100)
+        HSL(29, 88, 51)
     >;
 };
