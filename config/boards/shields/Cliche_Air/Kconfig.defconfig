@@ -1,8 +1,6 @@
-/*
- * Cliche Air Split Keyboard with Battery Monitoring, Pointing Device, and Power Management
- * Right (R): PMW3610 pointing device enabled
- * Left (L): basic split peripheral
- */
+# Cliche Air Split Keyboard with Battery Monitoring, Pointing Device, and Power Management
+# Right (R): PMW3610 pointing device enabled
+# Left (L): basic split peripheral
 
 if SHIELD_CLICHE_AIR_R
 
