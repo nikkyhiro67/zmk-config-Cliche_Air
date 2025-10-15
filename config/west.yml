@@ -6,6 +6,8 @@ manifest:
       url-base: https://github.com/nikkyhiro67
     - name: caksoylar # <-- new entry
       url-base: https://github.com/caksoylar
+    - name: sekigon-gonnoc
+      url-base: https://github.com/sekigon-gonnoc
 
   projects:
     - name: zmk
@@ -16,8 +18,16 @@ manifest:
       remote: nikkyhiro67
       revision: main
       path: modules/pmw3610-driver
+    - name: zmk-driver-animation
+      remote: nikkyhiro67
+      revision: main
+    - name: zmk-driver-ext-power-transient
+      remote: nikkyhiro67
+      revision: main
     - name: zmk-rgbled-widget # <-- new entry
       remote: caksoylar
       revision: main
+    - name: zmk-feature-non-lipo-battery-management
+      remote: sekigon-gonnoc
   self:
     path: config

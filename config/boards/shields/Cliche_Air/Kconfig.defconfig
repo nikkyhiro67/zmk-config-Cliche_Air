@@ -1,22 +1,104 @@
+/*
+ * Cliche Air Split Keyboard with Battery Monitoring, Pointing Device, and Power Management
+ * Right (R): PMW3610 pointing device enabled
+ * Left (L): basic split peripheral
+ */
+
 if SHIELD_CLICHE_AIR_R
 
 config ZMK_KEYBOARD_NAME
     default "Cliche_Air_R"
 
+# --- Split central role ---
 config ZMK_SPLIT
     default y
-
 config ZMK_SPLIT_ROLE_CENTRAL
     default y
 
+# --- Pointing device (PMW3610 sensor) ---
+config PMW3610
+    default y
+config ZMK_POINTING
+    default y
+
+# --- Battery monitoring (Ni-MH + boost + ADC) ---
+config ZMK_BATTERY_REPORTING
+    default y
+config ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_PROXY
+    default y
+config ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING
+    default y
+
+# --- Power management ---
+config ZMK_SLEEP
+    default y
+config ZMK_PM_SOFT_OFF
+    default y
+config ZMK_DRIVER_EXT_POWER_TRANSIENT
+    default y
+
+# --- LED / SPI interfaces ---
+config LED_STRIP
+    default y
+config SPI
+    default y
+
+# --- Settings save debounce ---
+config ZMK_SETTINGS_SAVE_DEBOUNCE
+    default 10000
+
+# --- Default layer configuration range ---
+config ZMK_DEFAULT_LAYER
+    default y
+config ZMK_DEFAULT_LAYER_MIN_INDEX
+    int "min layer index configurable as default layer"
+    default 0
+config ZMK_DEFAULT_LAYER_MAX_INDEX
+    int "max layer index configurable as default layer"
+    default 4
+
 endif
+
 
 if SHIELD_CLICHE_AIR_L
 
 config ZMK_KEYBOARD_NAME
     default "Cliche_Air_L"
 
+# --- Split peripheral role ---
 config ZMK_SPLIT
     default y
+
+# --- Battery monitoring ---
+config ZMK_BATTERY_REPORTING
+    default y
+
+# --- Power management ---
+config ZMK_SLEEP
+    default y
+config ZMK_PM_SOFT_OFF
+    default y
+config ZMK_DRIVER_EXT_POWER_TRANSIENT
+    default y
+
+# --- LED / SPI interfaces ---
+config LED_STRIP
+    default y
+config SPI
+    default y
+
+# --- Settings save debounce ---
+config ZMK_SETTINGS_SAVE_DEBOUNCE
+    default 10000
+
+# --- Default layer configuration range ---
+config ZMK_DEFAULT_LAYER
+    default y
+config ZMK_DEFAULT_LAYER_MIN_INDEX
+    int "min layer index configurable as default layer"
+    default 0
+config ZMK_DEFAULT_LAYER_MAX_INDEX
+    int "max layer index configurable as default layer"
+    default 4
 
 endif

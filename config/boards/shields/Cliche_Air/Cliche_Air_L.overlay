@@ -1,16 +1,48 @@
 #include "Cliche_Air.dtsi"
 
+/ {
+    // --- trackballを無効化（右側で使用するため左側では無効） ---
+    trackball: trackball {
+        status = "disabled";
+    };
+
+    chosen {
+        zmk,battery = &non_lipo_battery;
+    };
+
+    // --- Ni-MH用 非LiPoバッテリー定義 ---
+    non_lipo_battery: non_lipo_battery {
+        compatible = "zmk,non-lipo-battery";
+        io-channels = <&adc 2>;  // 使用するADCチャンネル
+        power-gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;  // 電圧分圧電源制御GPIO
+    };
+};
+
 &kscan0 {
-        col-gpios
-            = <&xiao_d 10 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 9 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 8 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 7 GPIO_ACTIVE_HIGH>
-            , <&gpio0 10 GPIO_ACTIVE_HIGH>
-            , <&gpio0 9 GPIO_ACTIVE_HIGH>
-            ;
+    col-gpios
+        = <&xiao_d 10 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 9 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 8 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH>
+        , <&gpio0 10 GPIO_ACTIVE_HIGH>
+        , <&gpio0 9 GPIO_ACTIVE_HIGH>
+        ;
 };
 
 &left_encoder {
     status = "okay";
+};
+
+&animation_layer_status {
+    // 左側では右側のレイヤー表示と整合を取る
+    layer-offset = <4>;
+    pixels = <3 2 1 0>;
+};
+
+&endpoint_status {
+    pixels = <3 2 1 0>;
+};
+
+&battery_status {
+    pixels = <3 2 1 0>;
 };
