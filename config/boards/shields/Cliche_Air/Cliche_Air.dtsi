@@ -12,7 +12,9 @@
         zmk,matrix_transform = &default_transform;
 
         // アニメーション制御
+        // Set root animation device. Suggested device is zmk,animation-control.
         zmk,animation = &root_animation;
+        // Set zmk,animation-control device to be accessed from behavior.
         zmk,animation-control = &root_animation;
     };
 
@@ -69,7 +71,7 @@
 
     //
     // ──────────────────────────────
-    // センサー定義
+    // センサー定義（エンコーダなど）
     // ──────────────────────────────
     //
     sensors: sensors {
@@ -83,18 +85,27 @@
     // LEDアニメーション制御関連
     // ──────────────────────────────
     //
+
+    // Animation node which controls animation device.
+    // LED device and pixel mapping is defined in it.
     animation: animation {
         compatible = "zmk,animation";
         drivers = <&led_strip>;
-        pixels = <&pixel 0 0>, <&pixel 1 0>, <&pixel 2 0>, <&pixel 3 0>;
+        pixels = <&pixel 0 0>,
+            <&pixel 1 0>,
+            <&pixel 2 0>,
+            <&pixel 3 0>;
         chain-lengths = <4>;
     };
 
+    // Optionally define zmk,ext-power compatible device to minimize power consumption if your keyboard supports
     led_power: led_power {
         compatible = "zmk,ext-power-transient";
         control-gpios = <&gpio0 10 (GPIO_ACTIVE_LOW)>; // NFC2
     };
 
+    // Root animation played by &animation node.
+    // It keeps running during ZMK active state.
     root_animation: animation_0 {
         compatible = "zmk,animation-control";
         label = "ANIMATION_CTRL_0";
@@ -110,6 +121,9 @@
     //
     // Animation definitions
     //
+
+    // animation played at start up.
+    // zmk,animation-compose can compose multiple animations.
     init_animation: init_animation {
         compatible = "zmk,animation-compose";
         animations = <&battery_status &black_animation &endpoint_status>;
@@ -119,9 +133,10 @@
     black_animation: black_animation {
         compatible = "zmk,animation-solid";
         pixels = <0 1 2 3>;
-        colors = <0x000000>;
+        colors = <HSL(0, 0, 0)>;
     };
 
+    // zmk,animation-empty is special device. animation-control turns OFF LED module during playing it by setting ext-power OFF.
     empty_animation: empty_animation {
         compatible = "zmk,animation-empty";
         status = "okay";
@@ -132,32 +147,34 @@
         status = "okay";
         pixels = <0 1 2 3>;
         colors = <
-            0xFF0000
-            0xFFFF00
-            0x00FF00
-            0x00FFFF
-            0x0000FF
-            0xFF00FF
+            HSL(0, 100, 50)
+            HSL(60, 100, 50)
+            HSL(120, 100, 50)
+            HSL(180, 100, 50)
+            HSL(240, 100, 50)
+            HSL(300, 100, 50)
         >;
     };
 
+    // endpoint status animation
     endpoint_status: endpoint_status {
         compatible = "zmk,animation-endpoint";
         status = "okay";
         pixels = <0 1 2 3>;
-        color-open = <0xFFFF00>;
-        color-connected = <0x0000FF>;
-        color-disconnected = <0xFF0000>;
-        color-usb = <0x008000>;
+        color-open = <HSL(60, 100, 50)>;
+        color-connected = <HSL(240, 100, 50)>;
+        color-disconnected = <HSL(0, 100, 50)>;
+        color-usb = <HSL(120, 100, 25)>;
     };
 
+    // Battery status animation
     battery_status: battery_status {
         compatible = "zmk,animation-battery-status";
         status = "okay";
         pixels = <0 1 2 3>;
-        color-high = <0x00FF00>;
-        color-middle = <0xFFFF00>;
-        color-low = <0xFF0000>;
+        color-high = <HSL(120, 100, 50)>;  // green
+        color-middle = <HSL(60, 100, 50)>; // yellow
+        color-low = <HSL(0, 100, 50)>;     // red
     };
 };
 
@@ -192,9 +209,13 @@
 
     led_strip: ws2812@0 {
         compatible = "worldsemi,ws2812-spi";
-        reg = <0>;
+
+        /* SPI */
+        reg = <0>; /* ignored, but necessary for SPI bindings */
         spi-max-frequency = <4000000>;
-        chain-length = <4>;
+
+        /* WS2812 */
+        chain-length = <4>; /* number of LEDs */
         spi-one-frame = <0x70>;
         spi-zero-frame = <0x40>;
         color-mapping = <
@@ -208,14 +229,20 @@
 // ──────────────────────────────
 // レイヤーアニメーションカラー設定
 // ──────────────────────────────
+// zmk,animation-layer-status is provided by #include <zmk_driver_animation/animation_layer_status.dtsi>
 &animation_layer_status {
     pixels = <0 1 2 3>;
-    default-color = <0x0000FF>; /* Blue */
-
+    default-color = <HSL(240, 100, 50)>;
+    // default
+    // windows blue
+    // mac red
+    // ios white
+    // linux orange
     colors = <
-        0x26C6DA /* Layer 0 - Cyan */
-        0xCC0000 /* Layer 1 - Red */
-        0xFFFFFF /* Layer 2 - White */
-        0xE89041 /* Layer 3 - Orange */
+        0
+        HSL(193, 100, 47)
+        HSL(0, 100, 40)
+        HSL(0, 100, 100)
+        HSL(29, 88, 51)
     >;
 };
