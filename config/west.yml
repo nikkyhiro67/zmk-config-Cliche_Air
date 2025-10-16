@@ -20,6 +20,7 @@ manifest:
       path: modules/pmw3610-driver
     - name: zmk-feature-non-lipo-battery-management
       remote: sekigon-gonnoc
+      revision: main
     - name: zmk-rgbled-widget
       remote: caksoylar
       revision: main
