@@ -115,9 +115,9 @@
 
     non_lipo_battery: non_lipo_battery {
         compatible = "zmk,non-lipo-battery";
-        io-channels = <&adc 2>;  // Replace with your ADC channel number
+        io-channels = <&adc 2>;  // 使用するADCチャンネル
 
-        // Optional: Power control GPIO for the voltage divider
-        power-gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;  // Replace with your GPIO
+        // オプション: 電圧分圧器の電源制御GPIO
+        power-gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;  // 使用するGPIOに置き換えてください
     };
 };
