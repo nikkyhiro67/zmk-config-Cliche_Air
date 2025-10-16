@@ -37,7 +37,8 @@ config ZMK_SETTINGS_SAVE_DEBOUNCE
     default 10000
 
 config ZMK_DEFAULT_LAYER
-    default y
+    int "default layer index"
+    default 0
 config ZMK_DEFAULT_LAYER_MIN_INDEX
     int "min layer index configurable as default layer"
     default 0
@@ -74,7 +75,8 @@ config ZMK_SETTINGS_SAVE_DEBOUNCE
     default 10000
 
 config ZMK_DEFAULT_LAYER
-    default y
+    int "default layer index"
+    default 0
 config ZMK_DEFAULT_LAYER_MIN_INDEX
     int "min layer index configurable as default layer"
     default 0
