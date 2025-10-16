@@ -14,3 +14,17 @@
 &left_encoder {
     status = "okay";
 };
+
+/ {
+    chosen {
+        zmk,battery = &non_lipo_battery;
+    };
+
+    non_lipo_battery: non_lipo_battery {
+        compatible = "zmk,non-lipo-battery";
+        io-channels = <&adc 2>;  // Replace with your ADC channel number
+
+        // Optional: Power control GPIO for the voltage divider
+        power-gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;  // Replace with your GPIO
+    };
+};

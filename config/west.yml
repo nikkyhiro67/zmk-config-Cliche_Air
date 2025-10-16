@@ -4,7 +4,9 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: nikkyhiro67
       url-base: https://github.com/nikkyhiro67
-    - name: caksoylar # <-- new entry
+    - name: sekigon-gonnoc
+      url-base: https://github.com/sekigon-gonnoc
+    - name: caksoylar
       url-base: https://github.com/caksoylar
 
   projects:
@@ -16,7 +18,9 @@ manifest:
       remote: nikkyhiro67
       revision: main
       path: modules/pmw3610-driver
-    - name: zmk-rgbled-widget # <-- new entry
+    - name: zmk-feature-non-lipo-battery-management
+      remote: sekigon-gonnoc
+    - name: zmk-rgbled-widget
       remote: caksoylar
       revision: main
   self:
