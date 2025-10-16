@@ -21,6 +21,9 @@ manifest:
     - name: zmk-feature-non-lipo-battery-management
       remote: sekigon-gonnoc
       revision: main
+    - name: zmk-driver-animation
+      remote: nikkyhiro67
+      revision: main
     - name: zmk-rgbled-widget
       remote: caksoylar
       revision: main
