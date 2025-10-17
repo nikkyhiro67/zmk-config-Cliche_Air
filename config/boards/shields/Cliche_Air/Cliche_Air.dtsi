@@ -105,7 +105,7 @@
     black_animation: black_animation {
         compatible = "zmk,animation-solid";
         pixels = <0 1 2 3>;
-        colors = <HSL_RGB 0, 0, 0>;
+        colors = <HSL_RGB 0 0 0>;
     };
 
     empty_animation: empty_animation {
@@ -117,28 +117,36 @@
         compatible = "zmk,animation-solid";
         status = "okay";
         pixels = <0 1 2 3>;
-        colors = <HSL_RGB 0, 100, 50 HSL_RGB 0, 100, 50 HSL_RGB 120, 100, 50
-                  HSL_RGB 180, 100, 50 HSL_RGB 240, 100, 50 HSL_RGB 300, 100, 50>;
+        colors = <
+            HSL_RGB 0 100 50
+            HSL_RGB 0 100 50
+            HSL_RGB 120 100 50
+            HSL_RGB 180 100 50
+            HSL_RGB 240 100 50
+            HSL_RGB 300 100 50
+        >;
     };
+
 
     endpoint_status: endpoint_status {
         compatible = "zmk,animation-endpoint";
         status = "okay";
         pixels = <0 1 2 3>;
-        color-open = <HSL_RGB 60, 100, 50>;
-        color-connected = <HSL_RGB 240, 100, 50>;
-        color-disconnected = <HSL_RGB 0, 100, 50>;
-        color-usb = <HSL_RGB 120, 100, 25>;
+        color-open = <HSL_RGB 60 100 50>;
+        color-connected = <HSL_RGB 240 100 50>;
+        color-disconnected = <HSL_RGB 0 100 50>;
+        color-usb = <HSL_RGB 120 100 25>;
     };
 
     battery_status: battery_status {
         compatible = "zmk,animation-battery-status";
         status = "okay";
         pixels = <0 1 2 3>;
-        color-high = <HSL_RGB 120, 100, 50>;
-        color-middle = <HSL_RGB 60, 100, 50>;
-        color-low = <HSL_RGB 0, 100, 50>;
+        color-high = <HSL_RGB 120 100 50>;
+        color-middle = <HSL_RGB 60 100 50>;
+        color-low = <HSL_RGB 0 100 50>;
     };
+
 };
 
 // ==========================
