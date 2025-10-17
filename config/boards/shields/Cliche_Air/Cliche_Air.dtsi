@@ -119,7 +119,6 @@
         pixels = <0 1 2 3>;
         colors = <
             HSL_RGB 0 100 50
-            HSL_RGB 0 100 50
             HSL_RGB 120 100 50
             HSL_RGB 180 100 50
             HSL_RGB 240 100 50
