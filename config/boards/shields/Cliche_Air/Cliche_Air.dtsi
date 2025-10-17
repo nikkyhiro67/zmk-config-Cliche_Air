@@ -193,12 +193,12 @@
 // ==========================
 &animation_layer_status {
     pixels = <0 1 2 3>;
-    default-color = <HSL_RGB 240, 100, 50>;
+    default-color = <HSL_RGB 240 100 50>;
     colors = <
         0
-    HSL_RGB 193 100 47
-    HSL_RGB 0 100 40
-    HSL_RGB 0 100 100
-    HSL_RGB 29 88 51
+        HSL_RGB 193 100 47
+        HSL_RGB 0 100 40
+        HSL_RGB 0 100 100
+        HSL_RGB 29 88 51
     >;
 };
