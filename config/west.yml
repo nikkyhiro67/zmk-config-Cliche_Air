@@ -24,8 +24,9 @@ manifest:
       remote: sekigon-gonnoc
       revision: main
     - name: zmk-driver-animation
-      remote: cormoran
+      remote: nikkyhiro67
       revision: main
+      path: modules/driver-animation
     - name: zmk-rgbled-widget
       remote: caksoylar
       revision: main
