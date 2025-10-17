@@ -105,8 +105,7 @@
     black_animation: black_animation {
         compatible = "zmk,animation-solid";
         pixels = <0 1 2 3>;
-        /* HSL(0,0,0) -> 0x00000000 */
-        colors = <0>;
+        colors = <HSL_RGB 0, 0, 0>;
     };
 
     empty_animation: empty_animation {
@@ -118,35 +117,27 @@
         compatible = "zmk,animation-solid";
         status = "okay";
         pixels = <0 1 2 3>;
-        /* HSL(...) を little-endian 展開 (h + (s<<16) + (l<<24)) した uint32 値 */
-        colors = <
-            0x32640000 /* HSL(0,100,50)   */
-            0x3264003c /* HSL(60,100,50)  */
-            0x32640078 /* HSL(120,100,50) */
-            0x326400b4 /* HSL(180,100,50) */
-            0x326400f0 /* HSL(240,100,50) */
-            0x3264012c /* HSL(300,100,50) */
-        >;
+        colors = <HSL_RGB 0, 100, 50 HSL_RGB 0, 100, 50 HSL_RGB 120, 100, 50
+                  HSL_RGB 180, 100, 50 HSL_RGB 240, 100, 50 HSL_RGB 300, 100, 50>;
     };
 
     endpoint_status: endpoint_status {
         compatible = "zmk,animation-endpoint";
         status = "okay";
         pixels = <0 1 2 3>;
-        /* 置換済 */
-        color-open = <0x3264003c>;     /* HSL(60,100,50)  */
-        color-connected = <0x326400f0>;/* HSL(240,100,50) */
-        color-disconnected = <0x32640000>; /* HSL(0,100,50) */
-        color-usb = <0x19640078>;      /* HSL(120,100,25) */
+        color-open = <HSL_RGB 60, 100, 50>;
+        color-connected = <HSL_RGB 240, 100, 50>;
+        color-disconnected = <HSL_RGB 0, 100, 50>;
+        color-usb = <HSL_RGB 120, 100, 25>;
     };
 
     battery_status: battery_status {
         compatible = "zmk,animation-battery-status";
         status = "okay";
         pixels = <0 1 2 3>;
-        color-high = <0x32640078>;   /* HSL(120,100,50) */
-        color-middle = <0x3264003c>; /* HSL(60,100,50)  */
-        color-low = <0x32640000>;    /* HSL(0,100,50)   */
+        color-high = <HSL_RGB 120, 100, 50>;
+        color-middle = <HSL_RGB 60, 100, 50>;
+        color-low = <HSL_RGB 0, 100, 50>;
     };
 };
 
@@ -195,13 +186,12 @@
 // ==========================
 &animation_layer_status {
     pixels = <0 1 2 3>;
-    /* HSL(240,100,50) -> 0x326400f0 */
-    default-color = <0x326400f0>;
+    default-color = <HSL_RGB 240, 100, 50>;
     colors = <
-        0x00000000 /* 0 */
-        0x2f6400c1 /* HSL(193,100,47) */
-        0x28640000 /* HSL(0,100,40) */
-        0x64640000 /* HSL(0,100,100) */
-        0x33580033 /* HSL(29,88,51) の uint32 近似 */
+        0
+    HSL_RGB 193 100 47
+    HSL_RGB 0 100 40
+    HSL_RGB 0 100 100
+    HSL_RGB 29 88 51
     >;
 };
