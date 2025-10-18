@@ -33,7 +33,6 @@ manifest:
     - name: zmk-driver-animation
       remote: cormoran
       revision: main
-      path: modules/driver-animation
     - name: zmk-rgbled-widget
       remote: caksoylar
       revision: main
