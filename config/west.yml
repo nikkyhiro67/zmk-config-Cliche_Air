@@ -18,6 +18,14 @@ manifest:
       remote: nikkyhiro67
       revision: main
       path: modules/pmw3610-driver
+    - name: zmk-module-battery-monitor
+      remote: nikkyhiro67
+      revision: main
+      path: modules/zmk-module-battery-monitor
+    - name: zmk-module-led-indicator
+      remote: nikkyhiro67
+      revision: main
+      path: modules/zmk-module-led-indicator
     - name: zmk-feature-non-lipo-battery-management
       remote: sekigon-gonnoc
       revision: main
