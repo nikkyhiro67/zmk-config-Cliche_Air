@@ -1,6 +1,15 @@
 #include <dt-bindings/zmk/matrix_transform.h>
+#include <dt-bindings/led/led.h>
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/zmk/battery.h>
+
+#include <zmk-led-indicator/led_indicator.dtsi>
+#include <zmk-battery-monitor/battery_monitor.dtsi>
 
 / {
+    /* =========================================
+     * キースキャンとマトリクス変換設定
+     * ========================================= */
     chosen {
         zmk,kscan = &kscan0;
         zmk,matrix_transform = &default_transform;
@@ -17,18 +26,24 @@
             RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4) RC(3,5)     RC(3,8) RC(3,9)                         RC(3,10)
         >;
     };
-        kscan0: kscan {
+
+    /* =========================================
+     * キースキャン設定
+     * ========================================= */
+    kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
         label = "KSCAN";
         diode-direction = "col2row";
-            row-gpios
-                = <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-                , <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-                , <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-                , <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-                ;
+        row-gpios =
+            <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+            <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+            <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+            <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
     };
 
+    /* =========================================
+     * エンコーダ設定
+     * ========================================= */
     left_encoder: encoder_left {
         compatible = "alps,ec11";
         a-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
@@ -45,5 +60,55 @@
         compatible = "zmk,keymap-sensors";
         sensors = <&left_encoder &right_encoder>;
         triggers-per-rotation = <10>;
+    };
+
+    /* =========================================
+     * バッテリーモニタモジュール設定
+     * ========================================= */
+    battery_monitor: battery-monitor {
+        compatible = "zmk,battery-monitor";
+        io-channels = <&adc 0>;                 /* ADCチャネル指定 */
+        power-gpios = <&gpio0 10 GPIO_ACTIVE_HIGH>; /* 分圧電源制御ピン（任意） */
+        full-mv = <4200>;                       /* フル充電電圧[mV] */
+        empty-mv = <3300>;                      /* 空状態[mV] */
+        status = "okay";
+    };
+
+    /* =========================================
+     * LEDストリップ定義
+     * ========================================= */
+    sk6812_led: led_strip {
+        compatible = "zmk,led-strip";
+        label = "LED_STRIP";
+        gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;   /* 実機ピンに合わせて調整 */
+        chain-length = <1>;
+        color-order = "GRB";                   /* WS2812/SK6812MINI-E用 */
+        status = "okay";
+    };
+
+    /* =========================================
+     * LEDインジケータモジュール設定
+     * ========================================= */
+    led_indicator: led-indicator {
+        compatible = "zmk,led-indicator";
+
+        /* 対象LEDドライバノードを参照 */
+        led-strip = <&sk6812_led>;
+
+        /* バッテリーモニタとの連携 */
+        battery = <&battery_monitor>;
+
+        /* GPIO駆動LED（任意・複数指定可） */
+        power-gpios = <&gpio0 9 GPIO_ACTIVE_HIGH>, <&gpio0 10 GPIO_ACTIVE_HIGH>;
+
+        status = "okay";
+    };
+
+    /* =========================================
+     * エイリアス定義（モジュール参照用）
+     * ========================================= */
+    aliases {
+        led-indicator = &led_indicator;
+        battery-monitor = &battery_monitor;
     };
 };
