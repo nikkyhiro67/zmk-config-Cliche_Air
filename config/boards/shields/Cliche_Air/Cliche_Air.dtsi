@@ -67,22 +67,22 @@
      * ========================================= */
     battery_monitor: battery-monitor {
         compatible = "zmk,battery-monitor";
-        io-channels = <&adc 0>;                 /* ADCチャネル指定 */
-        power-gpios = <&gpio0 10 GPIO_ACTIVE_HIGH>; /* 分圧電源制御ピン（任意） */
-        full-mv = <4200>;                       /* フル充電電圧[mV] */
-        empty-mv = <3300>;                      /* 空状態[mV] */
+        io-channels = <&adc 0>;                     /* ADCチャネル指定 */
+        power-gpios = <&gpio0 10 GPIO_ACTIVE_HIGH>;  /* 分圧電源制御ピン（任意） */
+        full-mv = <4200>;                            /* フル充電電圧[mV] */
+        empty-mv = <3300>;                           /* 空状態[mV] */
         status = "okay";
     };
 
     /* =========================================
-     * LEDストリップ定義
+     * LEDストリップ定義（SK6812/WS2812）
      * ========================================= */
     sk6812_led: led_strip {
         compatible = "zmk,led-strip";
         label = "LED_STRIP";
-        gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;   /* 実機ピンに合わせて調整 */
+        gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;         /* 実機ピンに合わせて調整 */
         chain-length = <1>;
-        color-order = "GRB";                   /* WS2812/SK6812MINI-E用 */
+        color-order = "GRB";                         /* WS2812/SK6812MINI-E用 */
         status = "okay";
     };
 
@@ -105,7 +105,7 @@
     };
 
     /* =========================================
-     * エイリアス定義（モジュール参照用）
+     * エイリアス定義（他モジュール・ZMK参照用）
      * ========================================= */
     aliases {
         led-indicator = &led_indicator;
