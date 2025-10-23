@@ -18,6 +18,7 @@
         <&gpio0 10 GPIO_ACTIVE_HIGH>;
 };
 
+/* SPIピン（PMW3610） */
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
@@ -57,14 +58,24 @@
     };
 };
 
+/* ADC設定：INPUT_VOLTAGE -> P0.20 */
 &adc {
     status = "okay";
+
+    channel@0 {
+        reg = <0>;
+        zephyr,gain = "GAIN_1_6";
+        zephyr,reference = "VDD_1_4";
+        zephyr,acquisition-time = <10>;
+        zephyr,input-positive = <NRF_SAADC_AIN4>;  /* P0.20 */
+        zephyr,resolution = <12>;
+    };
 };
 
-/ {
+ / {
     /* Non-LiPo バッテリ管理 */
-    non_lipo_battery: non-lipo-battery {
-        compatible = "non-lipo-battery-management";
+    non_lipo_battery: non_lipo_battery {
+        compatible = "zmk,non-lipo-battery-management";
         io-channels = <&adc 0>;
         full-mv = <4200>;
         empty-mv = <3300>;
@@ -72,14 +83,14 @@
     };
 
     /* Battery Monitor */
-    battery_monitor: battery-monitor {
+    battery_monitor: battery_monitor {
         compatible = "zmk,battery-monitor";
         manager = <&non_lipo_battery>;
         status = "okay";
     };
 
-    /* LEDインジケータ */
-    led_indicator: led-indicator {
+    /* LED インジケータ */
+    led_indicator: led_indicator {
         compatible = "zmk,led-indicator";
         led-strip = <&sk6812_led>;
         battery = <&battery_monitor>;
@@ -89,5 +100,9 @@
 
     chosen {
         zmk,battery = &non_lipo_battery;
+    };
+
+    aliases {
+        battery-monitor = &battery_monitor;
     };
 };
