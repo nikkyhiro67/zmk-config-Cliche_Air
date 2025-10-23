@@ -2,9 +2,6 @@
 #include <dt-bindings/led/led.h>
 #include <dt-bindings/gpio/gpio.h>
 
-#include <zmk-led-indicator/led_indicator.dtsi>
-#include <zmk-battery-monitor/battery_monitor.dtsi>
-
 / {
     /* =========================================
      * キースキャンとマトリクス変換設定
