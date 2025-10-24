@@ -1,7 +1,7 @@
 #include "Cliche_Air.dtsi"
 
 /* =========================================
- * 左手ユニット：キーマトリクス＋バッテリ＋LED
+ * 左手ユニット：キーマトリクス＋エンコーダ＋バッテリ＋LED
  * ========================================= */
 
 &kscan0 {
@@ -21,14 +21,23 @@
         <&gpio0 9 GPIO_ACTIVE_HIGH>;   /* COL5 -> P0.09 */
 };
 
-/* 左エンコーダ */
-&left_encoder {
-    a-gpios = <&gpio0 5 GPIO_ACTIVE_HIGH>;  /* ENC_A -> P0.05 */
-    b-gpios = <&gpio0 4 GPIO_ACTIVE_HIGH>;  /* ENC_B -> P0.04 */
-    status = "okay";
+/* =========================================
+ * ロータリーエンコーダ定義（左側のみ）
+ * ========================================= */
+ / {
+    left_encoder: encoder0 {
+        compatible = "zmk,encoder"; /* ZMK標準エンコーダドライバ */
+        label = "LEFT_ENCODER";
+        a-gpios = <&gpio0 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;  /* ENC_A -> P0.05 */
+        b-gpios = <&gpio0 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;  /* ENC_B -> P0.04 */
+        steps = <4>;
+        status = "okay";
+    };
 };
 
-/* ADC設定：INPUT_VOLTAGE -> P0.02 */
+/* =========================================
+ * ADC設定：INPUT_VOLTAGE -> P0.02
+ * ========================================= */
 &adc {
     status = "okay";
 
@@ -42,7 +51,10 @@
     };
 };
 
-/ {
+/* =========================================
+ * バッテリ・LED制御ノード群
+ * ========================================= */
+ / {
     /* Non-LiPo バッテリ管理 */
     non_lipo_battery: non_lipo_battery {
         compatible = "zmk,non-lipo-battery-management";
