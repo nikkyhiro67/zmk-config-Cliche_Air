@@ -64,7 +64,7 @@
      * 共通エイリアス設定
      * ========================================= */
     aliases {
-        led_indicator = &led_indicator;
-        battery_monitor = &battery_monitor;
+        led-indicator = &led_indicator;
+        battery-monitor = &battery_monitor;
     };
 };
