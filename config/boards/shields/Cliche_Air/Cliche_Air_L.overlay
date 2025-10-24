@@ -23,7 +23,7 @@
     status = "okay";
 
     channel@0 {
-        reg = <0>;
+        reg = <0 0 0>;  /* ← 修正！ 3つ必要 */
         zephyr,gain = "GAIN_1_6";
         zephyr,reference = "VDD_1_4";
         zephyr,acquisition-time = <10>;
