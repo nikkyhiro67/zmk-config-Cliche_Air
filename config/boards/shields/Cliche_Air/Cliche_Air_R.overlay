@@ -10,21 +10,28 @@
 };
 
 &kscan0 {
+    /* 右手も同じROW構成だがCOLが5本のみ */
+    row-gpios =
+        <&gpio0 3 GPIO_ACTIVE_HIGH>,   /* ROW0 -> P0.03 */
+        <&gpio0 28 GPIO_ACTIVE_HIGH>,  /* ROW1 -> P0.28 */
+        <&gpio0 29 GPIO_ACTIVE_HIGH>,  /* ROW2 -> P0.29 */
+        <&gpio1 11 GPIO_ACTIVE_HIGH>;  /* ROW3 -> P1.11 */
+
     col-gpios =
-        <&xiao_d 10 GPIO_ACTIVE_HIGH>,
-        <&xiao_d 9 GPIO_ACTIVE_HIGH>,
-        <&xiao_d 8 GPIO_ACTIVE_HIGH>,
-        <&xiao_d 7 GPIO_ACTIVE_HIGH>,
-        <&gpio0 10 GPIO_ACTIVE_HIGH>;
+        <&gpio1 15 GPIO_ACTIVE_HIGH>,  /* COL0 -> P1.15 */
+        <&gpio1 14 GPIO_ACTIVE_HIGH>,  /* COL1 -> P1.14 */
+        <&gpio1 13 GPIO_ACTIVE_HIGH>,  /* COL2 -> P1.13 */
+        <&gpio1 12 GPIO_ACTIVE_HIGH>,  /* COL3 -> P1.12 */
+        <&gpio0 10 GPIO_ACTIVE_HIGH>;  /* COL4 -> P0.10 */
 };
 
-/* SPIピン（PMW3610） */
+/* SPIピン（PMW3610トラックボール） */
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
-                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 4)>;
+            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,   /* TB_SCLK -> P0.05 */
+                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,  /* TB_SDIO -> P0.04 */
+                    <NRF_PSEL(SPIM_MISO, 0, 4)>;  /* 双方向ピン（兼用） */
         };
     };
 
@@ -44,14 +51,14 @@
     pinctrl-0 = <&spi0_default>;
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
+    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;    /* TB_NCS -> P0.09 */
 
     trackball: trackball@0 {
         status = "okay";
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
-        irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        irq-gpios = <&gpio1 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* TB_MOTION -> P1.10 */
         evt-type = <0>;
         x-input-code = <0x00>; // REL_X
         y-input-code = <0x01>; // REL_Y
@@ -94,7 +101,7 @@
         compatible = "zmk,led-indicator";
         led-strip = <&sk6812_led>;
         battery = <&battery_monitor>;
-        power-gpios = <&gpio0 9 GPIO_ACTIVE_HIGH>;
+        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
         status = "okay";
     };
 

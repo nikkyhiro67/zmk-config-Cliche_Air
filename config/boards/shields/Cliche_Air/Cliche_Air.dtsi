@@ -4,6 +4,31 @@
 
 / {
     /* =========================================
+     * キースキャン設定（Central / Left）
+     * ========================================= */
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        label = "KSCAN0";
+        diode-direction = "col2row";
+
+        /* ROW: P0.03, P0.28, P0.29, P1.11 */
+        row-gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>,
+                    <&gpio0 28 GPIO_ACTIVE_HIGH>,
+                    <&gpio0 29 GPIO_ACTIVE_HIGH>,
+                    <&gpio1 11 GPIO_ACTIVE_HIGH>;
+
+        /* COL: P1.15, P1.14, P1.13, P1.12, P0.10, P0.09 */
+        col-gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>,
+                    <&gpio1 14 GPIO_ACTIVE_HIGH>,
+                    <&gpio1 13 GPIO_ACTIVE_HIGH>,
+                    <&gpio1 12 GPIO_ACTIVE_HIGH>,
+                    <&gpio0 10 GPIO_ACTIVE_HIGH>,
+                    <&gpio0 9 GPIO_ACTIVE_HIGH>;
+
+        status = "okay";
+    };
+
+    /* =========================================
      * キースキャンとマトリクス変換設定
      * ========================================= */
     chosen {
