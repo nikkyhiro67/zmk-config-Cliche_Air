@@ -4,29 +4,12 @@
  * 左手ユニット：キーマトリクス＋エンコーダ＋バッテリ＋LED
  * ========================================= */
 
-&kscan0 {
-    /* 左手用の実ピンに置換 */
-    row-gpios =
-        <&gpio0 3 GPIO_ACTIVE_HIGH>,   /* ROW0 -> P0.03 */
-        <&gpio0 28 GPIO_ACTIVE_HIGH>,  /* ROW1 -> P0.28 */
-        <&gpio0 29 GPIO_ACTIVE_HIGH>,  /* ROW2 -> P0.29 */
-        <&gpio1 11 GPIO_ACTIVE_HIGH>;  /* ROW3 -> P1.11 */
+/* kscan0 は Cliche_Air.dtsi 側に定義済み（上書き不要） */
 
-    col-gpios =
-        <&gpio1 15 GPIO_ACTIVE_HIGH>,  /* COL0 -> P1.15 */
-        <&gpio1 14 GPIO_ACTIVE_HIGH>,  /* COL1 -> P1.14 */
-        <&gpio1 13 GPIO_ACTIVE_HIGH>,  /* COL2 -> P1.13 */
-        <&gpio1 12 GPIO_ACTIVE_HIGH>,  /* COL3 -> P1.12 */
-        <&gpio0 10 GPIO_ACTIVE_HIGH>,  /* COL4 -> P0.10 */
-        <&gpio0 9 GPIO_ACTIVE_HIGH>;   /* COL5 -> P0.09 */
-};
-
-/* =========================================
- * ロータリーエンコーダ定義（左側のみ）
- * ========================================= */
+/* エンコーダ（左） — ノードを明示的に定義 */
  / {
     left_encoder: encoder0 {
-        compatible = "zmk,encoder"; /* ZMK標準エンコーダドライバ */
+        compatible = "zmk,encoder";
         label = "LEFT_ENCODER";
         a-gpios = <&gpio0 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;  /* ENC_A -> P0.05 */
         b-gpios = <&gpio0 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;  /* ENC_B -> P0.04 */
@@ -35,9 +18,7 @@
     };
 };
 
-/* =========================================
- * ADC設定：INPUT_VOLTAGE -> P0.02
- * ========================================= */
+/* ADC設定：INPUT_VOLTAGE -> P0.02 */
 &adc {
     status = "okay";
 
@@ -51,11 +32,9 @@
     };
 };
 
-/* =========================================
- * バッテリ・LED制御ノード群
- * ========================================= */
+/* ===== battery / led nodes (left) ===== */
  / {
-    /* Non-LiPo バッテリ管理 */
+    /* Non-LiPo バッテリ管理（実ADC読み取りを行う manager ノード） */
     non_lipo_battery: non_lipo_battery {
         compatible = "zmk,non-lipo-battery-management";
         io-channels = <&adc 0>;
@@ -64,27 +43,31 @@
         status = "okay";
     };
 
-    /* Battery Monitor */
+    /* Battery Monitor (zmk,battery-monitor binding) */
     battery_monitor: battery_monitor {
         compatible = "zmk,battery-monitor";
         manager = <&non_lipo_battery>;
         status = "okay";
     };
 
-    /* LED インジケータ */
+    /* LED Indicator node (uses LED strip defined in dtsi) */
     led_indicator: led_indicator {
         compatible = "zmk,led-indicator";
         led-strip = <&sk6812_led>;
         battery = <&battery_monitor>;
-        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
+        /* LED_EN -> P1.00 */
+        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
         status = "okay";
     };
 
+    /* ZMK が使うバッテリ参照 */
     chosen {
         zmk,battery = &non_lipo_battery;
     };
 
+    /* alias（overlay 内でも定義しておくと明確） */
     aliases {
+        led-indicator = &led_indicator;
         battery-monitor = &battery_monitor;
     };
 };

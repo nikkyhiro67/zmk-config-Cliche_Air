@@ -7,31 +7,20 @@
 
 &default_transform {
     col-offset = <6>;
-};
+}
 
+/* 右手は共通 kscan0 を利用だが、左と同じROW構成、COLは5本 */
 &kscan0 {
-    /* 右手も同じROW構成だがCOLが5本のみ */
-    row-gpios =
-        <&gpio0 3 GPIO_ACTIVE_HIGH>,   /* ROW0 -> P0.03 */
-        <&gpio0 28 GPIO_ACTIVE_HIGH>,  /* ROW1 -> P0.28 */
-        <&gpio0 29 GPIO_ACTIVE_HIGH>,  /* ROW2 -> P0.29 */
-        <&gpio1 11 GPIO_ACTIVE_HIGH>;  /* ROW3 -> P1.11 */
-
-    col-gpios =
-        <&gpio1 15 GPIO_ACTIVE_HIGH>,  /* COL0 -> P1.15 */
-        <&gpio1 14 GPIO_ACTIVE_HIGH>,  /* COL1 -> P1.14 */
-        <&gpio1 13 GPIO_ACTIVE_HIGH>,  /* COL2 -> P1.13 */
-        <&gpio1 12 GPIO_ACTIVE_HIGH>,  /* COL3 -> P1.12 */
-        <&gpio0 10 GPIO_ACTIVE_HIGH>;  /* COL4 -> P0.10 */
+    /* override col-gpios for right if needed (we keep common definition) */
 };
 
-/* SPIピン（PMW3610トラックボール） */
+/* SPI / trackball の設定（ピン表に準拠） */
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
             psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,   /* TB_SCLK -> P0.05 */
                     <NRF_PSEL(SPIM_MOSI, 0, 4)>,  /* TB_SDIO -> P0.04 */
-                    <NRF_PSEL(SPIM_MISO, 0, 4)>;  /* 双方向ピン（兼用） */
+                    <NRF_PSEL(SPIM_MISO, 0, 4)>;
         };
     };
 
@@ -79,6 +68,7 @@
     };
 };
 
+/* ===== battery / led nodes (right) ===== */
  / {
     /* Non-LiPo バッテリ管理 */
     non_lipo_battery: non_lipo_battery {
@@ -96,7 +86,7 @@
         status = "okay";
     };
 
-    /* LED インジケータ */
+    /* LED Indicator */
     led_indicator: led_indicator {
         compatible = "zmk,led-indicator";
         led-strip = <&sk6812_led>;
@@ -110,6 +100,7 @@
     };
 
     aliases {
+        led-indicator = &led_indicator;
         battery-monitor = &battery_monitor;
     };
 };
