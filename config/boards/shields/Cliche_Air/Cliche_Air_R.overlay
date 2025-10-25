@@ -109,7 +109,6 @@
     zmk,non-lipo-battery {
         compatible = "zmk,non-lipo-battery";
         io-channels = <&adc 0>;
-        power-supply = <&vbat>;
         status = "okay";
     };
 };
