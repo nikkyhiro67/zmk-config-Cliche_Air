@@ -1,12 +1,12 @@
 #include "Cliche_Air.dtsi"
+#include <input/processors.dtsi>
 
 /* =========================================
  * 左手ユニット：キーマトリクス＋エンコーダ＋バッテリ＋LED
  * ========================================= */
 
-/* kscan0 は Cliche_Air.dtsi 側に定義済み（上書き不要） */
+/* kscan0 は Cliche_Air.dtsi 側で定義済み */
 
-/* エンコーダ（左） — ノードを明示的に定義 */
  / {
     left_encoder: encoder0 {
         compatible = "zmk,encoder";
@@ -27,7 +27,7 @@
         zephyr,gain = "ADC_GAIN_1_6";
         zephyr,reference = "ADC_REF_INTERNAL";
         zephyr,acquisition-time = <10>;
-        zephyr,input-positive = <NRF_SAADC_AIN0>; /* 左手の場合: P0.02 */
+        zephyr,input-positive = <NRF_SAADC_AIN0>; /* 左手: P0.02 */
         zephyr,resolution = <12>;
     };
 };
@@ -36,7 +36,7 @@
  / {
     /* Non-LiPo バッテリ管理（実ADC読み取りを行う manager ノード） */
     non_lipo_battery: non_lipo_battery {
-        compatible = "zmk,non-lipo-battery-management";
+        compatible = "zmk,non-lipo-battery";
         io-channels = <&adc 0>;
         full-mv = <4200>;
         empty-mv = <3300>;
@@ -55,27 +55,16 @@
         compatible = "zmk,led-indicator";
         led-strip = <&sk6812_led>;
         battery = <&battery_monitor>;
-        /* LED_EN -> P1.00 */
-        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
         status = "okay";
     };
 
-    /* ZMK が使うバッテリ参照 */
     chosen {
         zmk,battery = &non_lipo_battery;
     };
 
-    /* alias（overlay 内でも定義しておくと明確） */
     aliases {
         led-indicator = &led_indicator;
         battery-monitor = &battery_monitor;
-    };
-};
-
-/ {
-    zmk,non-lipo-battery {
-        compatible = "zmk,non-lipo-battery";
-        io-channels = <&adc 0>;
-        status = "okay";
     };
 };

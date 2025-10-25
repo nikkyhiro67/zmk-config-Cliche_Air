@@ -1,25 +1,20 @@
 #include "Cliche_Air.dtsi"
-#include <input/processors.dtsi>
 
 /* =========================================
  * 右手ユニット：ポインティング＋バッテリ＋LED
  * ========================================= */
 
+/* デフォルトマトリクスオフセット */
 &default_transform {
     col-offset = <6>;
 }
 
-/* 右手は共通 kscan0 を利用だが、左と同じROW構成、COLは5本 */
-&kscan0 {
-    /* override col-gpios for right if needed (we keep common definition) */
-};
-
-/* SPI / trackball の設定（ピン表に準拠） */
+/* SPI / trackball 設定 */
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,   /* TB_SCLK -> P0.05 */
-                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,  /* TB_SDIO -> P0.04 */
+            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,
                     <NRF_PSEL(SPIM_MISO, 0, 4)>;
         };
     };
@@ -40,21 +35,21 @@
     pinctrl-0 = <&spi0_default>;
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;    /* TB_NCS -> P0.09 */
+    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
 
     trackball: trackball@0 {
         status = "okay";
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
-        irq-gpios = <&gpio1 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* TB_MOTION -> P1.10 */
+        irq-gpios = <&gpio1 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
         evt-type = <0>;
-        x-input-code = <0x00>; // REL_X
-        y-input-code = <0x01>; // REL_Y
+        x-input-code = <0x00>;
+        y-input-code = <0x01>;
     };
 };
 
-/* ADC設定：INPUT_VOLTAGE -> P0.20 */
+/* ADC設定：INPUT_VOLTAGE -> P0.28 */
 &adc {
     status = "okay";
 
@@ -63,7 +58,7 @@
         zephyr,gain = "ADC_GAIN_1_6";
         zephyr,reference = "ADC_REF_INTERNAL";
         zephyr,acquisition-time = <10>;
-        zephyr,input-positive = <NRF_SAADC_AIN4>; /* 右手の場合: P0.28 */
+        zephyr,input-positive = <NRF_SAADC_AIN4>; /* 右手: P0.28 */
         zephyr,resolution = <12>;
     };
 };
@@ -72,7 +67,7 @@
  / {
     /* Non-LiPo バッテリ管理 */
     non_lipo_battery: non_lipo_battery {
-        compatible = "zmk,non-lipo-battery-management";
+        compatible = "zmk,non-lipo-battery";  /* ← 修正済 */
         io-channels = <&adc 0>;
         full-mv = <4200>;
         empty-mv = <3300>;
@@ -91,7 +86,7 @@
         compatible = "zmk,led-indicator";
         led-strip = <&sk6812_led>;
         battery = <&battery_monitor>;
-        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
+        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
         status = "okay";
     };
 
@@ -102,13 +97,5 @@
     aliases {
         led-indicator = &led_indicator;
         battery-monitor = &battery_monitor;
-    };
-};
-
-/ {
-    zmk,non-lipo-battery {
-        compatible = "zmk,non-lipo-battery";
-        io-channels = <&adc 0>;
-        status = "okay";
     };
 };
