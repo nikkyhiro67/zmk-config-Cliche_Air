@@ -59,11 +59,11 @@
     status = "okay";
 
     channel@0 {
-        reg = <0 0 1>;  /* ← 修正 */
-        zephyr,gain = "GAIN_1_6";
-        zephyr,reference = "VDD_1_4";
+        reg = <0 0 1>;
+        zephyr,gain = "ADC_GAIN_1_6";
+        zephyr,reference = "ADC_REF_INTERNAL";
         zephyr,acquisition-time = <10>;
-        zephyr,input-positive = <NRF_SAADC_AIN4>;  /* P0.20 */
+        zephyr,input-positive = <NRF_SAADC_AIN4>; /* 右手の場合: P0.28 */
         zephyr,resolution = <12>;
     };
 };
