@@ -1,4 +1,4 @@
-# Cliche_Air LED Indicator Firmware v1.5 (final candidate)
+# Cliche_Air LED Indicator Firmware v4
 
 This package contains:
 
@@ -14,4 +14,4 @@ IMPORTANT:
 - PMW3610 driver is SPI-based; if your board uses SDIO, the driver must be adapted.
 - Build this within your ZMK workspace (west build) and provide logs if errors occur.
 
-  10.4 色々修正
+  10.26 色々修正
