@@ -27,7 +27,7 @@ manifest:
       revision: main
       path: modules/zmk-module-led-indicator
     - name: zmk-feature-non-lipo-battery-management
-      remote: sekigon-gonnoc
+      remote: nikkyhiro67
       revision: main
     - name: zmk-rgbled-widget
       remote: caksoylar
