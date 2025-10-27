@@ -182,7 +182,8 @@ Firmware Architect nikkyhiro67
 Firmware Co-Designer (AI Support) ChatGPT GPT-5  
 Base Platform ZMK Firmware
 
-Additional Modules zmk-feature-non-lipo-battery-management 　@sekigon-gonnoc
+Additional Modules  
+・[sekigon-gonnoc/zmk-feature-non-lipo-battery-management](https://github.com/sekigon-gonnoc/zmk-feature-non-lipo-battery-management) 　@sekigon-gonnoc
 
 Reference  
 ・[zmk-config-moNa2](https://github.com/sayu-hub/zmk-config-moNa2) @shakushakupanda  
