@@ -27,32 +27,9 @@ ZMK Firmware をベースに構築された **左右分離型ワイヤレスキ�
 | `.conf` / `.keymap`    | ZMK レイヤー構成ファイル                                                      |
 | `west.yml`             | モジュール参照設定（非 LiPo バッテリ管理拡張含む）                            |
 
-## 🧩 ピンマッピング一覧
-
-### 左手 (Central) ### 右手 (Peripheral)
-
-| 機能 | ピン | | 機能 | ピン |
-|-------|------| |-------|------|
-| ROW0 | P0.03 | | ROW0 | P0.03 |
-| ROW1 | P0.28 | | ROW1 | P0.28 |
-| ROW2 | P0.29 | | ROW2 | P0.29 |
-| ROW3 | P1.11 | | ROW3 | P1.11 |
-| COL0 | P1.15 | | COL0 | P1.15 |
-| COL1 | P1.14 | | COL1 | P1.14 |
-| COL2 | P1.13 | | COL2 | P1.13 |
-| COL3 | P1.12 | | COL3 | P1.12 |
-| COL4 | P0.10 | | COL4 | P0.10 |
-| COL5 | P0.09 | | TB_SCLK | P0.05 |
-| ENC_A | P0.05 | | TB_SDIO | P0.04 |
-| ENC_B | P0.04 | | TB_NCS | P0.09 |
-| LED_DIN | P0.16 | | TB_MOTION | P1.10 |
-| LED_EN | P1.00 | | LED_DIN | P0.16 |
-| INPUT_VOLTAGE(ADC) | P0.02 | | LED_EN | P1.00 |
-| INPUT_VOLTAGE(ADC) | P0.02 |
-
 ##⚡ 非 LiPo バッテリ管理構成
 
-### モジュール
+### 外部モジュール
 
 [sekigon-gonnoc/zmk-feature-non-lipo-battery-management](https://github.com/sekigon-gonnoc/zmk-feature-non-lipo-battery-management)
 
