@@ -178,15 +178,15 @@ LED は 1 秒ごとに再描画（状態変化時は即反映）。
 
 ### 👨‍💻 作者・クレジット
 
-Firmware Architect nikkyhiro67
-Firmware Co-Designer (AI Support) ChatGPT GPT-5
+Firmware Architect nikkyhiro67  
+Firmware Co-Designer (AI Support) ChatGPT GPT-5  
 Base Platform ZMK Firmware
 
 Additional Modules zmk-feature-non-lipo-battery-management 　@sekigon-gonnoc
 
-Reference
-・mk-config-moNa2 @shakushakupanda
-・zmk-config-roBa @kumamuk-git
+Reference  
+・mk-config-moNa2 @shakushakupanda  
+・zmk-config-roBa @kumamuk-git  
 ・zmk-keyboard-dya-dash @cormoran
 
 ### ⚖License
