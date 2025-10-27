@@ -185,9 +185,9 @@ Base Platform ZMK Firmware
 Additional Modules zmk-feature-non-lipo-battery-management 　@sekigon-gonnoc
 
 Reference  
-・mk-config-moNa2 @shakushakupanda  
-・zmk-config-roBa @kumamuk-git  
-・zmk-keyboard-dya-dash @cormoran
+・[zmk-config-moNa2](https://github.com/sayu-hub/zmk-config-moNa2) @shakushakupanda  
+・[zmk-config-roBa](https://github.com/kumamuk-git/zmk-config-roBa) @kumamuk-git  
+・[zmk-keyboard-dya-dash](https://github.com/cormoran/dya-dash-keyboard/tree/main/firmware) @cormoran
 
 ### ⚖License
 
