@@ -35,21 +35,21 @@
     pinctrl-0 = <&spi0_default>;
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
+    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;/* TB_NCS -> P0.09 */
 
     trackball: trackball@0 {
         status = "okay";
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
-        irq-gpios = <&gpio1 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        irq-gpios = <&gpio1 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;/* TB_MOTION -> P1.10 */
         evt-type = <0>;
         x-input-code = <0x00>;
         y-input-code = <0x01>;
     };
 };
 
-/* ADC設定：INPUT_VOLTAGE -> P0.28 */
+/* ADC設定：INPUT_VOLTAGE -> P0.02 */
 &adc {
     status = "okay";
 
@@ -58,7 +58,7 @@
         zephyr,gain = "ADC_GAIN_1_6";
         zephyr,reference = "ADC_REF_INTERNAL";
         zephyr,acquisition-time = <10>;
-        zephyr,input-positive = <NRF_SAADC_AIN4>; /* 右手: P0.28 */
+        zephyr,input-positive = <NRF_SAADC_AIN0>; /* 右手: P0.02 */
         zephyr,resolution = <12>;
     };
 };
@@ -86,7 +86,7 @@
         compatible = "zmk,led-indicator";
         led-strip = <&sk6812_led>;
         battery = <&battery_monitor>;
-        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;/* LED_EN -> P1.00 */
         status = "okay";
     };
 
