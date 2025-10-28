@@ -60,7 +60,7 @@
     };
 
     chosen {
-        zmk,battery = &non_lipo_battery;
+        zmk,battery = &non_lipo_battery_left;
     };
 
     aliases {
