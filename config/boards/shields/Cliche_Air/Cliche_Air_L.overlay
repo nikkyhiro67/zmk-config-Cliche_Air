@@ -35,7 +35,7 @@
 /* ===== battery / led nodes (left) ===== */
  / {
     /* Non-LiPo バッテリ管理（実ADC読み取りを行う manager ノード） */
-    non_lipo_battery: non_lipo_battery {
+    non_lipo_battery_left: non_lipo_battery_left {
         compatible = "zmk,non-lipo-battery";
         io-channels = <&adc 0>;
         full-mv = <4200>;
