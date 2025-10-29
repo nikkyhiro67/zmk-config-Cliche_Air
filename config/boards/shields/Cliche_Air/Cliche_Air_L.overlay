@@ -46,7 +46,7 @@
     /* Battery Monitor (zmk,battery-monitor binding) */
     battery_monitor: battery_monitor {
         compatible = "zmk,battery-monitor";
-        battery = <&non_lipo_battery_left>;
+        manager = <&non_lipo_battery_left>;
         status = "okay";
     };
 

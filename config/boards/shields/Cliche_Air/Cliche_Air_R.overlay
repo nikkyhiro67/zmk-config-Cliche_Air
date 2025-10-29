@@ -77,7 +77,7 @@
     /* Battery Monitor */
     battery_monitor: battery_monitor {
         compatible = "zmk,battery-monitor";
-        battery = <&non_lipo_battery_right>;
+        manager = <&non_lipo_battery_right>;
         status = "okay";
     };
 
