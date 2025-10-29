@@ -5,20 +5,64 @@
  * 左手ユニット：キーマトリクス＋エンコーダ＋バッテリ＋LED
  * ========================================= */
 
-/* kscan0 は Cliche_Air.dtsi 側で定義済み */
-
- / {
+/ {
+    /* ============================
+     * エンコーダノード（ALPS EC11）
+     * ============================ */
     left_encoder: encoder0 {
-        compatible = "zmk,encoder";
+        compatible = "alps,ec11";
         label = "LEFT_ENCODER";
         a-gpios = <&gpio0 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;  /* ENC_A -> P0.05 */
         b-gpios = <&gpio0 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;  /* ENC_B -> P0.04 */
         steps = <4>;
         status = "okay";
     };
+
+    /* ============================
+     * Non-LiPo バッテリ管理
+     * ============================ */
+    non_lipo_battery_left: non_lipo_battery_left {
+        compatible = "zmk,non-lipo-battery";
+        io-channels = <&adc 0>;
+        full-mv = <4200>;
+        empty-mv = <3300>;
+        status = "okay";
+    };
+
+    /* ============================
+     * Battery Monitor
+     * ============================ */
+    battery_monitor_left: battery_monitor_left {
+        compatible = "zmk,battery-monitor";
+        manager = <&non_lipo_battery_left>;
+        status = "okay";
+    };
+
+    /* ============================
+     * LED Indicator
+     * ============================ */
+    led_indicator_left: led_indicator_left {
+        compatible = "zmk,led-indicator";
+        led-strip = <&sk6812_led>;
+        battery = <&battery_monitor_left>;
+        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
+        status = "okay";
+    };
+
+    chosen {
+        zmk,battery = &non_lipo_battery_left;
+    };
+
+    aliases {
+        encoder0 = &left_encoder;
+        battery-monitor = &battery_monitor_left;
+        led-indicator = &led_indicator_left;
+    };
 };
 
-/* ADC設定：INPUT_VOLTAGE -> P0.02 */
+/* ============================
+ * ADC設定：INPUT_VOLTAGE -> P0.02
+ * ============================ */
 &adc {
     status = "okay";
 
@@ -29,42 +73,5 @@
         zephyr,acquisition-time = <10>;
         zephyr,input-positive = <NRF_SAADC_AIN0>; /* 左手: P0.02 */
         zephyr,resolution = <12>;
-    };
-};
-
-/* ===== battery / led nodes (left) ===== */
- / {
-    /* Non-LiPo バッテリ管理（実ADC読み取りを行う manager ノード） */
-    non_lipo_battery_left: non_lipo_battery_left {
-        compatible = "zmk,non-lipo-battery";
-        io-channels = <&adc 0>;
-        full-mv = <4200>;
-        empty-mv = <3300>;
-        status = "okay";
-    };
-
-    /* Battery Monitor (zmk,battery-monitor binding) */
-    battery_monitor: battery_monitor {
-        compatible = "zmk,battery-monitor";
-        manager = <&non_lipo_battery_left>;
-        status = "okay";
-    };
-
-    /* LED Indicator node (uses LED strip defined in dtsi) */
-    led_indicator: led_indicator {
-        compatible = "zmk,led-indicator";
-        led-strip = <&sk6812_led>;
-        battery = <&battery_monitor>;
-        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
-        status = "okay";
-    };
-
-    chosen {
-        zmk,battery = &non_lipo_battery_left;
-    };
-
-    aliases {
-        led-indicator = &led_indicator;
-        battery-monitor = &battery_monitor;
     };
 };
