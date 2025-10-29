@@ -98,7 +98,6 @@
     };
 
     aliases {
-        encoder1 = &right_encoder;
         battery-monitor = &battery_monitor_right;
         led-indicator = &led_indicator_right;
     };
