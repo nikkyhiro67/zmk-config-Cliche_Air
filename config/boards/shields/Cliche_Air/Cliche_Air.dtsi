@@ -4,7 +4,7 @@
 
 / {
     /* =========================================
-     * キースキャン設定（Central / Left）
+     * キースキャン設定（ベース定義）
      * ========================================= */
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
@@ -48,6 +48,9 @@
         >;
     };
 
+    /* =========================================
+     * エンコーダ定義
+     * ========================================= */
     left_encoder: encoder_left {
         compatible = "alps,ec11";
         a-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
@@ -66,9 +69,8 @@
         triggers-per-rotation = <10>;
     };
 
-
     /* =========================================
-     * LEDストリップ定義（SK6812/WS2812）
+     * LEDストリップ定義（共通）
      * ========================================= */
     sk6812_led: led_strip {
         compatible = "zmk,led-strip";
@@ -79,12 +81,7 @@
         status = "okay";
     };
 
-    /* =========================================
-     * 共通エイリアス設定（overlay 側で具体ノードを定義する想定）
-     * alias 名は小文字とハイフンのみ
-     * ========================================= */
     aliases {
-        led-indicator = &led_indicator;
-        battery-monitor = &battery_monitor;
+        led-strip = &sk6812_led;
     };
 };

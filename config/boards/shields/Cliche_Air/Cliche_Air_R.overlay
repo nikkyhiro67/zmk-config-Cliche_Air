@@ -1,16 +1,7 @@
 #include "Cliche_Air.dtsi"
 
-/* =========================================
- * 右手ユニット：ポインティング＋バッテリ＋LED
- * ========================================= */
-
 / {
-    zmk,split-role = "peripheral";
-};
-
-/* デフォルトマトリクスオフセット */
-&default_transform {
-    col-offset = <6>;
+    zmk,split-role = "central";
 };
 
 /* ============================
@@ -21,7 +12,7 @@
         group1 {
             psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
                     <NRF_PSEL(SPIM_MOSI, 0, 4)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 6)>; /* MISO修正済み */
+                    <NRF_PSEL(SPIM_MISO, 0, 6)>;
         };
     };
 
@@ -41,14 +32,14 @@
     pinctrl-0 = <&spi0_default>;
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>; /* TB_NCS -> P0.09 */
+    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
 
     trackball: trackball@0 {
         status = "okay";
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
-        irq-gpios = <&gpio1 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* TB_MOTION -> P1.10 */
+        irq-gpios = <&gpio1 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
         evt-type = <0>;
         x-input-code = <0x00>;
         y-input-code = <0x01>;
@@ -56,7 +47,7 @@
 };
 
 /* ============================
- * ADC設定：INPUT_VOLTAGE -> P0.02
+ * ADC設定（右手）
  * ============================ */
 &adc {
     status = "okay";
@@ -66,13 +57,13 @@
         zephyr,gain = "ADC_GAIN_1_6";
         zephyr,reference = "ADC_REF_INTERNAL";
         zephyr,acquisition-time = <10>;
-        zephyr,input-positive = <NRF_SAADC_AIN0>; /* 右手: P0.02 */
+        zephyr,input-positive = <NRF_SAADC_AIN0>;
         zephyr,resolution = <12>;
     };
 };
 
 /* ============================
- * Battery / LED ノード
+ * Battery / LED設定（右手）
  * ============================ */
  / {
     non_lipo_battery_right: non_lipo_battery_right {
@@ -93,7 +84,7 @@
         compatible = "zmk,led-indicator";
         led-strip = <&sk6812_led>;
         battery = <&battery_monitor_right>;
-        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
+        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
         status = "okay";
     };
 
