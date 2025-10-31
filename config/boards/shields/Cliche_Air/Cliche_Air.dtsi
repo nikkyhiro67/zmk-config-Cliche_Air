@@ -1,20 +1,6 @@
-/* Cliche_Air.dtsi
- * 共通定義（左右共通）
- *
- * 注意:
- *  - 共通ノードは status = "disabled" にしておき、
- *    overlay 側で status = "okay" にして有効化します。
- *  - ADC は共通で定義して overlay で有効化します（左右とも INPUT_VOLTAGE -> P0.02）。
- */
-
 #include <dt-bindings/zmk/matrix_transform.h>
-#include <dt-bindings/led/led.h>
-#include <dt-bindings/gpio/gpio.h>
 
- / {
-    /* =========================================
-     * 共通キーマップ / transform / kscan の参照
-     * ========================================= */
+/ {
     chosen {
         zmk,kscan = &kscan0;
         zmk,matrix_transform = &default_transform;
@@ -31,44 +17,22 @@
             RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4) RC(3,5)     RC(3,8) RC(3,9)                         RC(3,10)
         >;
     };
-
-    /* =========================================
-     * kscan (行は共通。列は overlay 側で上書き)
-     * ========================================= */
-    kscan0: kscan {
+        kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
         label = "KSCAN";
         diode-direction = "col2row";
-
-        /* ROW: 共通。左/右とも同じ配線 */
-        row-gpios = <&gpio0 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&gpio0 28 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
-                    <&gpio1 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
-
-        status = "okay";
+            row-gpios
+                = <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+                , <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+                , <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+                , <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+                ;
     };
 
-    /* =========================================
-     * 共通 LED ストリップ（必ず overlay で status=okay にする）
-     *  - dtsi には label を付けず overlay 側で固有ラベルを付与
-     * ========================================= */
-    sk6812_led: led_strip {
-        compatible = "zmk,led-strip";
-        /* label intentionally omitted here to avoid collisions */
-        gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>; /* default DIN pin, overlay で上書き可 */
-        chain-length = <1>;
-        color-order = "GRB";
-        status = "disabled";
-    };
-
-    /* =========================================
-     * エンコーダ（左用） — 右手には無効化しておく
-     * ========================================= */
     left_encoder: encoder_left {
         compatible = "alps,ec11";
-        a-gpios = <&gpio0 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>; /* ENC_A -> P0.05 (left) */
-        b-gpios = <&gpio0 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>; /* ENC_B -> P0.04 (left) */
+        a-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
         steps = <24>;
         status = "disabled";
     };
@@ -81,23 +45,5 @@
         compatible = "zmk,keymap-sensors";
         sensors = <&left_encoder &right_encoder>;
         triggers-per-rotation = <10>;
-    };
-
-    /* =========================================
-     * 共通 ADC 定義（INPUT_VOLTAGE -> P0.02）
-     * overlay で status = "okay" にして有効化してください
-     * ========================================= */
-    adc: adc {
-        compatible = "nordic,nrf-saadc";
-        status = "disabled";
-
-        channel@0 {
-            reg = <0 0 1>;
-            zephyr,gain = "ADC_GAIN_1_6";
-            zephyr,reference = "ADC_REF_INTERNAL";
-            zephyr,acquisition-time = <10>;
-            zephyr,input-positive = <NRF_SAADC_AIN0>; /* P0.02 */
-            zephyr,resolution = <12>;
-        };
     };
 };

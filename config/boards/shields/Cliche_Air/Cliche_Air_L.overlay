@@ -1,26 +1,21 @@
 #include "Cliche_Air.dtsi"
+#include <input/processors.dtsi>
 
-&kscan0 {
-    col-gpios = <&xiao_d 10 GPIO_ACTIVE_HIGH>,
-                <&xiao_d 9 GPIO_ACTIVE_HIGH>,
-                <&xiao_d 8 GPIO_ACTIVE_HIGH>,
-                <&xiao_d 7 GPIO_ACTIVE_HIGH>,
-                <&gpio0 10 GPIO_ACTIVE_HIGH>,
-                <&gpio0 9 GPIO_ACTIVE_HIGH>;
-};
-
-&left_encoder {
-    status = "okay";
-};
-
-&sk6812_led {
-    status = "okay";
-};
+/* =========================================
+ * 左手ユニット（Central）：キー＋エンコーダ＋バッテリ＋LED
+ * ========================================= */
 
 / {
-    zmk,split-role = "peripheral";
+    /* エンコーダ設定 */
+    left_encoder: encoder_left {
+        compatible = "alps,ec11";
+        a-gpios = <&gpio0 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&gpio0 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        steps = <80>;
+        status = "okay";
+    };
 
-    /* 左手バッテリ設定 */
+    /* Non-LiPo バッテリ管理 */
     non_lipo_battery_left: non_lipo_battery_left {
         compatible = "zmk,non-lipo-battery";
         io-channels = <&adc 0>;
@@ -29,17 +24,19 @@
         status = "okay";
     };
 
+    /* Battery Monitor */
     battery_monitor_left: battery_monitor_left {
         compatible = "zmk,battery-monitor";
         manager = <&non_lipo_battery_left>;
         status = "okay";
     };
 
+    /* LED Indicator */
     led_indicator_left: led_indicator_left {
         compatible = "zmk,led-indicator";
         led-strip = <&sk6812_led>;
         battery = <&battery_monitor_left>;
-        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
         status = "okay";
     };
 
@@ -48,7 +45,22 @@
     };
 
     aliases {
+        encoder0 = &left_encoder;
         battery-monitor = &battery_monitor_left;
         led-indicator = &led_indicator_left;
+    };
+};
+
+/* ADC設定（P0.02） */
+&saadc {
+    status = "okay";
+
+    channel@0 {
+        reg = <0>;
+        zephyr,gain = "ADC_GAIN_1_6";
+        zephyr,reference = "ADC_REF_INTERNAL";
+        zephyr,acquisition-time = <10>;
+        zephyr,input-positive = <NRF_SAADC_AIN0>;
+        zephyr,resolution = <12>;
     };
 };
