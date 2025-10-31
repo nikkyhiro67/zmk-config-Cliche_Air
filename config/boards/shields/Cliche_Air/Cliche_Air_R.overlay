@@ -67,7 +67,7 @@
 /* ===============================
  * Non-LiPo バッテリ管理
  * =============================== */
-&saadc {
+&adc {
     status = "okay";
 
     channel@0 {
@@ -84,7 +84,7 @@
     /* Non-LiPo バッテリ管理 */
     non_lipo_battery_right: non_lipo_battery_right {
         compatible = "zmk,non-lipo-battery";
-        io-channels = <&saadc 0>;
+        io-channels = <&adc 0>;
         full-mv = <4200>;
         empty-mv = <3300>;
         status = "okay";
