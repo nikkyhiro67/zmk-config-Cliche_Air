@@ -1,21 +1,40 @@
+/* Cliche_Air_L.overlay
+ * Left (Central) overlay
+ */
+
 #include "Cliche_Air.dtsi"
-#include <input/processors.dtsi>
 
-/* =========================================
- * 左手ユニット（Central）：キー＋エンコーダ＋バッテリ＋LED
- * ========================================= */
+&kscan0 {
+    /* COL pins for left (6 cols) */
+    col-gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>,
+                <&gpio1 14 GPIO_ACTIVE_HIGH>,
+                <&gpio1 13 GPIO_ACTIVE_HIGH>,
+                <&gpio1 12 GPIO_ACTIVE_HIGH>,
+                <&gpio0 10 GPIO_ACTIVE_HIGH>,
+                <&gpio0 9  GPIO_ACTIVE_HIGH>;
+};
 
-/ {
-    /* エンコーダ設定 */
-    left_encoder: encoder_left {
-        compatible = "alps,ec11";
-        a-gpios = <&gpio0 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        b-gpios = <&gpio0 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        steps = <80>;
+/* 左エンコーダを有効化 (左にのみ存在) */
+&left_encoder {
+    status = "okay";
+};
+
+/* 左手用 LED: 個別ラベルを付与して有効化 */
+&sk6812_led {
+    label = "LED_STRIP_LEFT";
+    gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>; /* LED_DIN -> P0.16 */
+    chain-length = <1>;
+    color-order = "GRB";
+    status = "okay";
+};
+
+ / {
+    /* ADC を有効化（INPUT_VOLTAGE -> P0.02） */
+    &adc {
         status = "okay";
     };
 
-    /* Non-LiPo バッテリ管理 */
+    /* 左手バッテリ設定 */
     non_lipo_battery_left: non_lipo_battery_left {
         compatible = "zmk,non-lipo-battery";
         io-channels = <&adc 0>;
@@ -24,19 +43,17 @@
         status = "okay";
     };
 
-    /* Battery Monitor */
     battery_monitor_left: battery_monitor_left {
         compatible = "zmk,battery-monitor";
         manager = <&non_lipo_battery_left>;
         status = "okay";
     };
 
-    /* LED Indicator */
     led_indicator_left: led_indicator_left {
         compatible = "zmk,led-indicator";
         led-strip = <&sk6812_led>;
         battery = <&battery_monitor_left>;
-        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
+        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN (左) -> P1.00 */
         status = "okay";
     };
 
@@ -45,22 +62,7 @@
     };
 
     aliases {
-        encoder0 = &left_encoder;
         battery-monitor = &battery_monitor_left;
         led-indicator = &led_indicator_left;
-    };
-};
-
-/* ADC設定（P0.02） */
-&saadc {
-    status = "okay";
-
-    channel@0 {
-        reg = <0>;
-        zephyr,gain = "ADC_GAIN_1_6";
-        zephyr,reference = "ADC_REF_INTERNAL";
-        zephyr,acquisition-time = <10>;
-        zephyr,input-positive = <NRF_SAADC_AIN0>;
-        zephyr,resolution = <12>;
     };
 };
