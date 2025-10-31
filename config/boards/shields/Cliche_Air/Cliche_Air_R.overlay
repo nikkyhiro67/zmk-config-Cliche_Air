@@ -80,6 +80,19 @@
     };
 };
 
+/* ===============================
+ * LED 定義（右手用）
+ * =============================== */
+sk6812_led_right: sk6812_led_right {
+    compatible = "sk6812";
+    pin-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
+    chain-length = <10>; /* 必要に応じて LED 数を変更 */
+    status = "okay";
+};
+
+/* ===============================
+ * デバイス定義
+ * =============================== */
  / {
     /* Non-LiPo バッテリ管理 */
     non_lipo_battery_right: non_lipo_battery_right {
@@ -100,9 +113,9 @@
     /* LED Indicator */
     led_indicator_right: led_indicator_right {
         compatible = "zmk,led-indicator";
-        led-strip = <&sk6812_led>;
+        led-strip = <&sk6812_led_right>; /* 右手LEDを参照 */
         battery = <&battery_monitor_right>;
-        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
+        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
         status = "okay";
     };
 
