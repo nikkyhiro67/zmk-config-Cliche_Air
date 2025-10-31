@@ -1,6 +1,10 @@
 #include "Cliche_Air.dtsi"
 #include <input/processors.dtsi>
 
+/* =========================================
+ * 右手ユニット（Peripheral）：トラックボール＋Non-LiPoバッテリ＋LED
+ * ========================================= */
+
 &default_transform {
     col-offset = <6>;
 };
@@ -14,6 +18,7 @@
         <&gpio0 10 GPIO_ACTIVE_HIGH>;
 };
 
+/* SPI / Trackball */
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
@@ -52,33 +57,54 @@
     };
 };
 
-/* overlay 側で ADC と LED を有効化 */
-&saadc { status = "okay"; };
-&sk6812_led { status = "okay"; chain-length = <10>; };
+/* ADC設定 */
+&adc {
+    status = "okay";
 
-/* デバイス定義 */
+    channel@0 {
+        reg = <0>;
+        zephyr,gain = "ADC_GAIN_1_6";
+        zephyr,reference = "ADC_REF_INTERNAL";
+        zephyr,acquisition-time = <10>;
+        zephyr,input-positive = <NRF_SAADC_AIN0>;
+        zephyr,resolution = <12>;
+    };
+};
+
+/* 右手用 LED */
+sk6812_led_right: sk6812_led_right {
+    compatible = "sk6812";
+    pin-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+    chain-length = <10>;
+    status = "okay";
+};
+
+/* Non-LiPo バッテリ管理 */
 non_lipo_battery_right: non_lipo_battery_right {
     compatible = "zmk,non-lipo-battery";
-    io-channels = <&saadc 0>;
+    io-channels = <&adc 0>;
     full-mv = <4200>;
     empty-mv = <3300>;
     status = "okay";
 };
 
+/* Battery Monitor */
 battery_monitor_right: battery_monitor_right {
     compatible = "zmk,battery-monitor";
     manager = <&non_lipo_battery_right>;
     status = "okay";
 };
 
+/* LED Indicator */
 led_indicator_right: led_indicator_right {
     compatible = "zmk,led-indicator";
-    led-strip = <&sk6812_led>;
+    led-strip = <&sk6812_led_right>;
     battery = <&battery_monitor_right>;
     power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
     status = "okay";
 };
 
+/* chosen / aliases */
 chosen {
     zmk,battery = &non_lipo_battery_right;
 };
