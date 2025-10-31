@@ -2,21 +2,18 @@
 #include <input/processors.dtsi>
 
 /* =========================================
- * 右手ユニット（Peripheral）：
- * トラックボール＋Non-LiPoバッテリ＋LED
+ * 右手ユニット（Peripheral）：トラックボール＋Non-LiPoバッテリ＋LED
  * ========================================= */
-
 &default_transform {
     col-offset = <6>;
 };
 
 &kscan0 {
-    col-gpios =
-        <&xiao_d 10 GPIO_ACTIVE_HIGH>,
-        <&xiao_d 9  GPIO_ACTIVE_HIGH>,
-        <&xiao_d 8  GPIO_ACTIVE_HIGH>,
-        <&xiao_d 7  GPIO_ACTIVE_HIGH>,
-        <&gpio0 10 GPIO_ACTIVE_HIGH>;
+    col-gpios = <&xiao_d 10 GPIO_ACTIVE_HIGH>,
+                <&xiao_d 9  GPIO_ACTIVE_HIGH>,
+                <&xiao_d 8  GPIO_ACTIVE_HIGH>,
+                <&xiao_d 7  GPIO_ACTIVE_HIGH>,
+                <&gpio0 10 GPIO_ACTIVE_HIGH>;
 };
 
 &pinctrl {
@@ -57,61 +54,33 @@
     };
 };
 
-&adc {
-    status = "okay";
-
-    channel@0 {
-        reg = <0>;
-        zephyr,gain = "ADC_GAIN_1_6";
-        zephyr,reference = "ADC_REF_INTERNAL";
-        zephyr,acquisition-time = <10>;
-        zephyr,input-positive = <NRF_SAADC_AIN0>;
-        zephyr,resolution = <12>;
-    };
-};
-
-/* ===============================
- * 右手用 LED を先に定義
- * =============================== */
-sk6812_led_right: sk6812_led_right {
-    compatible = "sk6812";
-    pin-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
-    chain-length = <10>; /* 必要に応じて変更 */
+non_lipo_battery_right: non_lipo_battery_right {
+    compatible = "zmk,non-lipo-battery";
+    io-channels = <&adc0 0>;
+    full-mv = <4200>;
+    empty-mv = <3300>;
     status = "okay";
 };
 
-/* ===============================
- * デバイス定義
- * =============================== */
- / {
-    non_lipo_battery_right: non_lipo_battery_right {
-        compatible = "zmk,non-lipo-battery";
-        io-channels = <&adc 0>;
-        full-mv = <4200>;
-        empty-mv = <3300>;
-        status = "okay";
-    };
+battery_monitor_right: battery_monitor_right {
+    compatible = "zmk,battery-monitor";
+    manager = <&non_lipo_battery_right>;
+    status = "okay";
+};
 
-    battery_monitor_right: battery_monitor_right {
-        compatible = "zmk,battery-monitor";
-        manager = <&non_lipo_battery_right>;
-        status = "okay";
-    };
+led_indicator_right: led_indicator_right {
+    compatible = "zmk,led-indicator";
+    led-strip = <&sk6812_led_right>;
+    battery = <&battery_monitor_right>;
+    power-gpios = <&gpio1 1 GPIO_ACTIVE_HIGH>;
+    status = "okay";
+};
 
-    led_indicator_right: led_indicator_right {
-        compatible = "zmk,led-indicator";
-        led-strip = <&sk6812_led_right>; /* ラベルはここで参照可能 */
-        battery = <&battery_monitor_right>;
-        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
-        status = "okay";
-    };
+chosen {
+    zmk,battery = &non_lipo_battery_right;
+};
 
-    chosen {
-        zmk,battery = &non_lipo_battery_right;
-    };
-
-    aliases {
-        battery-monitor = &battery_monitor_right;
-        led-indicator = &led_indicator_right;
-    };
+aliases {
+    battery-monitor = &battery_monitor_right;
+    led-indicator = &led_indicator_right;
 };
