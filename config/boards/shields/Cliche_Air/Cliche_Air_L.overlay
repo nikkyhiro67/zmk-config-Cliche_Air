@@ -1,57 +1,48 @@
 #include "Cliche_Air.dtsi"
 #include <input/processors.dtsi>
 
-/* =========================================
- * 左手ユニット（Central）：キー＋エンコーダ＋バッテリ＋LED
- * ========================================= */
-&default_transform {
-    col-offset = <0>;
-};
+/ {
+    left_encoder: encoder_left {
+        compatible = "alps,ec11";
+        a-gpios = <&gpio0 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&gpio0 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        steps = <80>;
+        status = "okay";
+    };
 
-&kscan0 {
-    col-gpios = <&xiao_d 0 GPIO_ACTIVE_HIGH>,
-                <&xiao_d 1 GPIO_ACTIVE_HIGH>,
-                <&xiao_d 2 GPIO_ACTIVE_HIGH>,
-                <&xiao_d 3 GPIO_ACTIVE_HIGH>,
-                <&xiao_d 4 GPIO_ACTIVE_HIGH>;
-};
+    non_lipo_battery_left: non_lipo_battery_left {
+        compatible = "zmk,non-lipo-battery";
+        io-channels = <&saadc 0>;
+        full-mv = <4200>;
+        empty-mv = <3300>;
+        status = "okay";
+    };
 
-&left_encoder {
-    compatible = "alps,ec11";
-    a-gpios = <&gpio0 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-    b-gpios = <&gpio0 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-    steps = <80>;
-    status = "okay";
-};
+    battery_monitor_left: battery_monitor_left {
+        compatible = "zmk,battery-monitor";
+        manager = <&non_lipo_battery_left>;
+        status = "okay";
+    };
 
-non_lipo_battery_left: non_lipo_battery_left {
-    compatible = "zmk,non-lipo-battery";
-    io-channels = <&adc0 0>;
-    full-mv = <4200>;
-    empty-mv = <3300>;
-    status = "okay";
-};
+    led_indicator_left: led_indicator_left {
+        compatible = "zmk,led-indicator";
+        led-strip = <&sk6812_led>;
+        battery = <&battery_monitor_left>;
+        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+        status = "okay";
+    };
 
-battery_monitor_left: battery_monitor_left {
-    compatible = "zmk,battery-monitor";
-    manager = <&non_lipo_battery_left>;
-    status = "okay";
-};
+    chosen {
+        zmk,battery = &non_lipo_battery_left;
+    };
 
-led_indicator_left: led_indicator_left {
-    compatible = "zmk,led-indicator";
-    led-strip = <&sk6812_led_left>;
-    battery = <&battery_monitor_left>;
-    power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
-    status = "okay";
-};
+    aliases {
+        encoder0 = &left_encoder;
+        battery-monitor = &battery_monitor_left;
+        led-indicator = &led_indicator_left;
+    };
 
-chosen {
-    zmk,battery = &non_lipo_battery_left;
-};
-
-aliases {
-    encoder0 = &left_encoder;
-    battery-monitor = &battery_monitor_left;
-    led-indicator = &led_indicator_left;
+    /* overlay で ADC と LED を有効化 */
+    &saadc { status = "okay"; };
+    &sk6812_led { status = "okay"; };
 };

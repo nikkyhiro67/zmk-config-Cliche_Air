@@ -18,23 +18,17 @@
         >;
     };
 
-    /* =========================================
-     * キースキャン
-     * ========================================= */
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
         label = "KSCAN";
         diode-direction = "col2row";
-        row-gpios = 
+        row-gpios =
             <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
             <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
             <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
             <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
     };
 
-    /* =========================================
-     * エンコーダ
-     * ========================================= */
     left_encoder: encoder_left {
         compatible = "alps,ec11";
         a-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
@@ -53,13 +47,17 @@
         triggers-per-rotation = <10>;
     };
 
-    /* =========================================
-     * 共通 ADC 定義（左右で参照）
-     * ========================================= */
-    adc0: saadc {
-        compatible = "nordic,nrf-saadc";
-        status = "okay";
+    /* 共通 LED 定義 */
+    sk6812_led: sk6812_led {
+        compatible = "sk6812";
+        pin-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+        chain-length = <10>; /* 必要に応じて overlay で上書き */
+        status = "disabled"; /* overlay 側で有効化 */
+    };
 
+    /* 共通 ADC 定義 */
+    saadc: saadc {
+        status = "disabled"; /* overlay 側で有効化 */
         channel@0 {
             reg = <0>;
             zephyr,gain = "ADC_GAIN_1_6";
@@ -68,22 +66,5 @@
             zephyr,input-positive = <NRF_SAADC_AIN0>;
             zephyr,resolution = <12>;
         };
-    };
-
-    /* =========================================
-     * 共通 LED 定義
-     * ========================================= */
-    sk6812_led_left: sk6812_led_left {
-        compatible = "sk6812";
-        pin-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
-        chain-length = <10>;
-        status = "okay";
-    };
-
-    sk6812_led_right: sk6812_led_right {
-        compatible = "sk6812";
-        pin-gpios = <&gpio1 1 GPIO_ACTIVE_HIGH>;
-        chain-length = <10>;
-        status = "okay";
     };
 };
