@@ -55,10 +55,11 @@
 };
 
 /* ADC設定（P0.02） */
-&adc {
+&saadc {
     status = "okay";
+
     channel@0 {
-        reg = <0 0 1>;
+        reg = <0>;
         zephyr,gain = "ADC_GAIN_1_6";
         zephyr,reference = "ADC_REF_INTERNAL";
         zephyr,acquisition-time = <10>;
@@ -66,3 +67,4 @@
         zephyr,resolution = <12>;
     };
 };
+
