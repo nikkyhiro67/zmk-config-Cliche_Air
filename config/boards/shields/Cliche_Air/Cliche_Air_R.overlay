@@ -10,9 +10,6 @@
     col-offset = <6>;
 };
 
-/* ===============================
- * キースキャン設定
- * =============================== */
 &kscan0 {
     col-gpios =
         <&xiao_d 10 GPIO_ACTIVE_HIGH>,
@@ -22,9 +19,6 @@
         <&gpio0 10 GPIO_ACTIVE_HIGH>;
 };
 
-/* ===============================
- * トラックボール SPI 設定
- * =============================== */
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
@@ -33,7 +27,6 @@
                     <NRF_PSEL(SPIM_MISO, 0, 4)>;
         };
     };
-
     spi0_sleep: spi0_sleep {
         group1 {
             psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
@@ -50,23 +43,20 @@
     pinctrl-0 = <&spi0_default>;
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>; /* TB_NCS -> P0.09 */
+    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
 
     trackball: trackball@0 {
         status = "okay";
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
-        irq-gpios = <&gpio1 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* TB_MOTION -> P1.10 */
+        irq-gpios = <&gpio1 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
         evt-type = <0>;
-        x-input-code = <0x00>; /* REL_X */
-        y-input-code = <0x01>; /* REL_Y */
+        x-input-code = <0x00>;
+        y-input-code = <0x01>;
     };
 };
 
-/* ===============================
- * Non-LiPo バッテリ管理
- * =============================== */
 &adc {
     status = "okay";
 
@@ -75,18 +65,18 @@
         zephyr,gain = "ADC_GAIN_1_6";
         zephyr,reference = "ADC_REF_INTERNAL";
         zephyr,acquisition-time = <10>;
-        zephyr,input-positive = <NRF_SAADC_AIN0>; /* P0.02 */
+        zephyr,input-positive = <NRF_SAADC_AIN0>;
         zephyr,resolution = <12>;
     };
 };
 
 /* ===============================
- * LED 定義（右手用）
+ * 右手用 LED を先に定義
  * =============================== */
 sk6812_led_right: sk6812_led_right {
     compatible = "sk6812";
-    pin-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
-    chain-length = <10>; /* 必要に応じて LED 数を変更 */
+    pin-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+    chain-length = <10>; /* 必要に応じて変更 */
     status = "okay";
 };
 
@@ -94,7 +84,6 @@ sk6812_led_right: sk6812_led_right {
  * デバイス定義
  * =============================== */
  / {
-    /* Non-LiPo バッテリ管理 */
     non_lipo_battery_right: non_lipo_battery_right {
         compatible = "zmk,non-lipo-battery";
         io-channels = <&adc 0>;
@@ -103,17 +92,15 @@ sk6812_led_right: sk6812_led_right {
         status = "okay";
     };
 
-    /* Battery Monitor */
     battery_monitor_right: battery_monitor_right {
         compatible = "zmk,battery-monitor";
         manager = <&non_lipo_battery_right>;
         status = "okay";
     };
 
-    /* LED Indicator */
     led_indicator_right: led_indicator_right {
         compatible = "zmk,led-indicator";
-        led-strip = <&sk6812_led_right>; /* 右手LEDを参照 */
+        led-strip = <&sk6812_led_right>; /* ラベルはここで参照可能 */
         battery = <&battery_monitor_right>;
         power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
         status = "okay";
