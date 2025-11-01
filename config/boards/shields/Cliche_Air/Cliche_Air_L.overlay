@@ -48,12 +48,12 @@
     };
 };
 
-/* 左（Central）側で SAADC の channel 定義（INPUT_VOLTAGE -> P0.02） */
+/* 左（Central）側で ADC の channel 定義（INPUT_VOLTAGE -> P0.02） */
 &adc {
     status = "okay";
 
     channel@0 {
-        reg = <0>;
+        reg = <0 0 0x1000>;
         zephyr,gain = "ADC_GAIN_1_6";
         zephyr,reference = "ADC_REF_INTERNAL";
         zephyr,acquisition-time = <10>;

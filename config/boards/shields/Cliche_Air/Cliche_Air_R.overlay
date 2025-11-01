@@ -58,7 +58,7 @@
     };
 };
 
-/* 右側で SAADC の channel 定義（INPUT_VOLTAGE -> P0.02） */
+/* 右側で ADC の channel 定義（INPUT_VOLTAGE -> P0.02） */
 &adc {
     status = "okay";
 
@@ -80,7 +80,7 @@ sk6812_led_right: sk6812_led_right {
     chain-length = <10>; /* 必要に応じ変更 */
     color-order = "GRB";
     status = "okay";
-}
+};
 
 /* 右手側デバイス（バッテリ・バッテリモニタ・LED 指示器） */
  / {
