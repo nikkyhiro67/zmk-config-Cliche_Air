@@ -16,9 +16,7 @@
     /* Non-LiPo バッテリ（左）：io-channels は saadc の channel を参照 */
     non_lipo_battery_left: non_lipo_battery_left {
         compatible = "zmk,non-lipo-battery";
-        io-channels = <&adc 0>; /* overlay の下で channel@0 を定義します */
-        full-mv = <4200>;
-        empty-mv = <3300>;
+        io-channels = <&adc 0>;
         status = "okay";
     };
 
@@ -31,7 +29,7 @@
     /* 左の LED 指示器は共通 sk6812_led を有効化して使う */
     led_indicator_left: led_indicator_left {
         compatible = "zmk,led-indicator";
-        led-strip = <&sk6812_led>; /* Cliche_Air.dtsi の共通ノード参照 */
+        led-strip = <&sk6812_led>;
         battery = <&battery_monitor_left>;
         power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
         status = "okay";
