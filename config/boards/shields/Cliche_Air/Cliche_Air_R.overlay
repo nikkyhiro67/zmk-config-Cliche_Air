@@ -73,11 +73,11 @@
 };
 
 /* 右手専用 LED ノード（独自ノードで定義） */
-sk6812_led_right: sk6812_led_right {
+sk6812_led_right: led_strip {
     compatible = "zmk,led-strip";
     label = "LED_STRIP_RIGHT";
-    gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>; /* LED_DIN -> P0.16 */
-    chain-length = <10>; /* 必要に応じ変更 */
+    data-gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>; /* LED_DIN -> P0.16 */
+    chain-length = <10>;
     color-order = "GRB";
     status = "okay";
 };
