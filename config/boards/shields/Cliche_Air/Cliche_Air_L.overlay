@@ -2,9 +2,9 @@
 #include <input/processors.dtsi>
 
 / {
-    /* 左側は Central（USB 有効等は Kconfig 側で制御） */
+    /* 左手: Central（エンコーダ・バッテリモニタ・LED） */
 
-    /* エンコーダを有効化（左） */
+    /* 左用エンコーダ有効 */
     left_encoder: encoder_left {
         compatible = "alps,ec11";
         a-gpios = <&gpio0 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>; /* ENC_A -> P0.05 */
@@ -13,26 +13,25 @@
         status = "okay";
     };
 
-    /* Non-LiPo バッテリ管理（左） */
+    /* Non-LiPo バッテリ（左）：io-channels は saadc の channel を参照 */
     non_lipo_battery_left: non_lipo_battery_left {
         compatible = "zmk,non-lipo-battery";
-        io-channels = <&adc 0>; /* INPUT_VOLTAGE ADC チャンネル 0 -> P0.02 (channel 定義は下で) */
+        io-channels = <&adc 0>; /* overlay の下で channel@0 を定義します */
         full-mv = <4200>;
         empty-mv = <3300>;
         status = "okay";
     };
 
-    /* Battery Monitor（左） */
     battery_monitor_left: battery_monitor_left {
         compatible = "zmk,battery-monitor";
         manager = <&non_lipo_battery_left>;
         status = "okay";
     };
 
-    /* LED Indicator（左）：共通 sk6812_led を使用 */
+    /* 左の LED 指示器は共通 sk6812_led を有効化して使う */
     led_indicator_left: led_indicator_left {
         compatible = "zmk,led-indicator";
-        led-strip = <&sk6812_led>; /* 共通ノード参照 */
+        led-strip = <&sk6812_led>; /* Cliche_Air.dtsi の共通ノード参照 */
         battery = <&battery_monitor_left>;
         power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
         status = "okay";
@@ -49,14 +48,16 @@
     };
 };
 
-/* 左手で ADC のチャネル設定（入力ピン: P0.02） */
+/* 左（Central）側で SAADC の channel 定義（INPUT_VOLTAGE -> P0.02） */
 &adc {
+    status = "okay";
+
     channel@0 {
         reg = <0>;
         zephyr,gain = "ADC_GAIN_1_6";
         zephyr,reference = "ADC_REF_INTERNAL";
         zephyr,acquisition-time = <10>;
-        zephyr,input-positive = <NRF_SAADC_AIN0>; /* INPUT_VOLTAGE -> P0.02 */
+        zephyr,input-positive = <NRF_SAADC_AIN0>; /* P0.02 */
         zephyr,resolution = <12>;
     };
 };

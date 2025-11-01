@@ -6,7 +6,7 @@
         zmk,matrix_transform = &default_transform;
     };
 
-    /* 共通マトリクス変換（左右で col-offset を overlay 側で上書き） */
+    /* 共通マトリクス変換（col-offset は overlay で調整） */
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <11>;
@@ -19,13 +19,11 @@
         >;
     };
 
-    /* 共通キースキャン（行のみ共通定義。列は overlay 側で上書き） */
+    /* 共通キースキャンの行ピン（左右共通） - 列は overlay で指定 */
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
         label = "KSCAN";
         diode-direction = "col2row";
-
-        /* ROW: P0.03, P0.28, P0.29, P1.11 (左右共通) */
         row-gpios = <&gpio0 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
                     <&gpio0 28 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
                     <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
@@ -33,17 +31,17 @@
         status = "okay";
     };
 
-    /* 共通 LED ストリップ（デフォルト disabled、overlay で有効化または右専用ノード定義） */
+    /* 共通 LED ストリップ（disabled：左右 overlay で有効化 / 右は独自ノードでも可） */
     sk6812_led: led_strip {
         compatible = "zmk,led-strip";
         label = "LED_STRIP";
-        gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>; /* default DIN pin (overlay may reassign) */
+        gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>; /* default DIN (overlay で再設定できる) */
         chain-length = <1>;
         color-order = "GRB";
         status = "disabled";
     };
 
-    /* エンコーダ（左ベース定義。overlay で有効化） */
+    /* エンコーダ（左ベース、overlay で有効化） */
     left_encoder: encoder_left {
         compatible = "alps,ec11";
         a-gpios = <&gpio0 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
@@ -52,21 +50,15 @@
         status = "disabled";
     };
 
-    /* 右エンコーダ：デフォルト無効（今回レイアウトでは右にエンコーダなし） */
+    /* 右エンコーダはデフォルトで無効（今回右にエンコーダは無し） */
     right_encoder: encoder_right {
         status = "disabled";
     };
 
-    /* センサーリスト（左: encoder, 右: encoder disabled） */
+    /* sensors ノード（エンコーダ参照リスト） */
     sensors: sensors {
         compatible = "zmk,keymap-sensors";
         sensors = <&left_encoder &right_encoder>;
         triggers-per-rotation = <10>;
-    };
-
-    /* 共通 ADC ラベルを用意（overlay で channel を定義） */
-    &adc {
-        status = "okay";
-        /* overlay 側で channel@0 を詳細設定する（左/右 別々に定義する） */
     };
 };

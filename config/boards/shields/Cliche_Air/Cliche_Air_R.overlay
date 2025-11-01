@@ -1,14 +1,14 @@
 #include "Cliche_Air.dtsi"
 #include <input/processors.dtsi>
 
-/* 右手（Peripheral）: トラックボール + Non-LiPo バッテリ + LED（エンコーダなし） */
+/* 右手（Peripheral）: トラックボール + Non-LiPo バッテリ + LED */
 
-/* マトリクスオフセット（右側は左から 6 列オフセット） */
+/* 右側のマトリクスオフセット */
 &default_transform {
     col-offset = <6>;
-};
+}
 
-/* 右手の列ピンを上書き（左と違い col5 は無し） */
+/* 右側の列ピン（左と違い col5 は無し） */
 &kscan0 {
     col-gpios =
         <&gpio1 15 GPIO_ACTIVE_HIGH>, /* COL0 -> P1.15 */
@@ -16,15 +16,15 @@
         <&gpio1 13 GPIO_ACTIVE_HIGH>, /* COL2 -> P1.13 */
         <&gpio1 12 GPIO_ACTIVE_HIGH>, /* COL3 -> P1.12 */
         <&gpio0 10 GPIO_ACTIVE_HIGH>; /* COL4 -> P0.10 */
-};
+}
 
-/* トラックボール SPI / pinctrl 定義（右手） */
+/* トラックボール SPI / pinctrl */
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
             psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,   /* TB_SCLK -> P0.05 */
-                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,  /* TB_SDIO  -> P0.04 */
-                    <NRF_PSEL(SPIM_MISO, 0, 4)>;  /* MISO wiring (必要に応じてボード定義で修正) */
+                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,  /* TB_SDIO -> P0.04 */
+                    <NRF_PSEL(SPIM_MISO, 0, 4)>;
         };
     };
 
@@ -38,7 +38,6 @@
     };
 };
 
-/* SPI デバイス（trackball） */
 &spi0 {
     status = "okay";
     compatible = "nordic,nrf-spim";
@@ -59,8 +58,10 @@
     };
 };
 
-/* 右側の ADC チャネル定義（INPUT_VOLTAGE -> P0.02） */
+/* 右側で SAADC の channel 定義（INPUT_VOLTAGE -> P0.02） */
 &adc {
+    status = "okay";
+
     channel@0 {
         reg = <0>;
         zephyr,gain = "ADC_GAIN_1_6";
@@ -71,17 +72,17 @@
     };
 };
 
-/* 右手専用 LED ノード（右は独自チェイン長） */
+/* 右手専用 LED ノード（独自ノードで定義） */
 sk6812_led_right: sk6812_led_right {
     compatible = "zmk,led-strip";
     label = "LED_STRIP_RIGHT";
     gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>; /* LED_DIN -> P0.16 */
-    chain-length = <10>; /* 必要に応じて変更 */
+    chain-length = <10>; /* 必要に応じ変更 */
     color-order = "GRB";
     status = "okay";
-};
+}
 
-/* 右手側デバイス定義（バッテリ・バッテリモニタ・LED 指示器）*/
+/* 右手側デバイス（バッテリ・バッテリモニタ・LED 指示器） */
  / {
     non_lipo_battery_right: non_lipo_battery_right {
         compatible = "zmk,non-lipo-battery";
@@ -99,7 +100,7 @@ sk6812_led_right: sk6812_led_right {
 
     led_indicator_right: led_indicator_right {
         compatible = "zmk,led-indicator";
-        led-strip = <&sk6812_led_right>; /* 右専用 LED ノードを参照 */
+        led-strip = <&sk6812_led_right>;
         battery = <&battery_monitor_right>;
         power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
         status = "okay";
