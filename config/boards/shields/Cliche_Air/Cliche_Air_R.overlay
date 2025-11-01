@@ -6,7 +6,7 @@
 /* 右側のマトリクスオフセット */
 &default_transform {
     col-offset = <6>;
-}
+};
 
 /* 右側の列ピン（左と違い col5 は無し） */
 &kscan0 {
