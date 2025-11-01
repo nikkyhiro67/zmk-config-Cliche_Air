@@ -70,8 +70,8 @@
     };
 };
 
-&{/}
-{
+/* ---- ここから / ブロック開始 ---- */
+&{/} {
     /* 右手専用 LED ノード */
     sk6812_led_right: led_strip {
         compatible = "zmk,led-strip";
@@ -112,3 +112,4 @@
         led-indicator = &led_indicator_right;
     };
 };
+/* ---- / ブロック終了 ---- */
