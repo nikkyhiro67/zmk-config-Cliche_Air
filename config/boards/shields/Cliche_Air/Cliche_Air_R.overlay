@@ -16,7 +16,7 @@
         <&gpio1 13 GPIO_ACTIVE_HIGH>, /* COL2 -> P1.13 */
         <&gpio1 12 GPIO_ACTIVE_HIGH>, /* COL3 -> P1.12 */
         <&gpio0 10 GPIO_ACTIVE_HIGH>; /* COL4 -> P0.10 */
-}
+};
 
 /* トラックボール SPI / pinctrl */
 &pinctrl {
