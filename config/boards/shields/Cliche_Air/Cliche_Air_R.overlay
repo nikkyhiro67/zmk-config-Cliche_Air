@@ -83,7 +83,7 @@ sk6812_led_right: sk6812_led_right {
 };
 
 /* 右手側デバイス（バッテリ・バッテリモニタ・LED 指示器） */
- / {
+/ {
     non_lipo_battery_right: non_lipo_battery_right {
         compatible = "zmk,non-lipo-battery";
         io-channels = <&adc 0>;
