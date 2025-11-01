@@ -1,32 +1,33 @@
 #include "Cliche_Air.dtsi"
 #include <input/processors.dtsi>
 
-/* =========================================
- * 右手ユニット（Peripheral）：トラックボール＋Non-LiPoバッテリ＋LED
- * ========================================= */
+/* 右手（Peripheral）: トラックボール + Non-LiPo バッテリ + LED（エンコーダなし） */
 
+/* マトリクスオフセット（右側は左から 6 列オフセット） */
 &default_transform {
     col-offset = <6>;
 };
 
+/* 右手の列ピンを上書き（左と違い col5 は無し） */
 &kscan0 {
     col-gpios =
-        <&xiao_d 10 GPIO_ACTIVE_HIGH>,
-        <&xiao_d 9  GPIO_ACTIVE_HIGH>,
-        <&xiao_d 8  GPIO_ACTIVE_HIGH>,
-        <&xiao_d 7  GPIO_ACTIVE_HIGH>,
-        <&gpio0 10 GPIO_ACTIVE_HIGH>;
+        <&gpio1 15 GPIO_ACTIVE_HIGH>, /* COL0 -> P1.15 */
+        <&gpio1 14 GPIO_ACTIVE_HIGH>, /* COL1 -> P1.14 */
+        <&gpio1 13 GPIO_ACTIVE_HIGH>, /* COL2 -> P1.13 */
+        <&gpio1 12 GPIO_ACTIVE_HIGH>, /* COL3 -> P1.12 */
+        <&gpio0 10 GPIO_ACTIVE_HIGH>; /* COL4 -> P0.10 */
 };
 
-/* SPI / Trackball */
+/* トラックボール SPI / pinctrl 定義（右手） */
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
-                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 4)>;
+            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,   /* TB_SCLK -> P0.05 */
+                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,  /* TB_SDIO  -> P0.04 */
+                    <NRF_PSEL(SPIM_MISO, 0, 4)>;  /* MISO wiring (必要に応じてボード定義で修正) */
         };
     };
+
     spi0_sleep: spi0_sleep {
         group1 {
             psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
@@ -37,79 +38,79 @@
     };
 };
 
+/* SPI デバイス（trackball） */
 &spi0 {
     status = "okay";
     compatible = "nordic,nrf-spim";
     pinctrl-0 = <&spi0_default>;
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
+    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>; /* TB_NCS -> P0.09 */
 
     trackball: trackball@0 {
         status = "okay";
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
-        irq-gpios = <&gpio1 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        irq-gpios = <&gpio1 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* TB_MOTION -> P1.10 */
         evt-type = <0>;
-        x-input-code = <0x00>;
-        y-input-code = <0x01>;
+        x-input-code = <0x00>; /* REL_X */
+        y-input-code = <0x01>; /* REL_Y */
     };
 };
 
-/* ADC設定 */
+/* 右側の ADC チャネル定義（INPUT_VOLTAGE -> P0.02） */
 &adc {
-    status = "okay";
-
     channel@0 {
         reg = <0>;
         zephyr,gain = "ADC_GAIN_1_6";
         zephyr,reference = "ADC_REF_INTERNAL";
         zephyr,acquisition-time = <10>;
-        zephyr,input-positive = <NRF_SAADC_AIN0>;
+        zephyr,input-positive = <NRF_SAADC_AIN0>; /* P0.02 */
         zephyr,resolution = <12>;
     };
 };
 
-/* 右手用 LED */
+/* 右手専用 LED ノード（右は独自チェイン長） */
 sk6812_led_right: sk6812_led_right {
-    compatible = "sk6812";
-    pin-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
-    chain-length = <10>;
+    compatible = "zmk,led-strip";
+    label = "LED_STRIP_RIGHT";
+    gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>; /* LED_DIN -> P0.16 */
+    chain-length = <10>; /* 必要に応じて変更 */
+    color-order = "GRB";
     status = "okay";
 };
 
-/* Non-LiPo バッテリ管理 */
-non_lipo_battery_right: non_lipo_battery_right {
-    compatible = "zmk,non-lipo-battery";
-    io-channels = <&adc 0>;
-    full-mv = <4200>;
-    empty-mv = <3300>;
-    status = "okay";
-};
+/* 右手側デバイス定義（バッテリ・バッテリモニタ・LED 指示器）*/
+ / {
+    non_lipo_battery_right: non_lipo_battery_right {
+        compatible = "zmk,non-lipo-battery";
+        io-channels = <&adc 0>;
+        full-mv = <4200>;
+        empty-mv = <3300>;
+        status = "okay";
+    };
 
-/* Battery Monitor */
-battery_monitor_right: battery_monitor_right {
-    compatible = "zmk,battery-monitor";
-    manager = <&non_lipo_battery_right>;
-    status = "okay";
-};
+    battery_monitor_right: battery_monitor_right {
+        compatible = "zmk,battery-monitor";
+        manager = <&non_lipo_battery_right>;
+        status = "okay";
+    };
 
-/* LED Indicator */
-led_indicator_right: led_indicator_right {
-    compatible = "zmk,led-indicator";
-    led-strip = <&sk6812_led_right>;
-    battery = <&battery_monitor_right>;
-    power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
-    status = "okay";
-};
+    led_indicator_right: led_indicator_right {
+        compatible = "zmk,led-indicator";
+        led-strip = <&sk6812_led_right>; /* 右専用 LED ノードを参照 */
+        battery = <&battery_monitor_right>;
+        power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>; /* LED_EN -> P1.00 */
+        status = "okay";
+    };
 
-/* chosen / aliases */
-chosen {
-    zmk,battery = &non_lipo_battery_right;
-};
+    chosen {
+        zmk,battery = &non_lipo_battery_right;
+    };
 
-aliases {
-    battery-monitor = &battery_monitor_right;
-    led-indicator = &led_indicator_right;
+    aliases {
+        battery-monitor = &battery_monitor_right;
+        led-indicator = &led_indicator_right;
+    };
 };
