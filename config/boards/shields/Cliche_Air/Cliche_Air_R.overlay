@@ -76,7 +76,7 @@
 sk6812_led_right: led_strip {
     compatible = "zmk,led-strip";
     label = "LED_STRIP_RIGHT";
-    data-gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>; /* LED_DIN -> P0.16 */
+    data-gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>;
     chain-length = <10>;
     color-order = "GRB";
     status = "okay";
