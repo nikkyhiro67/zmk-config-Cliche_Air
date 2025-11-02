@@ -46,16 +46,7 @@
     };
 };
 
-/* 左（Central）側で ADC の channel 定義（INPUT_VOLTAGE -> P0.02） */
+/* 左（Central）側で ADC 有効化のみ（チャンネル構成は内部で管理） */
 &adc {
     status = "okay";
-
-    channel@0 {
-        reg = <0 0 0x1000>;
-        zephyr,gain = "ADC_GAIN_1_6";
-        zephyr,reference = "ADC_REF_INTERNAL";
-        zephyr,acquisition-time = <10>;
-        zephyr,input-positive = <NRF_SAADC_AIN0>; /* P0.02 */
-        zephyr,resolution = <12>;
-    };
 };
