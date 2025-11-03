@@ -2,7 +2,7 @@ README.md
 
 # 🛠️ Cliche_Air LED-Indicator Non-LiPo-Battery-Monitor Firmware v6.0
 
-**最終ビルド成功版（2025-10-25）**
+**最終ビルド成功版（2025-11-3）**
 
 ### 🚀 概要
 
@@ -85,6 +85,8 @@ led_indicator: led_indicator {
 24%～ 10% 3399〜3300 🔴 赤 残量低下警告  
 9%以下 < 3300 ⚫ 消灯 バッテリ切れ（自動省電力モード）
 
+---
+
 ### ⚙️ `Cliche_Air.dtsi`
 
 共通構成を司る基盤ファイル。  
@@ -96,8 +98,6 @@ led_indicator: led_indicator {
 - **matrix-transform 共通化**（左右 col-offset 切替対応）
 - **共通 LED ノード（sk6812_led）を disabled 定義** → overlay 側で有効化または独自ノード置換
 - **共通行ピン設定（col は overlay で再定義）**
-
----
 
 ### 🩵 `Cliche_Air_L.overlay`（左：Central）
 
@@ -135,8 +135,6 @@ led_indicator_left: led_indicator_left {
 - 共通 LED (`&sk6812_led`) を利用して指示灯制御
 - 非 LiPo バッテリを`battery-monitor`経由で取得
 - `encoder0` alias を設定し、ZMK の sensor 連携を容易に
-
----
 
 ### 🩷 `Cliche_Air_R.overlay`（右：Peripheral）
 
@@ -190,13 +188,15 @@ led_indicator_right: led_indicator_right {
 - EC11 エンコーダ用スレッドトリガを有効化
 - 非 LiPo 電池設定を明示
 
-## ⚡ `Cliche_Air_R.conf`（右設定）
+### ⚡ `Cliche_Air_R.conf`（右設定）
 
 🔹 特徴
 
 - PMW3610 トラックボール構成に完全対応
 - RGBLED にバッテリ状態およびレイヤーカラー反映
 - 非 LiPo 電池管理を左右で統一化
+
+---
 
 ### 👨‍💻 作者・クレジット
 
@@ -211,6 +211,8 @@ Reference
 ・[zmk-config-moNa2](https://github.com/sayu-hub/zmk-config-moNa2) @shakushakupanda  
 ・[zmk-config-roBa](https://github.com/kumamuk-git/zmk-config-roBa) @kumamuk-git  
 ・[zmk-keyboard-dya-dash](https://github.com/cormoran/dya-dash-keyboard/tree/main/firmware) @cormoran
+
+---
 
 ### ⚖License
 
