@@ -1,12 +1,12 @@
 README.md
 
-# 🛠️ Cliche_Air LED-Indicator Non-LiPo-Battery-Monitor Firmware v5.0
+# 🛠️ Cliche_Air LED-Indicator Non-LiPo-Battery-Monitor Firmware v6.0
 
 **最終ビルド成功版（2025-10-25）**
 
 ### 🚀 概要
 
-**Cliche_Air LED-Indicator Non-LiPo-Battery-Monitor Firmware v5.0** は、
+**Cliche_Air LED-Indicator Non-LiPo-Battery-Monitor Firmware v6.0** は、
 ZMK Firmware をベースに構築された **左右分離型ワイヤレスキーボードファームウェア** です。
 
 本バージョンでは以下の統合を実現しています：
@@ -17,13 +17,13 @@ ZMK Firmware をベースに構築された **左右分離型ワイヤレスキ�
 
 ### 🧱 ファームウェア構成
 
-| ファイル名             | 役割                                                                          |
-| ---------------------- | ----------------------------------------------------------------------------- |
-| `Cliche_Air.dtsi`      | 共通デバイスツリー定義（行列・LED・alias など）                               |
-| `Cliche_Air_L.overlay` | 左手側ユニット構成（エンコーダ EC11 ＋ ADC ＋ LED ＋ Battery Monitor）        |
-| `Cliche_Air_R.overlay` | 右手側ユニット構成（トラックボール PMW3610 ＋ ADC ＋ LED ＋ Battery Monitor） |
-| `.conf` / `.keymap`    | ZMK レイヤー構成ファイル                                                      |
-| `west.yml`             | モジュール参照設定（非 LiPo バッテリ管理拡張含む）                            |
+| ファイル名             | 役割                                                                   |
+| ---------------------- | ---------------------------------------------------------------------- |
+| `Cliche_Air.dtsi`      | 共通デバイスツリー定義：マトリクス・LED・エンコーダなど                |
+| `Cliche_Air_L.overlay` | 左側（Central）構成：エンコーダ・バッテリ監視・LED 制御                |
+| `Cliche_Air_R.overlay` | 右側（Peripheral）構成：トラックボール PMW3610・バッテリ監視・LED 制御 |
+| `Cliche_Air_L.conf`    | 左側用 Kconfig：エンコーダ・非 LiPo 電池・LED・バッテリ設定            |
+| `Cliche_Air_R.conf`    | 右側用 Kconfig：トラックボール・非 LiPo 電池・LED 設定・バッテリ設定   |
 
 ### 🔋 非 LiPo バッテリ管理構成
 
@@ -37,8 +37,6 @@ ZMK Firmware をベースに構築された **左右分離型ワイヤレスキ�
 non_lipo_battery: non_lipo_battery {
     compatible = "zmk,non-lipo-battery";
     io-channels = <&adc 0>;
-    full-mv = <4200>;
-    empty-mv = <3300>;
     status = "okay";
 };
 ```
@@ -47,9 +45,9 @@ non_lipo_battery: non_lipo_battery {
 
 [nikkyhiro67/zmk-module-battery-monitor](https://github.com/nikkyhiro67/zmk-module-battery-monitor/blob/main/src/battery_monitor.c)
 
-**dtsi に追記**
+**.overlay に追記**
 
-```dtsi
+```.overlay
 battery_monitor: battery_monitor {
     compatible = "zmk,battery-monitor";
     manager = <&non_lipo_battery>;
@@ -63,7 +61,7 @@ battery_monitor: battery_monitor {
 
 **dtsi に追記**
 
-```dtsi
+```.overlay
 led_indicator: led_indicator {
     compatible = "zmk,led-indicator";
     led-strip = <&sk6812_led>;
@@ -87,92 +85,118 @@ led_indicator: led_indicator {
 24%～ 10% 3399〜3300 🔴 赤 残量低下警告  
 9%以下 < 3300 ⚫ 消灯 バッテリ切れ（自動省電力モード）
 
-### 📘 デバイスツリーで設定する .dtsi .overlay
+### ⚙️ `Cliche_Air.dtsi`
 
-**dtsi に追記**
+共通構成を司る基盤ファイル。  
+行列スキャン・LED 定義・エンコーダ・matrix_transform を包括。  
+各 overlay から `#include "Cliche_Air.dtsi"` により参照。
 
-```dtsi
-aliases {
-    led-indicator = &led_indicator;
-    battery-monitor = &battery_monitor;
+主なポイント：
+
+- **matrix-transform 共通化**（左右 col-offset 切替対応）
+- **共通 LED ノード（sk6812_led）を disabled 定義** → overlay 側で有効化または独自ノード置換
+- **共通行ピン設定（col は overlay で再定義）**
+
+---
+
+### 🩵 `Cliche_Air_L.overlay`（左：Central）
+
+左側は**Central（親）**として動作。  
+エンコーダ・非 LiPo バッテリ・LED インジケータを統合。
+
+```dts
+non_lipo_battery_left: non_lipo_battery_left {
+    compatible = "zmk,non-lipo-battery";
+    io-channels = <&adc 0>;
+    status = "okay";
+};
+
+battery_monitor_left: battery_monitor_left {
+    compatible = "zmk,battery-monitor";
+    manager = <&non_lipo_battery_left>;
+    status = "okay";
+};
+
+led_indicator_left: led_indicator_left {
+    compatible = "zmk,led-indicator";
+    led-strip = <&sk6812_led>;
+    battery = <&battery_monitor_left>;
+    power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+    status = "okay";
+};
+
+&adc {
+    status = "okay";
 };
 ```
 
-**overlay に追記**
+🔹 特徴
 
-```overlay
-chosen {
-    zmk,battery = &non_lipo_battery;
+- 共通 LED (`&sk6812_led`) を利用して指示灯制御
+- 非 LiPo バッテリを`battery-monitor`経由で取得
+- `encoder0` alias を設定し、ZMK の sensor 連携を容易に
+
+---
+
+### 🩷 `Cliche_Air_R.overlay`（右：Peripheral）
+
+右側は**Peripheral（子）**として動作。  
+トラックボール（PMW3610）＋独自 LED ＋非 LiPo 電池モニタ構成。
+
+```dts
+sk6812_led_right: led_strip {
+    compatible = "zmk,led-strip";
+    label = "LED_STRIP_RIGHT";
+    gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>;
+    chain-length = <10>;
+    color-order = "GRB";
+    status = "okay";
 };
 
-aliases {
-    led-indicator = &led_indicator;
-    battery-monitor = &battery_monitor;
+non_lipo_battery_right: non_lipo_battery_right {
+    compatible = "zmk,non-lipo-battery";
+    io-channels = <&adc 0>;
+    status = "okay";
+};
+
+battery_monitor_right: battery_monitor_right {
+    compatible = "zmk,battery-monitor";
+    manager = <&non_lipo_battery_right>;
+    status = "okay";
+};
+
+led_indicator_right: led_indicator_right {
+    compatible = "zmk,led-indicator";
+    led-strip = <&sk6812_led_right>;
+    battery = <&battery_monitor_right>;
+    power-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+    status = "okay";
 };
 ```
 
-### ⭐ prj.conf 　 Kconfig 設定で有効にする
+🔹 特徴
 
-**① LED 周りの依存関係を明示化**
+- 独立した LED ノード `sk6812_led_right` を採用
+- SPI バスで PMW3610 トラックボールを接続
+- `col-offset = <6>` により keymap の右手側分担を定義
 
-```conf
-CONFIG_LED_STRIP=y
-CONFIG_LED=y
-CONFIG_PWM=y
-```
+---
 
-Zephyr の led_strip ドライバを正しく有効にするために必須。  
-（Cliche_Air は RGB ストリップ駆動前提のため入れておくと安全）
+### ⚡ `Cliche_Air_L.conf`（左設定）
 
-**② ログレベル最適化**
+🔹 特徴
 
-```conf
-CONFIG_LOG=y
-CONFIG_LOG_DEFAULT_LEVEL=3
-CONFIG_ZMK_LOG_LEVEL=3
-```
+- 中央（Central）側バッテリレポート機能を有効化
+- EC11 エンコーダ用スレッドトリガを有効化
+- 非 LiPo 電池設定を明示
 
-通常運用では「3: INFO」が最適（デバッグ時のみ 4 に変更）  
-この設定で LOG_INF() が有効になります。
+## ⚡ `Cliche_Air_R.conf`（右設定）
 
-**③ 初期化順序の安定化**
+🔹 特徴
 
-```conf
-CCONFIG_APPLICATION_INIT_PRIORITY=80
-```
-
-ZMK コアの BLE/Battery 初期化完了後に LED 初期化を行うための設定。  
-これがないと device_is_ready(led_strip_dev) が false のままになるケースがあります。
-
-**④ 分割構成のバッテリ同期**
-
-```conf
-CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_PROXY=y
-CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING=y
-```
-
-これにより左右分割間でバッテリ残量が正しく同期されます。  
-master 側 LED が slave 側バッテリ残量にも追従。
-
-**⑤ 電源管理（省電力連携）**
-
-```conf
-CONFIG_PM=y
-CONFIG_PM_DEVICE=y
-```
-
-バッテリ機器では省電力制御必須。  
-将来的にスリープ／復帰時の LED 点滅などにも対応可能。
-
-**⑥ battery_monitor.c の更新周期と一致**
-
-```conf
-CONFIG_ZMK_BATTERY_MONITOR_INTERVAL_SEC=30
-CONFIG_ZMK_LED_INDICATOR_UPDATE_INTERVAL=1000
-```
-
-30 秒ごとに battery_monitor が SoC 更新イベントを発行。  
-LED は 1 秒ごとに再描画（状態変化時は即反映）。
+- PMW3610 トラックボール構成に完全対応
+- RGBLED にバッテリ状態およびレイヤーカラー反映
+- 非 LiPo 電池管理を左右で統一化
 
 ### 👨‍💻 作者・クレジット
 
