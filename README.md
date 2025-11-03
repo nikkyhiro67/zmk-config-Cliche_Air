@@ -2,8 +2,6 @@ README.md
 
 # 🛠️ Cliche_Air LED-Indicator Non-LiPo-Battery-Monitor Firmware v6.0
 
-**最終ビルド成功版（2025-11-3）**
-
 ---
 
 ### 🚀 概要
