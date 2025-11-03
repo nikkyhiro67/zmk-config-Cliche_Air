@@ -4,6 +4,8 @@ README.md
 
 **最終ビルド成功版（2025-11-3）**
 
+---
+
 ### 🚀 概要
 
 **Cliche_Air LED-Indicator Non-LiPo-Battery-Monitor Firmware v6.0** は、
@@ -15,6 +17,8 @@ ZMK Firmware をベースに構築された **左右分離型ワイヤレスキ�
 - 💡 **LED インジケータ機能 (`zmk,led-indicator`)**
 - ⚙️ **ロータリーエンコーダ／トラックボール搭載**
 
+---
+
 ### 🧱 ファームウェア構成
 
 | ファイル名             | 役割                                                                   |
@@ -24,6 +28,8 @@ ZMK Firmware をベースに構築された **左右分離型ワイヤレスキ�
 | `Cliche_Air_R.overlay` | 右側（Peripheral）構成：トラックボール PMW3610・バッテリ監視・LED 制御 |
 | `Cliche_Air_L.conf`    | 左側用 Kconfig：エンコーダ・非 LiPo 電池・LED・バッテリ設定            |
 | `Cliche_Air_R.conf`    | 右側用 Kconfig：トラックボール・非 LiPo 電池・LED 設定・バッテリ設定   |
+
+---
 
 ### 🔋 非 LiPo バッテリ管理構成
 
