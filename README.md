@@ -182,6 +182,95 @@ led_indicator_right: led_indicator_right {
 
 ---
 
+### 🖱 Auto Mouse Layer 対応
+
+[ZMK のオートマウスレイヤーを極める＠kot149](https://zenn.dev/kot149/articles/zmk-auto-mouse-layer)
+
+**.overlay に追記**
+
+```.overlay
+#include <input/processors.dtsi>
+
+&zip_temp_layer {
+    excluded-positions = <
+        18 // J
+        19 // K
+        21 // ;
+        34 // Ctrl
+    >;
+};
+
+/ {
+    trackball_listener: trackball_listener {
+        compatible = "zmk,input-listener";
+        device = <&trackball>;
+
+        input-processors = <&zip_temp_layer 5 10000>;
+    };
+};
+```
+
+**.keymap に追記**
+
+```.keymap
+#include <input/processors.dtsi>
+#define MOUSE 5
+
+&mkp_input_listener {
+    input-processors = <&zip_temp_layer 5 250>;
+};
+
+/{
+    macros {
+        exit_AML: exit_AML {
+            compatible = "zmk,behavior-macro";
+            wait-ms = <0>;
+            tap-ms = <0>;
+            #binding-cells = <0>;
+            bindings = <&tog_off MOUSE>;
+            label = "exit_AML";
+        };
+
+        kp_exit_AML: kp_exit_AML {
+            compatible = "zmk,behavior-macro-one-param";
+            wait-ms = <0>;
+            tap-ms = <0>;
+            #binding-cells = <1>;
+            bindings = <&macro_param_1to1 &kp MACRO_PLACEHOLDER &exit_AML>;
+            label = "KP_exit_AML";
+        };
+    };
+
+    behaviors {
+        tog_off: toggle_layer_off {
+            compatible = "zmk,behavior-toggle-layer";
+            #binding-cells = <1>;
+            display-name = "Toggle Layer Off";
+            toggle-mode = "off";
+        };
+
+        mt_exit_AML_on_tap: mt_exit_AML_on_tap {
+            compatible = "zmk,behavior-hold-tap";
+            label = "MT_exit_AML_ON_TAP";
+            bindings = <&kp>, <&kp_exit_AML>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            flavor = "balanced";
+            quick-tap-ms = <200>;
+        };
+    };
+}
+```
+
+**.conf に追記**
+
+```.conf
+CONFIG_PMW3610_AUTOMOUSE_TIMEOUT_MS=100000
+```
+
+---
+
 ### ⚡ `Cliche_Air_L.conf`（左設定）
 
 🔹 特徴
