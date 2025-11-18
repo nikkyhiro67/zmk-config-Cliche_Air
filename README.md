@@ -41,6 +41,10 @@ non_lipo_battery: non_lipo_battery {
     io-channels = <&adc 0>;
     status = "okay";
 };
+
+&vbatt {
+    status = "disabled";
+};
 ```
 
 ### ⚡ バッテリー電圧 SOC 取得 API と ZMK イベント発行
