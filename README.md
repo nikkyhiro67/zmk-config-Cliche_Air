@@ -285,7 +285,7 @@ CONFIG_PMW3610_AUTOMOUSE_TIMEOUT_MS=100000
 
 - PMW3610 トラックボール構成に完全対応
 - RGBLED にバッテリ状態およびレイヤーカラー反映
-- 非 LiPo 電池管理を左右で統一化
+- 非 LiPo 電池管理を明示
 
 ---
 
