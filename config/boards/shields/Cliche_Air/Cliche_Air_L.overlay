@@ -50,3 +50,7 @@
 &adc {
     status = "okay";
 };
+
+&vbatt {
+    status = "disabled";
+};
