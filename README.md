@@ -295,16 +295,16 @@ CONFIG_PMW3610_AUTOMOUSE_TIMEOUT_MS=100000
 
 ### 👨‍💻 作者・クレジット
 
-Firmware Architect nikkyhiro67  
-Firmware Co-Designer (AI Support) ChatGPT GPT-5  
+Firmware Architect nikkyhiro67
+Firmware Co-Designer (AI Support) ChatGPT GPT-5
 Base Platform ZMK Firmware
 
-Additional Modules  
+Additional Modules
 ・[sekigon-gonnoc/zmk-feature-non-lipo-battery-management](https://github.com/sekigon-gonnoc/zmk-feature-non-lipo-battery-management) 　@sekigon-gonnoc
 
-Reference  
-・[zmk-config-moNa2](https://github.com/sayu-hub/zmk-config-moNa2) @shakushakupanda  
-・[zmk-config-roBa](https://github.com/kumamuk-git/zmk-config-roBa) @kumamuk-git  
+Reference
+・[zmk-config-roBa](https://github.com/kumamuk-git/zmk-config-roBa) @kumamuk-git
+・[zmk-config-moNa2](https://github.com/sayu-hub/zmk-config-moNa2) @shakushakupanda
 ・[zmk-keyboard-dya-dash](https://github.com/cormoran/dya-dash-keyboard/tree/main/firmware) @cormoran
 
 ---
