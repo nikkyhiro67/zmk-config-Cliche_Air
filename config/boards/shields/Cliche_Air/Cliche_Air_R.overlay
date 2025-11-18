@@ -138,7 +138,3 @@
         led-indicator = &led_indicator_right;
     };
 };
-
-&vbatt {
-    status = "disabled";
-};
